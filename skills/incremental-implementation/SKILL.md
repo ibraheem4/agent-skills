@@ -1,13 +1,15 @@
 ---
 name: incremental-implementation
-description: Use when building a feature that requires multiple steps. Implement in small, tested, committed increments.
+description: Use when building a feature that requires multiple steps. Implement in small, tested, committed increments. Never write more than 50 lines without running tests.
 ---
 
 # Incremental Implementation
 
 ## Overview
 
-Build features in small steps where each step compiles, passes tests, and could be merged independently. Never write more than 50 lines without running tests.
+The #1 agent failure mode: writing hundreds of lines of code without testing any of it, then spending longer debugging than it took to write. Build in small steps — each step compiles, passes tests, and could be merged independently.
+
+Grounded in Google's "small CLs" principle (under ~200 lines of meaningful change per commit) and Microsoft's atomic commit guidance.
 
 ## When to Use
 

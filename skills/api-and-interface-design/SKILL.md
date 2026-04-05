@@ -9,6 +9,8 @@ description: Use when designing APIs, module interfaces, or public contracts. De
 
 Design the interface first — function signatures, request/response shapes, error codes — before writing any implementation. Good interfaces are small, consistent, and hard to misuse.
 
+Follows Stripe's API design principles: consistent resource structure, predictable error responses with `type`/`code`/`message`/`param`, idempotency keys on mutating operations, and cursor-based pagination. Stripe's API is the industry gold standard because every endpoint behaves the same way.
+
 ## When to Use
 
 - Creating a new API endpoint or service

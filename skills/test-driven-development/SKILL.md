@@ -9,6 +9,8 @@ description: Use when implementing new functionality or fixing bugs. Write a fai
 
 Write the test before the code. The test defines the behavior; the implementation satisfies it. This produces minimal, correct code with built-in regression protection.
 
+Follows Google's "Beyonce Rule" — if you liked it, you should have put a test on it. Untested behavior is unguaranteed behavior. Uses Google's test size classification (small/medium/large) over the traditional unit/integration/e2e naming.
+
 ## When to Use
 
 - Implementing any new function, method, or endpoint
@@ -87,19 +89,17 @@ For bugs, reverse the flow:
 
 The test is your proof that the bug existed and is now fixed.
 
-## Test Pyramid
+## Test Sizes (Google Classification)
 
-```
-        ╱╲
-       ╱E2E╲         5% — Critical user journeys only
-      ╱──────╲
-     ╱ Integr. ╲     15% — API boundaries, DB queries
-    ╱────────────╲
-   ╱    Unit      ╲   80% — Functions, classes, modules
-  ╱────────────────╲
-```
+| Size | Constraints | Time | Network | Use For |
+|------|------------|------|---------|---------|
+| **Small** | Single process, hermetic | < 60s | No | Functions, classes, pure logic |
+| **Medium** | Single machine | < 5min | localhost only | DB queries, API boundaries |
+| **Large** | No constraints | < 15min | Yes | Critical user journeys, E2E |
 
-Default to unit tests. Reach for integration tests at system boundaries. Use E2E tests sparingly for critical paths.
+Target ratio: **80% small, 15% medium, 5% large**.
+
+Default to small tests. They're fast, deterministic, and catch most bugs. Reach for medium tests at system boundaries. Use large tests sparingly for critical paths.
 
 ## Common Rationalizations
 

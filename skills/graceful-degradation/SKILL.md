@@ -9,6 +9,8 @@ description: Use when building features that depend on external services, databa
 
 External dependencies fail. Networks partition. Databases slow down. Design every integration point to degrade gracefully — return stale data, skip optional features, or show a meaningful fallback — instead of crashing the entire request.
 
+Grounded in Netflix's resilience engineering: Hystrix circuit breakers, the fallback hierarchy (try primary → cache → static → degraded UI), and the principle that "the best way to avoid failure is to fail constantly." Agents tend to over-apply these patterns — use them at service boundaries, not internal function calls.
+
 ## When to Use
 
 - Calling any external API or third-party service

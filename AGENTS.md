@@ -1,20 +1,23 @@
 # Agent Skills — Codex
 
-This repository contains reusable agent skills. Each skill in `skills/` encodes a senior engineering workflow with clear activation conditions, step-by-step processes, and verifiable exit criteria.
+Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a specific agent failure mode with a step-by-step process grounded in industry practices (Microsoft, Google, Stripe, Netflix).
 
-## How to Use
+## Critical Skills (apply always)
 
-When a task matches a skill's "When to Use" conditions, load and follow the skill's process from `skills/<skill-name>/SKILL.md`.
+- **scope-discipline** — Do exactly what was asked. No extra features, no unsolicited refactors
+- **incremental-implementation** — Never write more than 50 lines without running tests
 
 ## Available Skills
 
-| Skill | Trigger |
-|-------|---------|
-| planning-and-task-breakdown | Breaking work into increments |
-| idea-refine | Sharpening a raw idea |
-| incremental-implementation | Building features step by step |
-| test-driven-development | Writing tests first |
-| code-review-and-quality | Reviewing code changes |
-| shipping-and-launch | Pre-launch checks |
-| debugging-and-error-recovery | Diagnosing errors |
-| security-and-hardening | Security review |
+| Skill | Agent Failure Mode It Fixes |
+|-------|----------------------------|
+| scope-discipline | Adding features nobody asked for |
+| incremental-implementation | Writing 500 lines without testing |
+| test-driven-development | Shipping code without tests |
+| debugging-and-error-recovery | Retrying the same failing approach |
+| code-review-and-quality | Missing subtle bugs in generated code |
+| security-and-hardening | Introducing injection vectors, hardcoded secrets |
+| shipping-and-launch | Leaving debug logs and TODOs in code |
+| graceful-degradation | Not handling dependency failures |
+| code-health-and-maintainability | Over-engineering with premature abstractions |
+| api-and-interface-design | Inconsistent interfaces, poor error design |

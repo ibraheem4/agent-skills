@@ -7,7 +7,7 @@ description: Use when encountering errors, unexpected behavior, or test failures
 
 ## Overview
 
-Diagnose errors systematically instead of guessing. Read the error, form a hypothesis, test it, repeat. Never change code without understanding why it's broken.
+Agents' second-most-common failure: ignoring error messages and retrying the same approach, or making random changes until something works ("shotgun debugging"). Diagnose errors systematically — read the error, form a hypothesis, test one thing. Never retry blindly.
 
 ## When to Use
 

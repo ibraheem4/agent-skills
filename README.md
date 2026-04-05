@@ -1,8 +1,8 @@
 # Agent Skills
 
-Reusable, tool-agnostic skills that encode senior engineering workflows for AI coding agents. Each skill is a structured process — not vague guidance — with clear activation conditions, step-by-step procedures, and verifiable exit criteria.
+Behavioral guardrails and engineering workflows for AI coding agents. Each skill combats a specific agent failure mode — scope creep, blind retries, missing tests, hallucinated fixes — with step-by-step processes grounded in industry practices.
 
-Grounded in practices from [Microsoft's Engineering Playbook](https://microsoft.github.io/code-with-engineering-playbook/), Microsoft's Security Development Lifecycle (SDL), and industry standards like DORA metrics and the OWASP Top 10.
+Draws from [Microsoft's Engineering Playbook](https://microsoft.github.io/code-with-engineering-playbook/), [Google's SWE Book](https://abseil.io/resources/swe-book), [Stripe's API design](https://stripe.com/docs/api), and [Netflix's resilience engineering](https://netflixtechblog.com/).
 
 ## Supported Tools
 
@@ -13,102 +13,77 @@ Grounded in practices from [Microsoft's Engineering Playbook](https://microsoft.
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `GEMINI.md` | Supported |
 | [OpenCode](https://github.com/nicholasgriffintn/opencode) | — | Planned |
 
+## Why Agent-Specific Skills?
+
+AI agents fail differently than humans:
+
+| Agent Failure Mode | Human Equivalent | Skill That Fixes It |
+|-------------------|-----------------|---------------------|
+| Writes 500 lines without testing | Cowboy coding | [incremental-implementation](#build) |
+| Retries the same failing approach | Stubbornness | [debugging-and-error-recovery](#verify) |
+| Adds features nobody asked for | Scope creep | [scope-discipline](#build) |
+| Generates code with subtle security holes | Inexperience | [security-and-hardening](#review) |
+| Leaves debug logs and TODOs in code | Carelessness | [shipping-and-launch](#ship) |
+| Doesn't read existing code before editing | Arrogance | [code-review-and-quality](#review) |
+| Over-engineers with premature abstractions | Resume-driven dev | [code-health-and-maintainability](#review) |
+| Ignores error messages, guesses at fixes | Panic | [debugging-and-error-recovery](#verify) |
+
 ## Skills
 
-Skills are organized by development phase:
-
-### Define
-- **[idea-refine](skills/idea-refine/)** — Expand, evaluate, and sharpen a raw idea into a concrete spec
-
-### Plan
-- **[planning-and-task-breakdown](skills/planning-and-task-breakdown/)** — Break work into small, shippable increments
-
 ### Build
-- **[incremental-implementation](skills/incremental-implementation/)** — Build features in small, tested steps
-- **[api-and-interface-design](skills/api-and-interface-design/)** — Design APIs and module interfaces
+- **[incremental-implementation](skills/incremental-implementation/)** — Never write more than 50 lines without running tests. Commit after every working change. *[Google: small CLs; Microsoft: atomic commits]*
+- **[scope-discipline](skills/scope-discipline/)** — Do exactly what was asked. No "while I'm here" refactors, no extra features, no unsolicited improvements. *[Google: one logical change per CL]*
+- **[api-and-interface-design](skills/api-and-interface-design/)** — Design the interface before the implementation. Consistent naming, minimal surface area, hard to misuse. *[Stripe: resource-oriented design, consistent error structure]*
 
 ### Verify
-- **[test-driven-development](skills/test-driven-development/)** — Write tests first, then make them pass
-- **[debugging-and-error-recovery](skills/debugging-and-error-recovery/)** — Systematic diagnosis over guessing
+- **[test-driven-development](skills/test-driven-development/)** — Write the failing test first. "If you liked it, you should have put a test on it." *[Google: Beyonce Rule, 80/15/5 test pyramid]*
+- **[debugging-and-error-recovery](skills/debugging-and-error-recovery/)** — Read the error. Form a hypothesis. Test one thing. Never retry blindly. *[Microsoft: systematic diagnosis]*
 
 ### Review
-- **[code-review-and-quality](skills/code-review-and-quality/)** — Two-pass review: design pass, then code quality pass
-- **[security-and-hardening](skills/security-and-hardening/)** — DevSecOps shift-left security checks (SDL-aligned)
-- **[threat-modeling](skills/threat-modeling/)** — STRIDE threat analysis on data flow diagrams before implementation
-- **[code-health-and-maintainability](skills/code-health-and-maintainability/)** — Reduce complexity, remove dead code, improve names
+- **[code-review-and-quality](skills/code-review-and-quality/)** — Two-pass review: design pass, then code quality pass. Label findings by severity. *[Microsoft: two-pass model; Google: readability reviews]*
+- **[security-and-hardening](skills/security-and-hardening/)** — DevSecOps shift-left checks: input validation, auth, secrets, dependencies. *[Microsoft: SDL; OWASP Top 10]*
+- **[threat-modeling](skills/threat-modeling/)** — STRIDE threat analysis on data flow diagrams. Identify threats at design time, not after deployment. *[Microsoft: SDL]*
+- **[code-health-and-maintainability](skills/code-health-and-maintainability/)** — Remove dead code. Improve names. Reduce nesting. Three similar lines are better than one wrong abstraction. *[Google: readability; Microsoft: code health]*
 
 ### Ship
-- **[git-workflow-and-versioning](skills/git-workflow-and-versioning/)** — Conventional commits, branching, and release
-- **[shipping-and-launch](skills/shipping-and-launch/)** — Pre-launch checklist and go/no-go gates
-- **[experimentation-and-feature-flags](skills/experimentation-and-feature-flags/)** — Controlled rollouts, A/B testing, kill switches
+- **[shipping-and-launch](skills/shipping-and-launch/)** — Pre-flight checklist: tests pass, no secrets, no debug logs, no TODOs without tickets. *[Microsoft: Engineering Fundamentals Checklist]*
+- **[git-workflow-and-versioning](skills/git-workflow-and-versioning/)** — Conventional commits, branch naming, semantic versioning. Every commit compiles and passes tests. *[Google: trunk-based development]*
 
 ### Operate
-- **[operational-excellence](skills/operational-excellence/)** — SLOs, alerting, runbooks, and postmortems
-- **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logging, RED metrics, distributed tracing
-- **[graceful-degradation](skills/graceful-degradation/)** — Timeouts, circuit breakers, fallbacks for partial failure
+- **[graceful-degradation](skills/graceful-degradation/)** — Every external call needs a timeout. Classify dependencies as critical or optional. Degrade, don't crash. *[Netflix: Hystrix, circuit breakers, fallback hierarchy]*
+- **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logs, RED metrics, correlation IDs. Ship monitoring with the feature. *[Google: SRE; Microsoft: observability pillar]*
 
 ### Foundations
-- **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 checklist: source control, CI/CD, testing, security, observability
-- **[developer-experience](skills/developer-experience/)** — The F5 Contract: clone, configure, run in under 30 minutes
-- **[design-docs-and-adrs](skills/design-docs-and-adrs/)** — Architectural decisions documented before implementation
+- **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 setup: CI, tests, branch protection, security scanning, monitoring. *[Microsoft: Engineering Fundamentals Playbook]*
 
 ## Design Philosophy
 
-1. **Process over prose** — Every skill is a step-by-step workflow, not a knowledge dump
-2. **Anti-rationalization** — Each skill includes common excuses for skipping steps and why they're wrong
-3. **Verifiable outcomes** — Exit criteria are observable and testable, not subjective
-4. **Tool-agnostic core** — Skills work across any agent; tool-specific config is separate
+1. **Agent failure modes, not human advice** — Each skill targets a specific way agents break
+2. **Process over prose** — Step-by-step workflows, not knowledge dumps
+3. **Anti-rationalization** — Common excuses for skipping steps with factual rebuttals
+4. **Industry-grounded** — Every practice is cited to a public engineering playbook or book
+5. **Tool-agnostic core** — Skills work across Claude Code, Codex, and Gemini CLI
 
 ## Quick Start
 
 ### Claude Code
 ```bash
-# Add as a subtree or copy skills/ into your project
 cp -r skills/ your-project/.claude/skills/
 ```
-
-Skills referenced in `CLAUDE.md` are automatically available as slash commands.
 
 ### Codex
 ```bash
 cp -r skills/ your-project/.codex/skills/
 ```
 
-Reference skills in your `codex.md` or `AGENTS.md` instructions.
-
 ### Gemini CLI
 ```bash
 cp -r skills/ your-project/.gemini/skills/
 ```
 
-Reference skills in your `GEMINI.md` instructions.
-
-## Skill Anatomy
-
-Every skill follows this structure:
-
-```
-skills/skill-name/
-  SKILL.md          # Main skill definition (required)
-  frameworks.md     # Supporting frameworks (optional)
-  references/       # Reference materials (optional)
-```
-
-Each `SKILL.md` contains:
-
-1. **Frontmatter** — Name, description, activation trigger
-2. **Overview** — What the skill does and why
-3. **When to Use** — Triggering conditions and exclusions
-4. **Core Process** — Sequential numbered workflow
-5. **Common Rationalizations** — Excuses and rebuttals (table)
-6. **Red Flags** — Observable anti-patterns
-7. **Verification** — Testable exit criteria (checkboxes)
-
-See [docs/skill-anatomy.md](docs/skill-anatomy.md) for the full template.
-
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on adding new skills.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. See [docs/skill-anatomy.md](docs/skill-anatomy.md) for the skill template.
 
 ## License
 

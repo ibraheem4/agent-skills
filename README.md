@@ -2,6 +2,8 @@
 
 Reusable, tool-agnostic skills that encode senior engineering workflows for AI coding agents. Each skill is a structured process — not vague guidance — with clear activation conditions, step-by-step procedures, and verifiable exit criteria.
 
+Grounded in practices from [Microsoft's Engineering Playbook](https://microsoft.github.io/code-with-engineering-playbook/), Microsoft's Security Development Lifecycle (SDL), and industry standards like DORA metrics and the OWASP Top 10.
+
 ## Supported Tools
 
 | Tool | Config File | Status |
@@ -30,8 +32,9 @@ Skills are organized by development phase:
 - **[debugging-and-error-recovery](skills/debugging-and-error-recovery/)** — Systematic diagnosis over guessing
 
 ### Review
-- **[code-review-and-quality](skills/code-review-and-quality/)** — Multi-axis review with severity labeling
-- **[security-and-hardening](skills/security-and-hardening/)** — OWASP-aligned security review
+- **[code-review-and-quality](skills/code-review-and-quality/)** — Two-pass review: design pass, then code quality pass
+- **[security-and-hardening](skills/security-and-hardening/)** — DevSecOps shift-left security checks (SDL-aligned)
+- **[threat-modeling](skills/threat-modeling/)** — STRIDE threat analysis on data flow diagrams before implementation
 - **[code-health-and-maintainability](skills/code-health-and-maintainability/)** — Reduce complexity, remove dead code, improve names
 
 ### Ship
@@ -44,7 +47,9 @@ Skills are organized by development phase:
 - **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logging, RED metrics, distributed tracing
 - **[graceful-degradation](skills/graceful-degradation/)** — Timeouts, circuit breakers, fallbacks for partial failure
 
-### Document
+### Foundations
+- **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 checklist: source control, CI/CD, testing, security, observability
+- **[developer-experience](skills/developer-experience/)** — The F5 Contract: clone, configure, run in under 30 minutes
 - **[design-docs-and-adrs](skills/design-docs-and-adrs/)** — Architectural decisions documented before implementation
 
 ## Design Philosophy

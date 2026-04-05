@@ -7,7 +7,7 @@ description: Use when reviewing code for security vulnerabilities. OWASP-aligned
 
 ## Overview
 
-Check code for the most common security vulnerabilities. This is a practical checklist, not an exhaustive audit — it covers what agents most frequently introduce or miss.
+Check code for the most common security vulnerabilities. Follows the DevSecOps shift-left approach from [Microsoft's SDL](https://www.microsoft.com/en-us/securityengineering/sdl/) — integrate security checks into the development process, not after it. For architectural-level security analysis, use the [threat-modeling](../threat-modeling/) skill with STRIDE.
 
 ## When to Use
 

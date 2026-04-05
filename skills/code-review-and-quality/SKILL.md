@@ -19,27 +19,38 @@ Review code across five axes: correctness, readability, architecture, security, 
 
 ## Core Process
 
+Use a **two-pass review** model (from [Microsoft's Engineering Playbook](https://microsoft.github.io/code-with-engineering-playbook/)):
+
 ### 1. Understand Context
 
 Before reading code, understand:
 - What problem does this PR solve?
 - What issue/ticket does it reference?
 - What changed at a high level? (file list, diff stats)
+- Are screenshots/GIFs included for UI changes?
 
-### 2. Read Tests First
+### 2. First Pass — Design Review
 
-Tests tell you what the code is supposed to do. If there are no tests, that's your first finding.
+Evaluate the approach, not the syntax:
 
-### 3. Review Implementation
+| Question | What to look for |
+|----------|-----------------|
+| Does the PR do one thing? | Single-responsibility at the PR level |
+| Is the approach right? | Architectural fit, patterns, data flow |
+| Are tests included? | "I'll add tests next" is not acceptable |
+| Are edge cases handled? | Null, empty, boundary, concurrent access |
 
-Walk through the diff file-by-file. For each change, evaluate:
+### 3. Second Pass — Code Quality
+
+Walk through the diff line-by-line:
 
 | Axis | Questions |
 |------|-----------|
-| **Correctness** | Does it do what it claims? Edge cases handled? Off-by-one? Null safety? |
+| **Correctness** | Does it do what it claims? Off-by-one? Null safety? |
 | **Readability** | Can a new team member understand this in 5 minutes? Clear names? |
-| **Architecture** | Does it follow existing patterns? Is the abstraction level right? |
-| **Security** | Input validated? Secrets exposed? Injection vectors? |
+| **Complexity** | Single responsibility? Max 3 function parameters? |
+| **Security** | Input validated? Secrets exposed? Injection vectors? PII handling? |
+| **Error handling** | Failures caught? Meaningful error messages? No swallowed exceptions? |
 | **Performance** | N+1 queries? Unnecessary allocations? Missing indexes? |
 
 ### 4. Label Findings

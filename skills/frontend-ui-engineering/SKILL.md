@@ -18,6 +18,16 @@ Agents produce UI that "works" but looks generic — default spacing, no hierarc
 
 **Do not use** for CLI tools, APIs, or backend-only code.
 
+## Reference Library
+
+This skill includes detailed reference files for deep-dive patterns:
+- **[references/components.md](references/components.md)** — Anatomy, props, and anti-patterns for 20+ components (Table, Modal, Button, Tabs, Toast, etc.)
+- **[references/accessibility.md](references/accessibility.md)** — ARIA patterns, keyboard navigation, screen reader requirements by component
+- **[references/responsive.md](references/responsive.md)** — Breakpoint strategies, container queries, mobile-first patterns
+- **[references/data-viz.md](references/data-viz.md)** — Chart selection, dashboard layout, data table patterns
+
+Use the **[ui-component-lookup](../ui-component-lookup/)** skill for quick access to a specific component's reference card.
+
 ## Core Process
 
 ### 1. Read the Design System First

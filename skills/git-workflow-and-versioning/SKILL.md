@@ -64,7 +64,7 @@ Enter worktree → create branch → implement → commit → push → PR → re
 | Rule | Rationale |
 |------|-----------|
 | **One worktree per feature** | Keeps each feature isolated, enables parallel work |
-| **Worktrees inside the repo** | Store in `<repo>/.claude/worktrees/` or equivalent — never in `~/Projects/` or sibling directories |
+| **Worktrees inside the repo** | Store in a dotfile directory within the repo (e.g., `.worktrees/`) — never in home or sibling directories where they get orphaned |
 | **Remove after merge** | Stale worktrees accumulate and confuse future sessions |
 | **Keep only if in-progress** | Only preserve a worktree if you'll return to unfinished work |
 | **Never switch branches in-place** | Contaminates the working tree, dirties submodule pointers |

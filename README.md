@@ -32,10 +32,20 @@ Skills are organized by development phase:
 ### Review
 - **[code-review-and-quality](skills/code-review-and-quality/)** — Multi-axis review with severity labeling
 - **[security-and-hardening](skills/security-and-hardening/)** — OWASP-aligned security review
+- **[code-health-and-maintainability](skills/code-health-and-maintainability/)** — Reduce complexity, remove dead code, improve names
 
 ### Ship
 - **[git-workflow-and-versioning](skills/git-workflow-and-versioning/)** — Conventional commits, branching, and release
 - **[shipping-and-launch](skills/shipping-and-launch/)** — Pre-launch checklist and go/no-go gates
+- **[experimentation-and-feature-flags](skills/experimentation-and-feature-flags/)** — Controlled rollouts, A/B testing, kill switches
+
+### Operate
+- **[operational-excellence](skills/operational-excellence/)** — SLOs, alerting, runbooks, and postmortems
+- **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logging, RED metrics, distributed tracing
+- **[graceful-degradation](skills/graceful-degradation/)** — Timeouts, circuit breakers, fallbacks for partial failure
+
+### Document
+- **[design-docs-and-adrs](skills/design-docs-and-adrs/)** — Architectural decisions documented before implementation
 
 ## Design Philosophy
 

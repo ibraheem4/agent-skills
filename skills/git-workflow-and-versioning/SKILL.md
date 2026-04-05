@@ -53,7 +53,25 @@ Examples: `feat/LUC-123-user-registration`, `fix/LUC-456-null-pointer`
 - No "WIP" or "fix typo" commits in final history (squash before merge)
 - No committed secrets, debug logs, or TODO without ticket reference
 
-### 4. Semantic Versioning
+### 4. Worktree Lifecycle
+
+Use worktrees for feature isolation. Never switch branches in-place on the main checkout.
+
+```
+Enter worktree → create branch → implement → commit → push → PR → remove worktree
+```
+
+| Rule | Rationale |
+|------|-----------|
+| **One worktree per feature** | Keeps each feature isolated, enables parallel work |
+| **Worktrees inside the repo** | Store in `<repo>/.claude/worktrees/` or equivalent — never in `~/Projects/` or sibling directories |
+| **Remove after merge** | Stale worktrees accumulate and confuse future sessions |
+| **Keep only if in-progress** | Only preserve a worktree if you'll return to unfinished work |
+| **Never switch branches in-place** | Contaminates the working tree, dirties submodule pointers |
+
+Periodic cleanup: run `git worktree list` and `git worktree prune` to find and remove orphaned worktrees.
+
+### 5. Semantic Versioning
 
 ```
 MAJOR.MINOR.PATCH
@@ -76,3 +94,4 @@ MAJOR.MINOR.PATCH
 - [ ] Branch name includes ticket reference
 - [ ] No secrets, debug output, or uncommitted files in the diff
 - [ ] Version bump follows semver rules
+- [ ] Worktree removed after work is committed and pushed (not left stale)

@@ -32,10 +32,12 @@ These must be in place before writing feature code:
 #### CI/CD
 - [ ] CI pipeline defined in the repo (not just in a UI)
 - [ ] Every commit triggers build + test
-- [ ] Pipeline includes: build, unit tests, lint, security scan
+- [ ] Pipeline includes quality gates in order: lint → typecheck → unit tests → build → integration tests → security scan
 - [ ] Build status badge in README
 - [ ] Broken builds block PR merges
 - [ ] CD deploys to at least one non-production environment
+- [ ] Pipeline caching configured (dependencies, build artifacts)
+- [ ] Deployment strategy defined (preview deploys for PRs, canary or blue-green for production)
 
 #### Testing
 - [ ] Unit test framework configured and running in CI

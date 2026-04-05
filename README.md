@@ -32,12 +32,15 @@ AI agents fail differently than humans:
 
 ### Build
 - **[incremental-implementation](skills/incremental-implementation/)** — Never write more than 50 lines without running tests. Commit after every working change. *[Google: small CLs; Microsoft: atomic commits]*
-- **[scope-discipline](skills/scope-discipline/)** — Do exactly what was asked. No "while I'm here" refactors, no extra features, no unsolicited improvements. *[Google: one logical change per CL]*
+- **[scope-discipline](skills/scope-discipline/)** — Surface assumptions, then do exactly what was asked. No extra features, no unsolicited improvements. *[Google: one logical change per CL]*
 - **[api-and-interface-design](skills/api-and-interface-design/)** — Design the interface before the implementation. Consistent naming, minimal surface area, hard to misuse. *[Stripe: resource-oriented design, consistent error structure]*
+- **[frontend-ui-engineering](skills/frontend-ui-engineering/)** — Composition over configuration, accessibility by default, no generic AI aesthetic. *[Industry: WCAG, component architecture]*
+- **[context-engineering](skills/context-engineering/)** — Read before writing, load deliberately, verify don't assume. Manage what enters the context window. *[Agent-specific]*
 
 ### Verify
 - **[test-driven-development](skills/test-driven-development/)** — Write the failing test first. "If you liked it, you should have put a test on it." *[Google: Beyonce Rule, 80/15/5 test pyramid]*
 - **[debugging-and-error-recovery](skills/debugging-and-error-recovery/)** — Read the error. Form a hypothesis. Test one thing. Never retry blindly. *[Microsoft: systematic diagnosis]*
+- **[performance-optimization](skills/performance-optimization/)** — Measure first, optimize the bottleneck, verify the improvement. Never optimize without profiling data. *[Google: measure-first; Stripe: latency budgets]*
 
 ### Review
 - **[code-review-and-quality](skills/code-review-and-quality/)** — Two-pass review: design pass, then code quality pass. Label findings by severity. *[Microsoft: two-pass model; Google: readability reviews]*
@@ -56,6 +59,7 @@ AI agents fail differently than humans:
 - **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logs, RED metrics, correlation IDs. Ship monitoring with the feature. *[Google: SRE; Microsoft: observability pillar]*
 
 ### Foundations
+- **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*
 - **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 setup: CI, tests, branch protection, security scanning, monitoring. *[Microsoft: Engineering Fundamentals Playbook]*
 
 ## Design Philosophy

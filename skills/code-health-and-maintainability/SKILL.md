@@ -66,14 +66,23 @@ Rules:
 - Collections: plural (`users`, `activeOrders`)
 - Avoid abbreviations unless universally understood (`id`, `url`, `http`)
 
-### 4. Reduce Complexity
+### 4. Simplify (Five Principles)
 
-Apply these transformations in order:
+When simplifying code, follow these in order:
 
-1. **Early return** — Replace nested conditionals with guard clauses
-2. **Extract function** — Name a block of code by what it does
-3. **Replace conditional with polymorphism** — When you have type-based switches
-4. **Inline** — Remove one-line wrappers that add no clarity
+1. **Preserve behavior** — Simplification must not change what the code does. Run tests after every transformation
+2. **Follow existing conventions** — Match the surrounding code's style, not your preferred style
+3. **Prefer clarity over cleverness** — If a reader needs to "figure out" what the code does, it's too clever
+4. **Reduce nesting** — Early returns, guard clauses, extract functions
+5. **Inline unnecessary abstractions** — Remove one-line wrappers, single-use helpers, and premature DRY
+
+Apply these transformations:
+
+- **Early return** — Replace nested conditionals with guard clauses
+- **Extract function** — Name a block of code by what it does
+- **Replace conditional with polymorphism** — When you have type-based switches
+- **Inline** — Remove wrappers that add no clarity
+- **Flatten** — Replace `if/else` chains with lookup tables or maps
 
 ```typescript
 // Before: nested, hard to follow

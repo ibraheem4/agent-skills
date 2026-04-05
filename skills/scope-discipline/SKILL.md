@@ -24,11 +24,21 @@ Before writing any code, restate what was asked:
 - What files are affected?
 - What is NOT being asked?
 
-### 2. Do Exactly That
+### 2. Surface Assumptions
+
+State your assumptions before proceeding — don't silently fill gaps:
+- Which files you plan to modify
+- What patterns you'll follow (based on existing code)
+- Technical choices you're making (library, approach, data structure)
+- What you're explicitly NOT doing
+
+For non-trivial tasks, confirm your understanding before writing code. A 10-second clarification prevents hours of rework.
+
+### 3. Do Exactly That
 
 Write the code that fulfills the request. Stop.
 
-### 3. Review Your Diff
+### 4. Review Your Diff
 
 Before presenting the result, check every changed line against the request:
 
@@ -45,7 +55,7 @@ Before presenting the result, check every changed line against the request:
 | Adds comments explaining obvious code | No |
 | Extracts a constant that's used once | No |
 
-### 4. If You Notice Something
+### 5. If You Notice Something
 
 If you notice a real issue outside the scope:
 - **Mention it** to the user: "I noticed X. Want me to fix that separately?"

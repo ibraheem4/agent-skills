@@ -1,4 +1,4 @@
-# Agent Skills — Codex
+# agent-skills - Codex Instructions
 
 Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a specific agent failure mode with a step-by-step process grounded in industry practices (Microsoft, Google, Stripe, Netflix).
 
@@ -9,15 +9,19 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 
 ## Available Skills
 
-| Skill | Agent Failure Mode It Fixes |
-|-------|----------------------------|
-| scope-discipline | Adding features nobody asked for |
-| incremental-implementation | Writing 500 lines without testing |
-| test-driven-development | Shipping code without tests |
-| debugging-and-error-recovery | Retrying the same failing approach |
-| code-review-and-quality | Missing subtle bugs in generated code |
-| security-and-hardening | Introducing injection vectors, hardcoded secrets |
-| shipping-and-launch | Leaving debug logs and TODOs in code |
-| graceful-degradation | Not handling dependency failures |
-| code-health-and-maintainability | Over-engineering with premature abstractions |
-| api-and-interface-design | Inconsistent interfaces, poor error design |
+- `/build` — Implement in small, tested increments
+- `/scope` — Check your diff against the request — remove anything unsolicited
+- `/test` — Write the failing test first (TDD, Beyonce Rule)
+- `/debug` — Read the error. Hypothesize. Test one thing. Don't retry blindly
+- `/review` — Two-pass review: design pass, then code quality
+- `/secure` — Security checklist: inputs, auth, secrets, dependencies
+- `/ship` — Pre-flight: tests pass, no secrets, no debug logs, no naked TODOs
+- `/resilience` — Timeouts, circuit breakers, fallbacks for external calls
+
+## Codex Operating Notes
+
+- Treat this repository as independent from the surrounding `lucitra-dev` workspace unless a task explicitly spans multiple repos.
+- Check `git status --short` before editing and do not revert user changes.
+- Prefer the repo's documented commands and existing patterns over introducing new tooling.
+- Run the smallest useful verification for the files changed and report anything that could not be run.
+- Never commit secrets, environment files, tokens, or generated credentials.

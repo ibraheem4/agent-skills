@@ -1,5 +1,9 @@
 {
   "name": "agent-skills",
   "description": "Project-agnostic engineering practice: operating principles, scope discipline, TDD, incremental implementation, debugging, code review, security and threat modeling, performance, observability, git workflow, PR lifecycle and shipping",
-  "author": { "name": "Lucitra", "url": "https://github.com/lucitra" }
+  "version": "0.1.0",
+  "author": {
+    "name": "Lucitra",
+    "url": "https://github.com/lucitra"
+  }
 }

@@ -31,6 +31,7 @@ AI agents fail differently than humans:
 | Kills a process that immediately respawns | Whack-a-mole | [find-hidden-services](#operate) |
 | Reads the biggest log first | Chasing noise | [triage-failing-fleet](#operate) |
 | Deletes committed files as "build output" | Overreach | [disk-reclaim](#operate) |
+| Hardcodes one company into a reusable skill | Short-termism | [work-summary](#operate) |
 
 ## Skills
 
@@ -66,6 +67,7 @@ AI agents fail differently than humans:
 - **[find-hidden-services](skills/find-hidden-services/)** — A respawning process means you found one spawner, not all of them. Enumerate launchd, native-messaging hosts and MCP configs. *[Agent-specific]*
 - **[triage-failing-fleet](skills/triage-failing-fleet/)** — Collapse logs to distinct lines, then walk the dependency chain backwards to the one upstream cause. *[Agent-specific]*
 - **[disk-reclaim](skills/disk-reclaim/)** — Caches before working trees. Never assume `dist/` is untracked. *[Agent-specific]*
+- **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across nine sources and post it. Profile-driven, no hardcoded org. *[Agent-specific]*
 
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*

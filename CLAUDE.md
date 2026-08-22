@@ -21,3 +21,4 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 - `/find-services` — Enumerate every spawner: launchd, native-messaging hosts, MCP configs
 - `/triage-fleet` — Distinct-line collapse, then walk the dependency chain to the upstream cause
 - `/reclaim-disk` — Caches before working trees; check for tracked files before deleting `dist/`
+- `/work-summary` — Summarize a workspace's activity for any period and post it (profile-driven)

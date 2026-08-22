@@ -27,6 +27,10 @@ AI agents fail differently than humans:
 | Doesn't read existing code before editing | Arrogance | [code-review-and-quality](#review) |
 | Over-engineers with premature abstractions | Resume-driven dev | [code-health-and-maintainability](#review) |
 | Ignores error messages, guesses at fixes | Panic | [debugging-and-error-recovery](#verify) |
+| Deletes a repo that had unpushed work | Carelessness | [safe-repo-removal](#operate) |
+| Kills a process that immediately respawns | Whack-a-mole | [find-hidden-services](#operate) |
+| Reads the biggest log first | Chasing noise | [triage-failing-fleet](#operate) |
+| Deletes committed files as "build output" | Overreach | [disk-reclaim](#operate) |
 
 ## Skills
 
@@ -58,6 +62,10 @@ AI agents fail differently than humans:
 ### Operate
 - **[graceful-degradation](skills/graceful-degradation/)** — Every external call needs a timeout. Classify dependencies as critical or optional. Degrade, don't crash. *[Netflix: Hystrix, circuit breakers, fallback hierarchy]*
 - **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logs, RED metrics, correlation IDs. Ship monitoring with the feature. *[Google: SRE; Microsoft: observability pillar]*
+- **[safe-repo-removal](skills/safe-repo-removal/)** — Prove every commit is recoverable before deleting a repo. Five checks, a manifest, and a restore-tested bundle. *[Agent-specific]*
+- **[find-hidden-services](skills/find-hidden-services/)** — A respawning process means you found one spawner, not all of them. Enumerate launchd, native-messaging hosts and MCP configs. *[Agent-specific]*
+- **[triage-failing-fleet](skills/triage-failing-fleet/)** — Collapse logs to distinct lines, then walk the dependency chain backwards to the one upstream cause. *[Agent-specific]*
+- **[disk-reclaim](skills/disk-reclaim/)** — Caches before working trees. Never assume `dist/` is untracked. *[Agent-specific]*
 
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*

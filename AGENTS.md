@@ -17,6 +17,10 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 - `/secure` — Security checklist: inputs, auth, secrets, dependencies
 - `/ship` — Pre-flight: tests pass, no secrets, no debug logs, no naked TODOs
 - `/resilience` — Timeouts, circuit breakers, fallbacks for external calls
+- `/cleanup-repo` — Prove commits are recoverable before deleting a repo (five checks, manifest, bundle)
+- `/find-services` — Enumerate every spawner: launchd, native-messaging hosts, MCP configs
+- `/triage-fleet` — Distinct-line collapse, then walk the dependency chain to the upstream cause
+- `/reclaim-disk` — Caches before working trees; check for tracked files before deleting `dist/`
 
 ## Codex Operating Notes
 

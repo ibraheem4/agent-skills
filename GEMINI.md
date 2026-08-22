@@ -21,3 +21,7 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 | graceful-degradation | Not handling dependency failures |
 | code-health-and-maintainability | Over-engineering with premature abstractions |
 | api-and-interface-design | Inconsistent interfaces, poor error design |
+| safe-repo-removal | Deleting a repo that had unpushed work |
+| find-hidden-services | Killing a process that immediately respawns |
+| triage-failing-fleet | Reading the biggest log instead of the first failure |
+| disk-reclaim | Deleting committed files as build output |

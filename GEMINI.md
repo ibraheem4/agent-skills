@@ -25,3 +25,4 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 | find-hidden-services | Killing a process that immediately respawns |
 | triage-failing-fleet | Reading the biggest log instead of the first failure |
 | disk-reclaim | Deleting committed files as build output |
+| work-summary | Hardcoding one company into a reusable skill |

@@ -163,8 +163,13 @@ Hard rules:
   mention in the narrative, and they don't count toward deciding whether the day was quiet.
   A summary that talks about its own plumbing is noise to the person reading it.
 
-Post with `mcp__claude_ai_Slack__slack_send_message`, `channel_id: "{{chat_destination}}"`. Return the
-message link.
+**Draft, don't send.** Use `mcp__claude_ai_Slack__slack_send_message_draft`,
+`channel_id: "{{chat_destination}}"`, and return the draft link so he can edit before it goes.
+This is the default even when he says "post it" or "send it" — he is the only reader, and a
+draft costs him one click.
 
-When he's present and may want to tweak wording first, `slack_send_message_draft` is the
-better call.
+Send outright with `mcp__claude_ai_Slack__slack_send_message` only when he asks for that
+specifically, or when the run is unattended and nobody is there to press send.
+
+A drafted summary he never sends leaves no record, so the next run re-covers those days —
+correct, but say so rather than letting a resend surprise him (step 1).

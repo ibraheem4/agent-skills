@@ -1,6 +1,6 @@
 ---
 name: work-summary
-description: Use when asked "what did I do today", for an end-of-day/EOD summary, standup notes, or a scheduled work report. Summarizes one workspace's activity for a day or any period across GitHub, meetings, docs, mail, chat, calendar and Claude Code sessions, then posts it to a configured chat destination.
+description: Use when asked "what did I do today", for an end-of-day/EOD summary, standup notes, or a scheduled work report. Summarizes one workspace's activity for a day or any period across GitHub, meetings, docs, mail, chat, calendar and Claude Code sessions, then drafts it to a configured chat destination for review.
 ---
 
 # Work Summary
@@ -108,10 +108,10 @@ after the end of that period** and `END` is today. Headers carry no year: resolv
 recent occurrence that isn't in the future.
 
 Four things about this that matter:
-- **Drafts are not runs.** `slack_send_message_draft` leaves nothing in the channel, so a
-  drafted-but-unsent summary is invisible here and its days count as uncovered. That is the
-  right answer — he never read it — but say which days you're re-covering so a resend isn't a
-  surprise.
+- **Drafts are not runs.** Drafting is the default (step 12), and a draft leaves nothing in the
+  channel — so a summary he never sent is invisible here and its days count as uncovered. That
+  is the right answer, he never read it, but say which days you're re-covering so a resend isn't
+  a surprise.
 - **Resume from coverage, not from the timestamp.** A summary for the 19th posted at 17:22 on
   the 19th means the 19th is done; start at the 20th, not at 17:22.
 - If the DM has no summary at all, there is no last run — treat the request as "today" and say
@@ -168,5 +168,5 @@ how to post to `{{chat_destination}}`.
 - [ ] `START` and `END` derived from `date`, never assumed
 - [ ] Every source attempted; unavailable ones named in the output
 - [ ] No content from an org in `{{exclude_orgs}}`
-- [ ] Summary posted to `{{chat_destination}}`, and the post confirmed
+- [ ] Summary drafted to `{{chat_destination}}` and the draft link returned — sent outright only if he asked
 - [ ] No workspace-specific literal committed to this skill

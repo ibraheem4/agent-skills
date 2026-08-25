@@ -15,7 +15,7 @@ gh api "users/{{github_login}}/events?per_page=100"
 
 Filter to `created_at` within `START..END` AND `repo.name` starting `{{github_org}}/`. This
 feed includes private-repo events because the call is authenticated as that user. It is
-capped at roughly **300 events / 90 days** across three pages (`&page=2`, `&page=3`) — at his
+capped at roughly **300 events / 90 days** across three pages (`&page=2`, `&page=3`) — at their
 current rate one page reached back 14 days and all three reached 30. Check the oldest
 `created_at` you got back: **if it lands after `START`, the feed did not cover the period and
 you must say so.**
@@ -46,7 +46,7 @@ messages — they read better and are already written for an audience.
 One limit worth respecting rather than working around: `gh search commits` is **not** a
 substitute for either query — its index lags and misses same-day work.
 
-Merge attribution needs the PR API, not the events feed: a merge of *his* PR shows up in his
+Merge attribution needs the PR API, not the events feed: a merge of *their* PR shows up in their
 event stream with `actor: {{github_login}}` even when someone else clicked the button. If who merged
 matters, read `merged_by` from `gh api repos/OWNER/REPO/pulls/N`.
 
@@ -56,22 +56,22 @@ Call `mcp__claude_ai_Granola__list_meetings` with `time_range: "custom"`,
 `custom_start` = `START`, `custom_end` = **the day after `END`**, and
 `involvement: {captured_by_me: true, listed_as_participant: true}`.
 
-**Dedupe.** The same meeting often appears twice — once captured by him, once by another
+**Dedupe.** The same meeting often appears twice — once captured by them, once by another
 attendee. Collapse entries sharing a title and start time.
 
 List title and time only. Do **not** pull transcripts unless explicitly asked; meeting
 content is sensitive and a summary line doesn't need it.
 
 **This is context, not output.** Meetings are gathered so the summary can explain a day —
-why something moved, stalled, or landed on him. Most runs print none at all. See step 13.
+why something moved, stalled, or landed on them. Most runs print none at all. See step 13.
 
 ## Step 4 — Outline docs
 
 Call `mcp__claude_ai_Outline__list_documents` with `limit: 25` and no query (returns
 recent documents). Do **not** use 100 — that returned 177k chars in testing and blew the
 tool-result token cap. Keep documents where **either**:
-- `updatedAt` is within `START..END` and `updatedBy.id` is his Outline id, **or**
-- `createdAt` is within `START..END` and `createdBy.id` is his Outline id.
+- `updatedAt` is within `START..END` and `updatedBy.id` is their Outline id, **or**
+- `createdAt` is within `START..END` and `createdBy.id` is their Outline id.
 
 **Paginate for anything longer than a day.** The list is workspace-recent across everyone, so
 25 rows can cover less than a day in a busy week. Walk `offset` in steps of 25 until the
@@ -82,9 +82,9 @@ Report title, the `breadcrumb` for context, and the `url`.
 
 Limitation to state honestly if it matters: this is a recency list, not a per-user audit log,
 and it only reports the *latest* edit — see step 5's unattributable-edits rule, which covers
-Outline too. A doc he edited on Tuesday and a teammate edited on
-Friday attributes to the teammate, so his Tuesday work vanishes from a Mon–Fri period. Nothing
-in the API fixes that — for a long period, treat Outline as a floor on his doc work, not a
+Outline too. A doc they edited on Tuesday and a teammate edited on
+Friday attributes to the teammate, so their Tuesday work vanishes from a Mon–Fri period. Nothing
+in the API fixes that — for a long period, treat Outline as a floor on their doc work, not a
 count.
 
 ## Step 5 — Google Docs
@@ -94,48 +94,48 @@ Call `mcp__claude_ai_Google_Drive__list_recent_files` with `orderBy: "lastModifi
 `START..END`. For a longer period, follow `next_page_token` until a page's `modifiedTime`
 values drop below `START`.
 
-Most files in this Drive are `sharedWithMe` and owned by teammates, so "he edited it" is
+Most files in this Drive are `sharedWithMe` and owned by teammates, so "they edited it" is
 approximate — the API gives no per-user edit timestamp, and `get_file_metadata` adds nothing
-(no `lastModifyingUser`; checked). Prefer files he owns, or that the `lastModifiedByMe`
+(no `lastModifyingUser`; checked). Prefer files they own, or that the `lastModifiedByMe`
 ordering surfaces near the top. Never claim authorship of an edit you cannot attribute.
 
-**Unattributable edits get surfaced, not dropped.** When a file he plausibly worked on was
+**Unattributable edits get surfaced, not dropped.** When a file they plausibly worked on was
 modified inside the period but the editor can't be established, give it one line saying
 exactly that — *"modified Thu 12:42, can't tell from the API whether that was me"* — instead
 of omitting it. Two signals make a file plausible: `viewedByMeTime` inside the period, or the
-file being the subject of something assigned to him in step 8. Silence reads as "I didn't
+file being the subject of something assigned to them in step 8. Silence reads as "I didn't
 touch it", which is a stronger claim than the evidence supports.
 
-The same rule applies to Outline (step 4), which reports only the *latest* editor: if he is in
-`collaboratorIds` on a doc whose last edit inside the period belongs to someone else, his own
+The same rule applies to Outline (step 4), which reports only the *latest* editor: if they are in
+`collaboratorIds` on a doc whose last edit inside the period belongs to someone else, their own
 edit may be hidden underneath it. Surface it the same way, and check `collaboratorIds` before
-concluding a doc wasn't his.
+concluding a doc wasn't their.
 
 ## Step 6 — Claude artifacts and design projects
 
 Two claude.ai surfaces. Neither is visible from the repos, and the artifact list does not cover
-design projects — so a canvas he shared is invisible to the first call below.
+design projects — so a canvas they shared is invisible to the first call below.
 
 **Artifacts.** Call the `Artifact` tool with `action: "list"`, `limit: 25`, and `scope: "mine"`
-— only artifacts he owns. Keep the ones whose last-updated date falls within `START..END`.
+— only artifacts they own. Keep the ones whose last-updated date falls within `START..END`.
 
 Report title and URL. Link the title; never paste the bare artifact URL into prose.
 
 Three honest limits:
-- The listing gives **last-updated, not created**, so a page he published weeks ago and
+- The listing gives **last-updated, not created**, so a page they published weeks ago and
   edited inside the period looks identical to one created in it. Write it as "published or
-  updated" unless he says which he wants — don't assert he created it on this evidence.
+  updated" unless they say which they want — don't assert they created it on this evidence.
 - There is no date filter in the call, so filter locally. Newest first, so a day inside the
   most recent 25 is safe; raise the limit toward the **50 cap** for longer periods. 50 is a
   hard ceiling with no pagination — if the 50th artifact is still newer than `START`, the
   period is only partly covered and the summary must say so.
-- `scope: "mine"` deliberately excludes artifacts teammates shared with him. Those aren't his
-  work and don't belong in his summary.
+- `scope: "mine"` deliberately excludes artifacts teammates shared with them. Those aren't their
+  work and don't belong in their summary.
 
 **Design projects** use the `DesignSync` tool, **read methods only** — a summary never writes,
 so `finalize_plan` and everything downstream of it are out of scope here.
 
-`list_projects` returns **design-system projects he can write to, with `updatedAt`**. Filter
+`list_projects` returns **design-system projects they can write to, with `updatedAt`**. Filter
 those on the period exactly like step 4's docs.
 
 Ordinary multi-artboard canvases are **neither enumerable nor timestamped**, and both halves
@@ -150,10 +150,10 @@ bite:
 So given a `claude.ai/design/p/<uuid>` URL from another source, resolve it instead of pasting
 the uuid: `get_project` for the project name, `list_files` for the `.dc.html` artboards. That
 turns a dead link into "the Onboarding Flow Deck, in the Billing Mail UI project", which is the
-line worth writing. Name the artboard he actually shared — `_ds/`, `shots/` and `.thumbnail` are
+line worth writing. Name the artboard they actually shared — `_ds/`, `shots/` and `.thumbnail` are
 scaffolding, not work.
 
-`canEdit: true` is not authorship, and an artboard existing is not evidence he touched it this
+`canEdit: true` is not authorship, and an artboard existing is not evidence they touched it this
 period. Attribute from the linking source, the same standard step 5 uses for Drive files.
 
 The `Artifact` call is a built-in tool rather than MCP, so it and step 11 are the only steps
@@ -167,18 +167,18 @@ Call `mcp__claude_ai_Gmail__search_threads` twice with `view: "THREAD_VIEW_MINIM
 `after:` takes the day *before* `START`, `before:` takes the day *after* `END` (step 1 has
 both commands). Dates use slashes here, not dashes:
 
-- What he sent — `in:sent after:2026/08/19 before:2026/08/22`
-- What landed for him directly — `to:me after:2026/08/19 before:2026/08/22 -category:promotions -category:social -category:updates -category:forums`
+- What they sent — `in:sent after:2026/08/19 before:2026/08/22`
+- What landed for them directly — `to:me after:2026/08/19 before:2026/08/22 -category:promotions -category:social -category:updates -category:forums`
 
 Follow `pageToken` if a long period fills the page; 25 threads is roughly a quiet week.
 
 Report at **subject level only**. A sent mail that decided something, asked a question now
 outstanding, or unblocked someone earns a line; a one-line reply does not. Received mail earns a
-line when it's provisioning, access, or a decision — most received mail is not his work and does
+line when it's provisioning, access, or a decision — most received mail is not their work and does
 not belong in a summary of it.
 
 **Do not call `get_thread`.** Subjects plus the snippet the search already returns are enough, and
-full bodies are a privacy step-change for a note to himself. Same principle as the Granola
+full bodies are a privacy step-change for a note to themselves. Same principle as the Granola
 transcript rule.
 
 **Email is where credentials actually arrive** — invitation links, one-time codes, API keys,
@@ -190,11 +190,11 @@ Scope rule still applies: skip threads belonging to `{{exclude_orgs}}`.
 
 ## Step 8 — Slack
 
-Two passes: what he said, then what was said to him. Both call
+Two passes: what they said, then what was said to them. Both call
 `mcp__claude_ai_Slack__slack_search_public_and_private` with `sort: "timestamp"`,
 `include_context: false`, and `only_my_channels: true`.
 
-**Pass A — what he communicated:**
+**Pass A — what they communicated:**
 
 ```
 from:<@{{chat_destination}}> after:<day before START> before:<day after END> -in:<@{{chat_destination}}>
@@ -212,24 +212,24 @@ a single day if you prefer it for a one-day period.
 beyond a couple of days needs the `cursor` from the response followed until it stops. Twenty
 results is not "that's all there was".
 
-**Pass B — what was aimed at him:**
+**Pass B — what was aimed at them:**
 
 ```
 <@{{chat_destination}}> after:<day before START> before:<day after END> -from:<@{{chat_destination}}> -in:<@{{chat_destination}}>
 ```
 
-His bare user ID as a search term matches messages that mention him. `to:` only works for DMs, so
+Their bare user ID as a search term matches messages that mention them. `to:` only works for DMs, so
 the bare ID is the thing that catches a channel mention. This is where the day's *asks* live: a
-question waiting on him, a post-standup to-do list that assigns him work, an access grant landing.
-Pass A only shows what he pushed out — without pass B, a question a teammate asked him in a
+question waiting on them, a post-standup to-do list that assigns them work, an access grant landing.
+Pass A only shows what they pushed out — without pass B, a question a teammate asked them in a
 working channel is invisible, and that is usually the most actionable line in the summary.
 
 **Check pass A before calling anything outstanding.** Most asks get answered within the hour, and
 an answered question is not an open item. Match them by thread: the permalinks carry `thread_ts`,
-so a reply of his in the same thread is normally the answer.
+so a reply of their in the same thread is normally the answer.
 
-Anything still unanswered, or assigned to him and not done, becomes an *On me* line in step 13 —
-unless what he needs is from someone else, in which case it is a blocker (step 12).
+Anything still unanswered, or assigned to them and not done, becomes an *On me* line in step 13 —
+unless what they need is from someone else, in which case it is a blocker (step 12).
 
 **Pass C, optional — read the channels this workspace's work happens in**, for a day that
 looks thinner than it was. The channel ids come from `{{work_channels}}`; skip pass C entirely
@@ -246,31 +246,31 @@ date -j -v+1d -f "%Y-%m-%d %H:%M:%S" "$END 00:00:00" +%s      # latest
 
 `limit` maxes at 100 messages per call, with a `cursor` for more.
 
-This catches what never mentioned him at all — a teammate shipping something he then picked up.
+This catches what never mentioned them at all — a teammate shipping something they then picked up.
 It returns **top-level messages only**; thread replies are collapsed, and that is where most of
 the back-and-forth happens, so it complements the two searches rather than replacing them. Volume
 on a working channel is usually single digits for a whole day, so it is cheap when you want it.
 
-Report what he actually communicated — a decision, a heads-up, a question he's waiting on — not
-chatter. Channel names carry the context, so keep them. Questions he asked that nobody answered
+Report what they actually communicated — a decision, a heads-up, a question they're waiting on — not
+chatter. Channel names carry the context, so keep them. Questions they asked that nobody answered
 are blocker candidates for step 12.
 
 ## Step 9 — calendar
 
-Call `mcp__claude_ai_Google_Calendar__list_events` on his primary calendar with `startTime` =
+Call `mcp__claude_ai_Google_Calendar__list_events` on their primary calendar with `startTime` =
 `START` 00:00 local and `endTime` = the day after `END` at 00:00 local, `orderBy: "startTime"`.
 Raise `pageSize` for a long period (max 250) and page through `nextPageToken`.
 
 This closes a real gap rather than duplicating step 3: **Granola only sees meetings that were
-recorded.** A meeting he attended without capturing notes is invisible to Granola entirely.
+recorded.** A meeting they attended without capturing notes is invisible to Granola entirely.
 
 Cross-reference the two. A calendar event with a matching Granola note needs no separate line —
 Granola's is better, because it has the content. Report the events that Granola *missed*, and use
 calendar to correct the meeting times, since Granola's timestamps are when the note was captured
 rather than when the meeting was scheduled.
 
-Two things not to assume: an event on the calendar is not proof he attended, and an accepted invite
-is not either. Prefer events he organized or that have a Granola note; if attendance is genuinely
+Two things not to assume: an event on the calendar is not proof they attended, and an accepted invite
+is not either. Prefer events they organized or that have a Granola note; if attendance is genuinely
 ambiguous, leave it out rather than assert it — the same standard step 5 uses for Drive files.
 Declined and cancelled events are not activity.
 
@@ -293,7 +293,7 @@ Then resolve identity and scope once:
 
 ```
 mcp__claude_ai_Linear__list_teams  query: <each of {{linear_teams}}>
-mcp__claude_ai_Linear__list_users  query: {{linear_user}}   -> his id AND his display name
+mcp__claude_ai_Linear__list_users  query: {{linear_user}}   -> their id AND their display name
 ```
 
 Keep the **name**, not just the id: `createdBy` and `assignee` come back as display names, so
@@ -312,13 +312,13 @@ mcp__claude_ai_Linear__list_issues
            "completedAt","startedAt","url","priority","project"]
 ```
 
-- **Pass A — what he owns that moved.** As above. `assignee: "me"` resolves to the connector's
+- **Pass A — what they own that moved.** As above. `assignee: "me"` resolves to the connector's
   own identity, so this pass needs no profile value at all.
-- **Pass B — what he opened.** Same call with `createdAt: "$START"`, `orderBy: "createdAt"` and
-  **no** assignee, then keep rows whose `createdBy` is his name — there is no `createdBy`
-  filter, so that match is local. An issue he filed and someone else owns is still his work, and
-  the inverse matters more in practice: a burst of issues *assigned* to him that he did not
-  create is someone else's planning session, not his output. Say which it was.
+- **Pass B — what they opened.** Same call with `createdAt: "$START"`, `orderBy: "createdAt"` and
+  **no** assignee, then keep rows whose `createdBy` is their name — there is no `createdBy`
+  filter, so that match is local. An issue they filed and someone else owns is still their work, and
+  the inverse matters more in practice: a burst of issues *assigned* to them that they did not
+  create is someone else's planning session, not their output. Say which it was.
 
 `id` is always returned and already carries the identifier (`ACME-708`), so never ask for
 `identifier` — it is not a valid field and the call fails with it. Raise `limit` (max 250)
@@ -326,7 +326,7 @@ rather than widening `fields`; the field list drives response size, and asking f
 `description` across a page is how this step blows the tool-result token cap.
 
 **Prefer the timestamped fields over `updatedAt` for "what moved".** Any teammate's comment or
-status change bumps `updatedAt`, so it dates the issue, not his work on it. `completedAt`,
+status change bumps `updatedAt`, so it dates the issue, not their work on it. `completedAt`,
 `startedAt` and `canceledAt` say precisely what changed and when. None of them names an actor,
 though: a ticket that went Done inside the period may have been closed by anyone, and the API
 will not say who. Report the close, not the closer, unless something else establishes it.
@@ -334,7 +334,7 @@ will not say who. Report the close, not the closer, unless something else establ
 loop — worth one call for a ticket that matters, never one per ticket across a team.
 
 **The GitHub overlap is the thing to get right.** Linear links PRs and flips issues to Done on
-merge, so a ticket that closed because his PR merged is already reported in step 2 and must not
+merge, so a ticket that closed because their PR merged is already reported in step 2 and must not
 become a second bullet. A ticket earns a line only for what the PR doesn't say: a status
 decision (blocked, descoped, punted to the next cycle), a scope or estimate change, or a
 comment thread that settled something. A ticket with no PR behind it is the case where this
@@ -342,20 +342,20 @@ step carries the whole item.
 
 Two more calls, worth it for a week or longer and skippable for a day:
 - `mcp__claude_ai_Linear__get_status_updates` — `type` is required (`project` or `initiative`)
-  and it takes `user: "me"` with a `createdAt` lower bound. A project update he wrote is the
-  closest thing to a summary he already authored; prefer his wording to yours.
+  and it takes `user: "me"` with a `createdAt` lower bound. A project update they wrote is the
+  closest thing to a summary they already authored; prefer their wording to yours.
 - `mcp__claude_ai_Linear__list_documents` — Linear docs, filtered the way step 4 filters
   Outline.
 
-**Feed the leftovers forward instead of printing them.** Issues assigned to him and still open
+**Feed the leftovers forward instead of printing them.** Issues assigned to them and still open
 at `END` are *On me* candidates (step 13) — rank them by `priority`, since a page of Todo
 tickets is not equally urgent. An issue in a blocked `state`, or one whose latest comment is a
-question aimed at him, is a blocker candidate (step 12).
+question aimed at them, is a blocker candidate (step 12).
 
 ## Step 11 — Claude Code sessions
 
-Every source above records an artifact. This one records intent — what he was trying to do,
-what he decided, and the work that produced nothing to point at.
+Every source above records an artifact. This one records intent — what they were trying to do,
+what they decided, and the work that produced nothing to point at.
 
 Transcripts are local JSONL, one file per session, in project dirs named after the session
 cwd with `/` replaced by `-`. A helper does the extraction:
@@ -402,7 +402,7 @@ jq -r 'select(.type == "assistant") | .message.content[]? | select(.type == "too
 text; three days ran to 71 prompts over five sessions. Scale by reading the session headers
 first and only descending into the prompts of sessions that matter: for a week or more, the
 titles plus prompt counts carry most of the signal, and a 40-prompt session obviously deserves
-more attention than a 2-prompt one. One line per session: what he was after and where it
+more attention than a 2-prompt one. One line per session: what they were after and where it
 landed. A session already covered
 by its PR in step 2 gets nothing here; the PR says it better. Session titles make decent
 handles, but a long session wanders far from its title, so trust the prompts over it.
@@ -429,6 +429,6 @@ Four limits, all load-bearing:
 
 **Never quote a prompt verbatim.** Prompts are raw typed text, and this step reads more raw
 human text than any other. They contain pasted keys, invite links, one-time codes, and the odd
-`.env` line. Describe what he was asking for instead. The 220-char cut bounds how much reaches
+`.env` line. Describe what they were asking for instead. The 220-char cut bounds how much reaches
 context; it is a bound, not a scrubber. Same rule as step 7, with more exposure to it.
 

@@ -193,8 +193,8 @@ results is not "that's all there was".
 His bare user ID as a search term matches messages that mention him. `to:` only works for DMs, so
 the bare ID is the thing that catches a channel mention. This is where the day's *asks* live: a
 question waiting on him, a post-standup to-do list that assigns him work, an access grant landing.
-Pass A only shows what he pushed out — without pass B, a question Nathan asked him in
-`#broker-platform` is invisible, and that is usually the most actionable line in the summary.
+Pass A only shows what he pushed out — without pass B, a question a teammate asked him in a
+working channel is invisible, and that is usually the most actionable line in the summary.
 
 **Check pass A before calling anything outstanding.** Most asks get answered within the hour, and
 an answered question is not an open item. Match them by thread: the permalinks carry `thread_ts`,
@@ -203,13 +203,10 @@ so a reply of his in the same thread is normally the answer.
 Anything still unanswered, or assigned to him and not done, becomes an *On me* line in step 13 —
 unless what he needs is from someone else, in which case it is a blocker (step 12).
 
-**Pass C, optional — read the two channels he works in**, for a day that looks thinner than it
-was. `mcp__claude_ai_Slack__slack_read_channel` with `response_format: "concise"`:
-
-| Channel | ID |
-|---|---|
-| `#dev` | `C0BQZNMH231` |
-| `#broker-platform` | `C0BR75F15MK` |
+**Pass C, optional — read the channels this workspace's work happens in**, for a day that
+looks thinner than it was. The channel ids come from `{{work_channels}}`; skip pass C entirely
+when that key is blank. Read each one with `mcp__claude_ai_Slack__slack_read_channel` and
+`response_format: "concise"`.
 
 `oldest`/`latest` are epoch seconds, and they must bound the *local* period — `START` 00:00 to
 the day after `END` 00:00:
@@ -224,7 +221,7 @@ date -j -v+1d -f "%Y-%m-%d %H:%M:%S" "$END 00:00:00" +%s      # latest
 This catches what never mentioned him at all — a teammate shipping something he then picked up.
 It returns **top-level messages only**; thread replies are collapsed, and that is where most of
 the back-and-forth happens, so it complements the two searches rather than replacing them. Volume
-on these two channels is single digits for a whole day, so it is cheap when you want it.
+on a working channel is usually single digits for a whole day, so it is cheap when you want it.
 
 Report what he actually communicated — a decision, a heads-up, a question he's waiting on — not
 chatter. Channel names carry the context, so keep them. Questions he asked that nobody answered
@@ -333,8 +330,8 @@ cwd with `/` replaced by `-`. A helper does the extraction:
 Per session it prints the auto-generated title, cwd, git branch, short session id, prompt count,
 and every human prompt with its local time — sessions ordered by when they started, and a totals
 footer. For a multi-day period the time column gains the date automatically, so the output stays
-groupable by day. It globs `{{transcript_glob}}` only, so `{{exclude_orgs}}`
-and `ArchitectHealth` sessions never appear — the scope rule holds without extra filtering.
+groupable by day. It globs `{{transcript_glob}}` only, so `{{exclude_orgs}}` sessions
+never appear — the scope rule holds without extra filtering.
 
 If the script is gone, this is the whole of it. `.origin.kind == "human"` is what separates a
 typed prompt from a tool result — both carry `type: "user"`, and tool results outnumber prompts

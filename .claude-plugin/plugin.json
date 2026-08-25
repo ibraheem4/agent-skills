@@ -1,7 +1,7 @@
 {
   "name": "agent-skills",
   "description": "Project-agnostic engineering practice and workstation operations: operating principles, scope discipline, TDD, incremental implementation, debugging, code review, security and threat modeling, performance, observability, git workflow, PR lifecycle and shipping; plus disk reclaim, hidden-service discovery, safe repo removal, failing-fleet triage, and cross-source work summaries.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": {
     "name": "Lucitra",
     "url": "https://github.com/lucitra"

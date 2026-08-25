@@ -171,8 +171,8 @@ Hard rules:
   summary that hides it reads as authoritative when it isn't. One line at the end: what was
   capped and from when.
 - No secrets, tokens, or `.env` values, even if they appear in a commit message or doc title.
-- **Never mention work on this skill.** Sessions that edit `~/.claude/skills/work-summary/`
-  are tooling maintenance, not workspace work — drop them silently. No *Sessions* line, no
+- **Never mention work on this skill.** Sessions that edit this skill's own directory — the
+  installed plugin copy or any checkout of the repo that ships it — are tooling maintenance, not workspace work — drop them silently. No *Sessions* line, no
   mention in the narrative, and they don't count toward deciding whether the day was quiet.
   A summary that talks about its own plumbing is noise to the person reading it.
 

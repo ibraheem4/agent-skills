@@ -31,7 +31,7 @@ previous steps already surfaced, and only from that. These qualify:
 
 Separate **waiting on a person** from **waiting on an external process** — a teammate needs a
 nudge, a vendor review needs lead time, and conflating them makes the first look unactionable.
-Name the person and the specific thing needed; "waiting on Nathan" is useless next week, "Nathan
+Name the person and the specific thing needed; "waiting on Dana" is useless next week, "Dana
 owes Linear access" is not.
 
 Same evidence bar as everything else: each blocker traces to a source from steps 2–11. **Do not
@@ -94,7 +94,7 @@ does belong, it goes in the opening line or attached to the bullet it explains, 
 of its own.
 
 **Linear folds into the work it tracks; it gets no standing section.** A ticket behind a PR
-already in *Code* rides along inside that bullet — `#136 — … (SAN-42)` — never as a line of its
+already in *Code* rides along inside that bullet — `#136 — … (ACME-42)` — never as a line of its
 own; that is the duplication step 10 exists to prevent. A ticket that moved with nothing in
 GitHub behind it is what earns its own line, and several of those in one period earn a *Tickets*
 heading. Issues assigned to him and still open at `END` go in *On me*, not into a ticket list.
@@ -111,25 +111,25 @@ line out of this example into a posted summary.
 ```
 *Wed 19 Aug*
 
-Got broker-platform running locally, then documented the two setup requirements that aren't
+Got billing-api running locally, then documented the two setup requirements that aren't
 written down anywhere.
 
-*Code* — broker-platform
+*Code* — billing-api
 • #135 — gitignore Claude Code local overrides
-• #136 — the spine checkout and AGENT_DEV_AUTH_BYPASS, into CLAUDE.md (SAN-42)
+• #136 — the submodule checkout and the auth-bypass env var, into CLAUDE.md (ACME-42)
 Neither reviewed yet.
 
 *Docs*
-• Broker Login — Problems, Options & Decisions — my first-run notes: no_org on my own sign-in,
-  the duplicate login page
-• broker-platform — First-Run Setup Issues — new. Three startup blockers, two of them doc gaps
+• Billing Login — Problems, Options & Decisions — my first-run notes: the missing-org error on
+  my own sign-in, the duplicate login page
+• billing-api — First-Run Setup Issues — new. Three startup blockers, two of them doc gaps
 
 *On me*
-• AWS migration plan doc — Nathan's standup to-do, not started
-• SAN-51 — broker auth onto WorkOS, mine since Tuesday, not started
+• Infra migration plan doc — Dana's standup to-do, not started
+• ACME-51 — billing auth onto the new IdP, mine since Tuesday, not started
 
 *Blockers*
-• Linear access from Nathan — asked Monday, still nothing
+• Linear access from Dana — asked Monday, still nothing
 ```
 
 Formatting rules:

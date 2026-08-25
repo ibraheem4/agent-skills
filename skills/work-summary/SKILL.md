@@ -1,13 +1,13 @@
 ---
 name: work-summary
-description: Use when asked "what did I do today", for an end-of-day/EOD summary, standup notes, or a scheduled work report. Summarizes one workspace's activity for a day or any period across GitHub, meetings, docs, mail, chat, calendar and Claude Code sessions, then drafts it to a configured chat destination for review.
+description: Use when asked "what did I do today", for an end-of-day/EOD summary, standup notes, or a scheduled work report. Summarizes one workspace's activity for a day or any period across GitHub, Linear, meetings, docs, mail, chat, calendar and Claude Code sessions, then drafts it to a configured chat destination for review.
 ---
 
 # Work Summary
 
 ## Overview
 
-Gather what one person did over a given period from up to nine sources, write a short factual
+Gather what one person did over a given period from up to ten sources, write a short factual
 summary, and post it to a configured chat destination. Every workspace-specific value lives in
 a profile file, so the same skill serves any company or org.
 
@@ -22,13 +22,13 @@ one profile per run.
 
 ## Core Process
 
-Gather what one person did over a given period from up to nine sources, write a short
+Gather what one person did over a given period from up to ten sources, write a short
 factual summary, and post it to a configured chat destination.
 
 **A day is the default, not the only option.** Every step below takes the `START`/`END`
 resolved in step 1. Three things change as the period grows, and they are called out where
 they bite: which GitHub query is trustworthy (step 2), which sources need paginating
-(steps 4-8), and how the output is shaped (step 12).
+(steps 4-10), and how the output is shaped (step 13).
 
 **One workspace per run.** A summary mixes companies only if you let it. Step 0 binds the
 run to exactly one profile, and every query below filters by that profile's values.
@@ -52,6 +52,8 @@ The profile defines these keys. Every `{{key}}` below is substituted from it:
 | `exclude_orgs` | Other orgs the person works in, excluded from this summary |
 | `outline_base` | Outline (or other wiki) base URL, blank if unused |
 | `outline_user_id` | That wiki's user id, blank if unused |
+| `linear_teams` | Linear team keys or names belonging to this workspace, blank if unused |
+| `linear_user` | His Linear user id or email, for attribution, blank if unused |
 | `chat_destination` | Channel or DM id to post the summary to |
 | `transcript_glob` | Claude Code project-dir glob for this workspace |
 
@@ -108,7 +110,7 @@ after the end of that period** and `END` is today. Headers carry no year: resolv
 recent occurrence that isn't in the future.
 
 Four things about this that matter:
-- **Drafts are not runs.** Drafting is the default (step 12), and a draft leaves nothing in the
+- **Drafts are not runs.** Drafting is the default (step 13), and a draft leaves nothing in the
   channel — so a summary he never sent is invisible here and its days count as uncovered. That
   is the right answer, he never read it, but say which days you're re-covering so a resend isn't
   a surprise.
@@ -120,7 +122,7 @@ Four things about this that matter:
   searches, and that exclusion stays: reading it for a *boundary* is not the same as counting
   it as work.
 
-## Steps 2-10 - gather the sources
+## Steps 2-11 - gather the sources
 
 Work through every source in **`references/sources.md`**. Each carries its own query syntax,
 pagination rule and known traps. Sources are independent: if one fails, record the failure and
@@ -136,9 +138,10 @@ continue rather than aborting the run.
 | 7 | Email | connector |
 | 8 | Chat | `{{chat_destination}}` |
 | 9 | Calendar | connector |
-| 10 | Claude Code sessions | `{{transcript_glob}}`, `scripts/claude-code-sessions.sh` |
+| 10 | Linear | `{{linear_teams}}`, `{{linear_user}}` |
+| 11 | Claude Code sessions | `{{transcript_glob}}`, `scripts/claude-code-sessions.sh` |
 
-## Steps 11-12 - blockers, voice, post
+## Steps 12-13 - blockers, voice, post
 
 Follow **`references/output.md`**. It covers what qualifies as a blocker, how to write in the
 person's voice rather than a report register, how output shape changes with period length, and
@@ -154,11 +157,14 @@ how to post to `{{chat_destination}}`.
 | "The GitHub events API is enough" | It is unreliable past a short window and misattributes merges — step 2 says which query to trust for which period |
 | "More detail is a better summary" | The output is read in a chat client. Length is a cost, not a signal of effort |
 | "I'll include everything I found" | Cross-org work and tooling maintenance are excluded by design. Filter to `{{github_org}}` |
+| "The Linear ticket and its PR are two things I did" | They are one piece of work. Linear flips the ticket when the PR merges — two bullets for one merge is padding (step 10) |
+| "The Linear connector is authenticated, so its tickets are this workspace's" | OAuth binds one Linear workspace, and it may be an org in `{{exclude_orgs}}`. Check `get_workspace` before reading issues |
 
 ## Red Flags
 
 - Any workspace-specific literal appearing in `SKILL.md` or `references/` instead of a profile key
 - A summary containing work from an org listed in `{{exclude_orgs}}`
+- Linear issues from a team outside `{{linear_teams}}`, or from a workspace `get_workspace` says isn't this one
 - Dates computed mentally rather than with `date`
 - Posting without reporting which sources were unavailable
 
@@ -168,5 +174,7 @@ how to post to `{{chat_destination}}`.
 - [ ] `START` and `END` derived from `date`, never assumed
 - [ ] Every source attempted; unavailable ones named in the output
 - [ ] No content from an org in `{{exclude_orgs}}`
+- [ ] Linear confirmed as this workspace's and scoped to `{{linear_teams}}`, or skipped with the reason stated
+- [ ] No ticket reported as its own item when the PR in step 2 already covers it
 - [ ] Summary drafted to `{{chat_destination}}` and the draft link returned — sent outright only if he asked
 - [ ] No workspace-specific literal committed to this skill

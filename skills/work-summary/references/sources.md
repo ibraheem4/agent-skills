@@ -111,10 +111,13 @@ The same rule applies to Outline (step 4), which reports only the *latest* edito
 edit may be hidden underneath it. Surface it the same way, and check `collaboratorIds` before
 concluding a doc wasn't his.
 
-## Step 6 — Claude artifacts
+## Step 6 — Claude artifacts and design projects
 
-Call the `Artifact` tool with `action: "list"`, `limit: 25`, and `scope: "mine"` — only
-artifacts he owns. Keep the ones whose last-updated date falls within `START..END`.
+Two claude.ai surfaces. Neither is visible from the repos, and the artifact list does not cover
+design projects — so a canvas he shared is invisible to the first call below.
+
+**Artifacts.** Call the `Artifact` tool with `action: "list"`, `limit: 25`, and `scope: "mine"`
+— only artifacts he owns. Keep the ones whose last-updated date falls within `START..END`.
 
 Report title and URL. Link the title; never paste the bare artifact URL into prose.
 
@@ -129,8 +132,33 @@ Three honest limits:
 - `scope: "mine"` deliberately excludes artifacts teammates shared with him. Those aren't his
   work and don't belong in his summary.
 
-Unlike the four sources above, this one is a built-in tool rather than MCP, so it and step 10
-are the only steps that would still work in a headless run.
+**Design projects** use the `DesignSync` tool, **read methods only** — a summary never writes,
+so `finalize_plan` and everything downstream of it are out of scope here.
+
+`list_projects` returns **design-system projects he can write to, with `updatedAt`**. Filter
+those on the period exactly like step 4's docs.
+
+Ordinary multi-artboard canvases are **neither enumerable nor timestamped**, and both halves
+bite:
+- `list_projects` omits them, so this step can never *discover* a canvas. You only learn one
+  exists from another source — a link in Slack (step 8), an Outline doc (step 4), a Linear
+  ticket (step 10), a Claude Code prompt (step 11).
+- `get_project` and `list_files` give a name and the artboard paths but **no dates at all**.
+  Design can never establish that something happened inside the period; the timestamp comes
+  from whatever linked it — the Slack message's time, the session's prompt time.
+
+So given a `claude.ai/design/p/<uuid>` URL from another source, resolve it instead of pasting
+the uuid: `get_project` for the project name, `list_files` for the `.dc.html` artboards. That
+turns a dead link into "the Onboarding Flow Deck, in the Billing Mail UI project", which is the
+line worth writing. Name the artboard he actually shared — `_ds/`, `shots/` and `.thumbnail` are
+scaffolding, not work.
+
+`canEdit: true` is not authorship, and an artboard existing is not evidence he touched it this
+period. Attribute from the linking source, the same standard step 5 uses for Drive files.
+
+The `Artifact` call is a built-in tool rather than MCP, so it and step 11 are the only steps
+that survive a headless run. `DesignSync` is built in too but needs the claude.ai login, so
+treat it as unavailable there and say so rather than omitting it.
 
 ## Step 7 — email
 

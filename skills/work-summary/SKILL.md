@@ -135,7 +135,7 @@ continue rather than aborting the run.
 | 3 | Granola meetings | connector |
 | 4 | Outline docs | `{{outline_base}}`, `{{outline_user_id}}` |
 | 5 | Google Docs | connector |
-| 6 | Claude artifacts | connector |
+| 6 | Claude artifacts & design | `Artifact`, `DesignSync` |
 | 7 | Email | connector |
 | 8 | Chat | `{{chat_destination}}`, `{{work_channels}}` |
 | 9 | Calendar | connector |

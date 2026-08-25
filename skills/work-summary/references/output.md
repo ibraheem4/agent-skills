@@ -8,26 +8,26 @@ voice, and posting. Every `{{key}}` comes from the profile resolved in step 0.
 Blockers are not a source of their own — no API returns them. Derive them from what the
 previous steps already surfaced, and only from that. These qualify:
 
-- **Owed to him by a named person.** From that day's Granola notes: access, credentials,
+- **Owed to them by a named person.** From that day's Granola notes: access, credentials,
   documents, decisions someone else committed to provide. These are the most reliable kind —
   a meeting is where they get promised.
-- **His PRs sitting unreviewed.** From step 2. Include the number and roughly how long it has
+- **Their PRs sitting unreviewed.** From step 2. Include the number and roughly how long it has
   been open. Two or more days of silence is worth a line; same-day is not. Measure the silence
   from `END`, not from today — a summary of last week judges staleness as of last Friday.
 - **A Linear issue that says it's stuck.** From step 10: an issue in a blocked state, one whose
-  latest comment is a question aimed at him, or one assigned to him that slipped its cycle. The
+  latest comment is a question aimed at them, or one assigned to them that slipped its cycle. The
   tracker is the one source where "blocked" is recorded as a fact rather than inferred — but an
   open issue is not a blocked one, and neither is one with days left on it.
-- **Blocked work he wrote down himself** in an Outline doc, artifact, or Google Doc he touched
-  that day. If he recorded "waiting on X" somewhere, it counts.
+- **Blocked work they wrote down themselves** in an Outline doc, artifact, or Google Doc they touched
+  that day. If they recorded "waiting on X" somewhere, it counts.
 - **Access or credential gaps** hit during the day's work. Email (step 7) is usually where these
   resolve — a provisioning mail that arrived is a blocker *cleared*, and worth one line saying so
   if it was blocking yesterday.
-- **A question he asked that nobody answered** — in Slack (step 8) or email (step 7). An ask
+- **A question they asked that nobody answered** — in Slack (step 8) or email (step 7). An ask
   from the last few hours of the period is not a blocker; one from two days before `END` is.
-- **A Claude Code session that ended mid-problem** — from step 11: a credential he didn't
-  have, a decision he parked, a failure he stopped on. A session that ends because the work
-  finished is not a blocker, and neither is one that ends because he logged off.
+- **A Claude Code session that ended mid-problem** — from step 11: a credential they didn't
+  have, a decision they parked, a failure they stopped on. A session that ends because the work
+  finished is not a blocker, and neither is one that ends because they logged off.
 
 Separate **waiting on a person** from **waiting on an external process** — a teammate needs a
 nudge, a vendor review needs lead time, and conflating them makes the first look unactionable.
@@ -39,15 +39,15 @@ infer a blocker from work that merely looks unfinished** — an open PR is not b
 with days left on the clock is not late. If nothing qualifies, omit the section; a day with no
 blockers is the normal case, and an empty *Blockers* heading reads like a problem.
 
-If he is present and something looks like a blocker but can't be sourced, ask rather than guess.
+If they are present and something looks like a blocker but can't be sourced, ask rather than guess.
 
-## Step 13 — write it in his voice, then post
+## Step 13 — write it in their voice, then post
 
 **Voice.** Write as the person, first person, in their own voice: conversational,
-contractions, plain words, no corporate register. He explains *why* briefly when it matters
+contractions, plain words, no corporate register. They explain *why* briefly when it matters
 and otherwise stays short. Not a bullet dump and not a status-report template — a short
-writeup a colleague would actually read. Skip the exclamation marks; those belong in his
-replies to people, not in notes to himself.
+writeup a colleague would actually read. Skip the exclamation marks; those belong in their
+replies to people, not in notes to themselves.
 
 **Matter-of-fact, not narrated.** State what happened and what it means. No scene-setting, no
 "spent most of the day" hedging where a verb will do, no editorialising about how it went. Short
@@ -55,18 +55,18 @@ declarative sentences beat flowing ones here.
 
 **Lead with what the period was actually about** — one sentence for a day, two at most for
 anything longer. The thread connecting it, not a restatement of the bullets. Then stop and get
-to the lists. The longer the period, the more this opening is the part he actually reads.
+to the lists. The longer the period, the more this opening is the part they actually read.
 
 **Every item earns its line, in one clause.** A title alone is useless, but so is a sentence
 where a clause will do. Each PR, doc and artifact bullet says what it *is* or what changed —
 substance, not filename. "#136 — the two local-setup requirements missing from CLAUDE.md" beats
-both "#136 — docs(claude): local setup" and a full sentence explaining it. For a doc he edited,
-say what he added, not that he edited it.
+both "#136 — docs(claude): local setup" and a full sentence explaining it. For a doc they edited,
+say what they added, not that they edited it.
 
-**Succinct is the point.** The shortest thing that still lets him reconstruct the period in a
+**Succinct is the point.** The shortest thing that still lets them reconstruct the period in a
 month — PR numbers, doc names, one clause of substance each, and nothing else. Not every commit,
 not the reasoning behind it, not the process, not how it went. Where a line and a merge both
-work, merge. He is the only reader and he was there.
+work, merge. They are the only reader and they were there.
 
 **Shape follows the period length.** Same sources, same voice, three shapes:
 
@@ -78,18 +78,18 @@ work, merge. He is the only reader and he was there.
 
 **Cut by default.** If a bullet is only there because an API returned it, cut it. Merged PRs that
 were one task go on one line; a doc touched four times is one bullet. The test at any length is
-whether he could have written it from memory — anything past that is padding, and going long is
+whether they could have written it from memory — anything past that is padding, and going long is
 where the padding creeps in.
 
-***On me* is for what he owes, *Blockers* for what he's owed.** Step 8's pass B surfaces asks
+***On me* is for what they owe, *Blockers* for what they're owed.** Step 8's pass B surfaces asks
 and assignments; the ones still open at end of day go in *On me*, immediately before *Blockers*.
-One line each, naming the thing and where it came from. Something he answered or finished the
-same day does not belong there — check for his reply first.
+One line each, naming the thing and where it came from. Something they answered or finished the
+same day does not belong there — check for their reply first.
 
 **Meetings are omitted unless they explain something.** There is no standing *Meetings*
 section. Name a meeting only when it carries weight: it produced a decision or an action that
-shows up elsewhere in the summary, it is why a piece of work moved or stalled, or he asked for
-his calendar. A day that was simply busy with calls is not information — he was there. When one
+shows up elsewhere in the summary, it is why a piece of work moved or stalled, or they asked for
+their calendar. A day that was simply busy with calls is not information — they were there. When one
 does belong, it goes in the opening line or attached to the bullet it explains, never in a list
 of its own.
 
@@ -97,7 +97,7 @@ of its own.
 already in *Code* rides along inside that bullet — `#136 — … (ACME-42)` — never as a line of its
 own; that is the duplication step 10 exists to prevent. A ticket that moved with nothing in
 GitHub behind it is what earns its own line, and several of those in one period earn a *Tickets*
-heading. Issues assigned to him and still open at `END` go in *On me*, not into a ticket list.
+heading. Issues assigned to them and still open at `END` go in *On me*, not into a ticket list.
 
 **Claude Code sessions fold in; they do not get a section by default.** Most of what step 11
 surfaces belongs in the opening line, or as the substance behind a *Code* bullet — the session
@@ -145,10 +145,10 @@ Formatting rules:
 - A blank line immediately after a bullet list gets collapsed, so the next heading can end up
   flush against the list. Keep one short non-list line between a list and the next heading.
 - Leave `unfurl_app_links` off by default. It gives GitHub links rich previews, which makes
-  the message much taller; turn it on only if he asks for previews.
+  the message much taller; turn it on only if they ask for previews.
 - Section headings only when that section has content. Never a heading over nothing.
-- *On me* then *Blockers* go **last**, in that order — they're what he acts on tomorrow, so they
-  should be the thing he's left looking at. The exception is a blocker that stopped the day's actual work: that belongs in the
+- *On me* then *Blockers* go **last**, in that order — they're what they act on tomorrow, so they
+  should be the thing they're left looking at. The exception is a blocker that stopped the day's actual work: that belongs in the
   opening narrative, because it explains the day rather than just following it.
 - Put status inline as a closing line under a section ("Both still open, waiting on review")
   rather than a separate *Open* section — it reads less like a form.
@@ -177,12 +177,12 @@ Hard rules:
   A summary that talks about its own plumbing is noise to the person reading it.
 
 **Draft, don't send.** Use `mcp__claude_ai_Slack__slack_send_message_draft`,
-`channel_id: "{{chat_destination}}"`, and return the draft link so he can edit before it goes.
-This is the default even when he says "post it" or "send it" — he is the only reader, and a
-draft costs him one click.
+`channel_id: "{{chat_destination}}"`, and return the draft link so they can edit before it goes.
+This is the default even when they say "post it" or "send it" — they are the only reader, and a
+draft costs them one click.
 
-Send outright with `mcp__claude_ai_Slack__slack_send_message` only when he asks for that
+Send outright with `mcp__claude_ai_Slack__slack_send_message` only when they ask for that
 specifically, or when the run is unattended and nobody is there to press send.
 
-A drafted summary he never sends leaves no record, so the next run re-covers those days —
-correct, but say so rather than letting a resend surprise him (step 1).
+A drafted summary they never send leaves no record, so the next run re-covers those days —
+correct, but say so rather than letting a resend surprise them (step 1).

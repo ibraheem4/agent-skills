@@ -358,11 +358,20 @@ Every source above records an artifact. This one records intent — what they we
 what they decided, and the work that produced nothing to point at.
 
 Transcripts are local JSONL, one file per session, in project dirs named after the session
-cwd with `/` replaced by `-`. A helper does the extraction:
+cwd with `/` replaced by `-`. A helper does the extraction. It sits in `scripts/` beside this
+file, so build the path from **the skill's own base directory — the one reported when the skill
+loads** — never from a fixed location. The skill moves with the plugin that ships it, and any
+absolute path under `~/.claude/skills/` is already stale:
 
 ```bash
-~/.claude/skills/work-summary/scripts/claude-code-sessions.sh "$START" "$END"   # END optional
+CLAUDE_SESSION_GLOB='{{transcript_glob}}' \
+  "<skill base dir>/scripts/claude-code-sessions.sh" "$START" "$END"   # END optional
 ```
+
+`CLAUDE_SESSION_GLOB` is **required and has no default** — it is the org filter, so the script
+refuses to guess rather than silently summarising every workspace on the machine. Pass
+`{{transcript_glob}}` exactly. `CLAUDE_PROJECTS_DIR` overrides the transcript root if it has
+moved, and `PROMPT_MAXLEN` the 220-char cut.
 
 Per session it prints the auto-generated title, cwd, git branch, short session id, prompt count,
 and every human prompt with its local time — sessions ordered by when they started, and a totals
@@ -407,8 +416,8 @@ landed. A session already covered
 by its PR in step 2 gets nothing here; the PR says it better. Session titles make decent
 handles, but a long session wanders far from its title, so trust the prompts over it.
 
-Work on this skill is the exception: sessions that edited `~/.claude/skills/work-summary/`
-never make the summary, even though they fit everything below. See the hard rules in step 13.
+Work on this skill is the exception: sessions that edited this skill's own directory — the
+installed plugin copy or any checkout of the repo that ships it — never make the summary, even though they fit everything below. See the hard rules in step 13.
 
 What this source is *for*, and where it beats the others: work that produced no commit, doc, or
 artifact; a decision made and then reversed; something tried that didn't work. If a session's

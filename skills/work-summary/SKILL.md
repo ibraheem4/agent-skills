@@ -55,6 +55,7 @@ The profile defines these keys. Every `{{key}}` below is substituted from it:
 | `linear_teams` | Linear team keys or names belonging to this workspace, blank if unused |
 | `linear_user` | His Linear user id or email, for attribution, blank if unused |
 | `chat_destination` | Channel or DM id to post the summary to |
+| `work_channels` | Chat channel ids this workspace's work happens in, blank to skip step 8's pass C |
 | `transcript_glob` | Claude Code project-dir glob for this workspace |
 
 **Never hardcode a profile value into this file.** If a step needs a new workspace-specific
@@ -136,7 +137,7 @@ continue rather than aborting the run.
 | 5 | Google Docs | connector |
 | 6 | Claude artifacts | connector |
 | 7 | Email | connector |
-| 8 | Chat | `{{chat_destination}}` |
+| 8 | Chat | `{{chat_destination}}`, `{{work_channels}}` |
 | 9 | Calendar | connector |
 | 10 | Linear | `{{linear_teams}}`, `{{linear_user}}` |
 | 11 | Claude Code sessions | `{{transcript_glob}}`, `scripts/claude-code-sessions.sh` |

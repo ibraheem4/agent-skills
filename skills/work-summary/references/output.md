@@ -1,9 +1,9 @@
 # Blockers and output
 
-Steps 11-12 of `work-summary`: deciding what counts as a blocker, writing in the person's
+Steps 12-13 of `work-summary`: deciding what counts as a blocker, writing in the person's
 voice, and posting. Every `{{key}}` comes from the profile resolved in step 0.
 
-## Step 11 — blockers
+## Step 12 — blockers
 
 Blockers are not a source of their own — no API returns them. Derive them from what the
 previous steps already surfaced, and only from that. These qualify:
@@ -14,6 +14,10 @@ previous steps already surfaced, and only from that. These qualify:
 - **His PRs sitting unreviewed.** From step 2. Include the number and roughly how long it has
   been open. Two or more days of silence is worth a line; same-day is not. Measure the silence
   from `END`, not from today — a summary of last week judges staleness as of last Friday.
+- **A Linear issue that says it's stuck.** From step 10: an issue in a blocked state, one whose
+  latest comment is a question aimed at him, or one assigned to him that slipped its cycle. The
+  tracker is the one source where "blocked" is recorded as a fact rather than inferred — but an
+  open issue is not a blocked one, and neither is one with days left on it.
 - **Blocked work he wrote down himself** in an Outline doc, artifact, or Google Doc he touched
   that day. If he recorded "waiting on X" somewhere, it counts.
 - **Access or credential gaps** hit during the day's work. Email (step 7) is usually where these
@@ -21,7 +25,7 @@ previous steps already surfaced, and only from that. These qualify:
   if it was blocking yesterday.
 - **A question he asked that nobody answered** — in Slack (step 8) or email (step 7). An ask
   from the last few hours of the period is not a blocker; one from two days before `END` is.
-- **A Claude Code session that ended mid-problem** — from step 10: a credential he didn't
+- **A Claude Code session that ended mid-problem** — from step 11: a credential he didn't
   have, a decision he parked, a failure he stopped on. A session that ends because the work
   finished is not a blocker, and neither is one that ends because he logged off.
 
@@ -30,14 +34,14 @@ nudge, a vendor review needs lead time, and conflating them makes the first look
 Name the person and the specific thing needed; "waiting on a teammate" is useless next week, "a teammate
 owes Linear access" is not.
 
-Same evidence bar as everything else: each blocker traces to a source from steps 2–10. **Do not
+Same evidence bar as everything else: each blocker traces to a source from steps 2–11. **Do not
 infer a blocker from work that merely looks unfinished** — an open PR is not blocked, and a task
 with days left on the clock is not late. If nothing qualifies, omit the section; a day with no
 blockers is the normal case, and an empty *Blockers* heading reads like a problem.
 
 If he is present and something looks like a blocker but can't be sourced, ask rather than guess.
 
-## Step 12 — write it in his voice, then post
+## Step 13 — write it in his voice, then post
 
 **Voice.** Write as the person, first person, in their own voice: conversational,
 contractions, plain words, no corporate register. He explains *why* briefly when it matters
@@ -89,7 +93,13 @@ his calendar. A day that was simply busy with calls is not information — he wa
 does belong, it goes in the opening line or attached to the bullet it explains, never in a list
 of its own.
 
-**Claude Code sessions fold in; they do not get a section by default.** Most of what step 10
+**Linear folds into the work it tracks; it gets no standing section.** A ticket behind a PR
+already in *Code* rides along inside that bullet — `#136 — … (SAN-42)` — never as a line of its
+own; that is the duplication step 10 exists to prevent. A ticket that moved with nothing in
+GitHub behind it is what earns its own line, and several of those in one period earn a *Tickets*
+heading. Issues assigned to him and still open at `END` go in *On me*, not into a ticket list.
+
+**Claude Code sessions fold in; they do not get a section by default.** Most of what step 11
 surfaces belongs in the opening line, or as the substance behind a *Code* bullet — the session
 is why the PR looks like it does. Give it its own *Sessions* heading only for work that left no
 commit, doc, or artifact behind, since that is the part nothing else in the summary records.
@@ -106,7 +116,7 @@ written down anywhere.
 
 *Code* — broker-platform
 • #135 — gitignore Claude Code local overrides
-• #136 — the spine checkout and AGENT_DEV_AUTH_BYPASS, into CLAUDE.md
+• #136 — the spine checkout and AGENT_DEV_AUTH_BYPASS, into CLAUDE.md (SAN-42)
 Neither reviewed yet.
 
 *Docs*
@@ -116,6 +126,7 @@ Neither reviewed yet.
 
 *On me*
 • AWS migration plan doc — a teammate's standup to-do, not started
+• SAN-51 — broker auth onto WorkOS, mine since Tuesday, not started
 
 *Blockers*
 • Linear access from a teammate — asked Monday, still nothing

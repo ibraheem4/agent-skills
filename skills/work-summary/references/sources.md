@@ -1,6 +1,6 @@
 # Sources
 
-Per-source gathering detail for `work-summary`, steps 2-10. Every `{{key}}` comes from the
+Per-source gathering detail for `work-summary`, steps 2-11. Every `{{key}}` comes from the
 profile resolved in step 0. Sources are independent - a failure in one does not block others;
 record it and carry on.
 
@@ -63,7 +63,7 @@ List title and time only. Do **not** pull transcripts unless explicitly asked; m
 content is sensitive and a summary line doesn't need it.
 
 **This is context, not output.** Meetings are gathered so the summary can explain a day —
-why something moved, stalled, or landed on him. Most runs print none at all. See step 12.
+why something moved, stalled, or landed on him. Most runs print none at all. See step 13.
 
 ## Step 4 — Outline docs
 
@@ -200,8 +200,8 @@ Pass A only shows what he pushed out — without pass B, a question a teammate a
 an answered question is not an open item. Match them by thread: the permalinks carry `thread_ts`,
 so a reply of his in the same thread is normally the answer.
 
-Anything still unanswered, or assigned to him and not done, becomes an *On me* line in step 12 —
-unless what he needs is from someone else, in which case it is a blocker (step 11).
+Anything still unanswered, or assigned to him and not done, becomes an *On me* line in step 13 —
+unless what he needs is from someone else, in which case it is a blocker (step 12).
 
 **Pass C, optional — read the two channels he works in**, for a day that looks thinner than it
 was. `mcp__claude_ai_Slack__slack_read_channel` with `response_format: "concise"`:
@@ -228,7 +228,7 @@ on these two channels is single digits for a whole day, so it is cheap when you 
 
 Report what he actually communicated — a decision, a heads-up, a question he's waiting on — not
 chatter. Channel names carry the context, so keep them. Questions he asked that nobody answered
-are blocker candidates for step 11.
+are blocker candidates for step 12.
 
 ## Step 9 — calendar
 
@@ -252,7 +252,73 @@ Declined and cancelled events are not activity.
 If the connector is unauthenticated (only `authenticate` / `complete_authentication` exposed), say
 so in one line per the honest-gap rule rather than omitting it silently.
 
-## Step 10 — Claude Code sessions
+## Step 10 — Linear
+
+Skip the step entirely when `{{linear_teams}}` is blank. If the connector is unauthenticated
+(only `authenticate` / `complete_authentication` exposed), say so in one line per the
+honest-gap rule, the same as step 9.
+
+**Confirm the workspace before reading anything.**
+`mcp__claude_ai_Linear__get_workspace` names the Linear workspace the connector is bound to,
+and OAuth binds exactly one at a time. A connector pointed at an org in `{{exclude_orgs}}`
+will happily return tickets that must not appear in this summary. If it isn't this
+workspace's, report that in one line and skip — do not filter your way to a partial answer.
+
+Then resolve identity and scope once:
+
+```
+mcp__claude_ai_Linear__list_users   → his id, matched on {{linear_user}}
+mcp__claude_ai_Linear__list_teams   → keep only the teams named in {{linear_teams}}
+```
+
+**Two passes per team, recency-ordered and date-filtered locally.** `list_issues` takes
+`team`, `project`, `query`, `limit`, `fields` and `orderBy` — there is no date argument, so the
+period filter happens on your side, exactly as in steps 4-6:
+
+```
+mcp__claude_ai_Linear__list_issues
+  team: <team>, limit: 50, orderBy: "updatedAt",
+  fields: ["identifier","title","status","assignee","updatedAt","createdAt","url"]
+```
+
+- **Pass A — what he owns that moved.** Keep issues whose `updatedAt` falls inside
+  `START..END` and whose `assignee` is him.
+- **Pass B — what he opened.** Same call with `orderBy: "createdAt"`; keep issues he created
+  inside the period. An issue he filed and someone else now owns is still his work.
+
+Paginate like step 4: keep going until a page's oldest date is older than `START`. Raise
+`limit`, never the field list — `fields` is what controls response size, so ask for the seven
+above and nothing else. Requesting `description` across 50 issues is how this step blows the
+tool-result token cap.
+
+**`updatedAt` is not an attribution.** Anyone's comment or status change bumps it, so pass A
+means "issues he owns that moved", not "issues he moved". Where the difference matters, check
+`mcp__claude_ai_Linear__list_comments` on that one issue for his authorship inside the period
+— never across a whole team. This is step 4's latest-editor problem again, and it earns the
+same honest line rather than a confident claim.
+
+**The GitHub overlap is the thing to get right.** Linear links PRs and flips issues to Done on
+merge, so a ticket that closed because his PR merged is already reported in step 2 and must not
+become a second bullet. A ticket earns a line only for what the PR doesn't say: a status
+decision (blocked, descoped, punted to the next cycle), a scope or estimate change, or a
+comment thread that settled something. A ticket with no PR behind it is the case where this
+step carries the whole item.
+
+Two more calls, worth it for a week or longer and skippable for a day:
+- `mcp__claude_ai_Linear__get_status_updates` — a project update he wrote is the closest thing
+  to a summary he already authored. If one covers the period, prefer his wording to yours.
+- `mcp__claude_ai_Linear__list_documents` — Linear docs, filtered the way step 4 filters
+  Outline.
+
+**Feed the leftovers forward instead of printing them.** Issues assigned to him and still open
+at `END` are *On me* candidates (step 13). An issue sitting in a blocked state, or one whose
+latest comment is a question aimed at him, is a blocker candidate (step 12).
+
+One caveat about this step specifically: only `list_issues`' argument list was exercised
+against a live connector. If a call rejects an argument, read the tool schema, adjust, and fix
+this file — do not drop the step.
+
+## Step 11 — Claude Code sessions
 
 Every source above records an artifact. This one records intent — what he was trying to do,
 what he decided, and the work that produced nothing to point at.
@@ -308,7 +374,7 @@ by its PR in step 2 gets nothing here; the PR says it better. Session titles mak
 handles, but a long session wanders far from its title, so trust the prompts over it.
 
 Work on this skill is the exception: sessions that edited `~/.claude/skills/work-summary/`
-never make the summary, even though they fit everything below. See the hard rules in step 12.
+never make the summary, even though they fit everything below. See the hard rules in step 13.
 
 What this source is *for*, and where it beats the others: work that produced no commit, doc, or
 artifact; a decision made and then reversed; something tried that didn't work. If a session's

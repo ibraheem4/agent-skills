@@ -53,7 +53,7 @@ The profile defines these keys. Every `{{key}}` below is substituted from it:
 | `outline_base` | Outline (or other wiki) base URL, blank if unused |
 | `outline_user_id` | That wiki's user id, blank if unused |
 | `linear_teams` | Linear team keys or names belonging to this workspace, blank if unused |
-| `linear_user` | His Linear user id or email, for attribution, blank if unused |
+| `linear_user` | Their Linear user id or email, for attribution, blank if unused |
 | `chat_destination` | Channel or DM id to post the summary to |
 | `work_channels` | Chat channel ids this workspace's work happens in, blank to skip step 8's pass C |
 | `transcript_glob` | Claude Code project-dir glob for this workspace |
@@ -90,15 +90,15 @@ date -j -v+1d -f %F "$END"   +%F     # day after END     (Gmail/Slack `before:`,
 resolved period back in one line before gathering — a wrong range is the one error that
 silently poisons every step downstream.
 
-**He asks in plain English; translate it and get on with it.** "the last few days", "since
+**They ask in plain English; translate it and get on with it.** "the last few days", "since
 Tuesday", "yesterday and today", "past couple weeks", "what have I been up to this week" all
 map onto the table above. Pick the sensible reading, state it, and start gathering — do not
-interrogate him about boundaries. Only ask when the phrase has no defensible reading ("this
-sprint" with no sprint defined anywhere). If he says a weekday with no date, it means the most
+interrogate them about boundaries. Only ask when the phrase has no defensible reading ("this
+sprint" with no sprint defined anywhere). If they say a weekday with no date, it means the most
 recent one already past, not next week's.
 
 **"Since the last run" — find it in Slack, don't keep a state file.** The skill posts its own
-history to his DM, so the last posted summary *is* the record of what's already covered:
+history to their DM, so the last posted summary *is* the record of what's already covered:
 
 ```
 mcp__claude_ai_Slack__slack_read_channel  channel_id: {{chat_destination}}, limit: 5,
@@ -112,8 +112,8 @@ recent occurrence that isn't in the future.
 
 Four things about this that matter:
 - **Drafts are not runs.** Drafting is the default (step 13), and a draft leaves nothing in the
-  channel — so a summary he never sent is invisible here and its days count as uncovered. That
-  is the right answer, he never read it, but say which days you're re-covering so a resend isn't
+  channel — so a summary they never sent is invisible here and its days count as uncovered. That
+  is the right answer, they never read it, but say which days you're re-covering so a resend isn't
   a surprise.
 - **Resume from coverage, not from the timestamp.** A summary for the 19th posted at 17:22 on
   the 19th means the 19th is done; start at the 20th, not at 17:22.
@@ -177,5 +177,5 @@ how to post to `{{chat_destination}}`.
 - [ ] No content from an org in `{{exclude_orgs}}`
 - [ ] Linear confirmed as this workspace's and scoped to `{{linear_teams}}`, or skipped with the reason stated
 - [ ] No ticket reported as its own item when the PR in step 2 already covers it
-- [ ] Summary drafted to `{{chat_destination}}` and the draft link returned — sent outright only if he asked
+- [ ] Summary drafted to `{{chat_destination}}` and the draft link returned — sent outright only if they asked
 - [ ] No workspace-specific literal committed to this skill

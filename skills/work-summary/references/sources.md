@@ -264,35 +264,46 @@ workspace's, report that in one line and skip — do not filter your way to a pa
 Then resolve identity and scope once:
 
 ```
-mcp__claude_ai_Linear__list_users   → his id, matched on {{linear_user}}
-mcp__claude_ai_Linear__list_teams   → keep only the teams named in {{linear_teams}}
+mcp__claude_ai_Linear__list_teams  query: <each of {{linear_teams}}>
+mcp__claude_ai_Linear__list_users  query: {{linear_user}}   -> his id AND his display name
 ```
 
-**Two passes per team, recency-ordered and date-filtered locally.** `list_issues` takes
-`team`, `project`, `query`, `limit`, `fields` and `orderBy` — there is no date argument, so the
-period filter happens on your side, exactly as in steps 4-6:
+Keep the **name**, not just the id: `createdBy` and `assignee` come back as display names, so
+matching either against an email never hits. `list_users` takes the email as its `query`, which
+is what makes that profile key usable at all.
+
+**Two passes per team.** `list_issues` takes `assignee`, `createdAt`, `updatedAt`, `state`,
+`label`, `cycle`, `project`, `query`, `team`, `limit`, `fields` and `orderBy`. The date
+arguments are **lower bounds only** — "updated after X", no upper bound — so pass `START` to the
+API and clip the `END` side yourself:
 
 ```
 mcp__claude_ai_Linear__list_issues
-  team: <team>, limit: 50, orderBy: "updatedAt",
-  fields: ["identifier","title","status","assignee","updatedAt","createdAt","url"]
+  team: <team>, assignee: "me", updatedAt: "$START", orderBy: "updatedAt", limit: 50,
+  fields: ["title","status","statusType","assignee","createdBy","createdAt","updatedAt",
+           "completedAt","startedAt","url","priority","project"]
 ```
 
-- **Pass A — what he owns that moved.** Keep issues whose `updatedAt` falls inside
-  `START..END` and whose `assignee` is him.
-- **Pass B — what he opened.** Same call with `orderBy: "createdAt"`; keep issues he created
-  inside the period. An issue he filed and someone else now owns is still his work.
+- **Pass A — what he owns that moved.** As above. `assignee: "me"` resolves to the connector's
+  own identity, so this pass needs no profile value at all.
+- **Pass B — what he opened.** Same call with `createdAt: "$START"`, `orderBy: "createdAt"` and
+  **no** assignee, then keep rows whose `createdBy` is his name — there is no `createdBy`
+  filter, so that match is local. An issue he filed and someone else owns is still his work, and
+  the inverse matters more in practice: a burst of issues *assigned* to him that he did not
+  create is someone else's planning session, not his output. Say which it was.
 
-Paginate like step 4: keep going until a page's oldest date is older than `START`. Raise
-`limit`, never the field list — `fields` is what controls response size, so ask for the seven
-above and nothing else. Requesting `description` across 50 issues is how this step blows the
-tool-result token cap.
+`id` is always returned and already carries the identifier (`ACME-708`), so never ask for
+`identifier` — it is not a valid field and the call fails with it. Raise `limit` (max 250)
+rather than widening `fields`; the field list drives response size, and asking for
+`description` across a page is how this step blows the tool-result token cap.
 
-**`updatedAt` is not an attribution.** Anyone's comment or status change bumps it, so pass A
-means "issues he owns that moved", not "issues he moved". Where the difference matters, check
-`mcp__claude_ai_Linear__list_comments` on that one issue for his authorship inside the period
-— never across a whole team. This is step 4's latest-editor problem again, and it earns the
-same honest line rather than a confident claim.
+**Prefer the timestamped fields over `updatedAt` for "what moved".** Any teammate's comment or
+status change bumps `updatedAt`, so it dates the issue, not his work on it. `completedAt`,
+`startedAt` and `canceledAt` say precisely what changed and when. None of them names an actor,
+though: a ticket that went Done inside the period may have been closed by anyone, and the API
+will not say who. Report the close, not the closer, unless something else establishes it.
+`mcp__claude_ai_Linear__list_comments` on that one issue is the only way to find a human in the
+loop — worth one call for a ticket that matters, never one per ticket across a team.
 
 **The GitHub overlap is the thing to get right.** Linear links PRs and flips issues to Done on
 merge, so a ticket that closed because his PR merged is already reported in step 2 and must not
@@ -302,18 +313,16 @@ comment thread that settled something. A ticket with no PR behind it is the case
 step carries the whole item.
 
 Two more calls, worth it for a week or longer and skippable for a day:
-- `mcp__claude_ai_Linear__get_status_updates` — a project update he wrote is the closest thing
-  to a summary he already authored. If one covers the period, prefer his wording to yours.
+- `mcp__claude_ai_Linear__get_status_updates` — `type` is required (`project` or `initiative`)
+  and it takes `user: "me"` with a `createdAt` lower bound. A project update he wrote is the
+  closest thing to a summary he already authored; prefer his wording to yours.
 - `mcp__claude_ai_Linear__list_documents` — Linear docs, filtered the way step 4 filters
   Outline.
 
 **Feed the leftovers forward instead of printing them.** Issues assigned to him and still open
-at `END` are *On me* candidates (step 13). An issue sitting in a blocked state, or one whose
-latest comment is a question aimed at him, is a blocker candidate (step 12).
-
-One caveat about this step specifically: only `list_issues`' argument list was exercised
-against a live connector. If a call rejects an argument, read the tool schema, adjust, and fix
-this file — do not drop the step.
+at `END` are *On me* candidates (step 13) — rank them by `priority`, since a page of Todo
+tickets is not equally urgent. An issue in a blocked `state`, or one whose latest comment is a
+question aimed at him, is a blocker candidate (step 12).
 
 ## Step 11 — Claude Code sessions
 

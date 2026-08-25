@@ -138,8 +138,10 @@ Formatting rules:
   Date header short and bold: `**Wed 19 Aug**` for a day, `**Mon 17 – Fri 21 Aug**` for a
   range, and drop the weekday once the period passes a week: `**3–21 Aug**`.
 - `•` for bullets. Link with standard markdown `[text](url)`; it converts to Slack's
-  `<url|text>` form correctly. Link PR numbers, Outline doc titles, and Google Doc titles —
-  never paste bare URLs into prose.
+  `<url|text>` form correctly. Link PR numbers, Outline doc titles, Google Doc titles, and
+  ticket ids — never paste bare URLs into prose. A design canvas is named by its artboard and
+  project (step 6), never by its `claude.ai/design/p/<uuid>` link, which says nothing to a
+  reader.
 - A blank line immediately after a bullet list gets collapsed, so the next heading can end up
   flush against the list. Keep one short non-list line between a list and the next heading.
 - Leave `unfurl_app_links` off by default. It gives GitHub links rich previews, which makes

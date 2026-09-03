@@ -1,6 +1,6 @@
 ---
 name: pr-lifecycle
-description: Use after opening a PR to shepherd it to merge-readiness. Monitor CI, fix failures, handle review feedback, and loop until green. Never merge — report readiness and let the human decide.
+description: Use when opening a PR and shepherding it to merge-readiness. Write a description a reviewer can act on, monitor CI, fix failures, handle review feedback, and loop until green. Never merge — report readiness and let the human decide.
 ---
 
 # PR Lifecycle
@@ -41,6 +41,34 @@ Wait for automated reviews
         │
         no──→ Diagnose + fix ──→ loop (max 3 cycles)
 ```
+
+### 0. Write the description
+
+Before the loop starts, the PR needs a body a reviewer can use. Read **two recently merged
+PRs in that repo and match their length** before writing a word — a description twice as long
+as everyone else's reads as noise, not rigour.
+
+Four sections, nothing else:
+
+- **Why** — 1–3 sentences, the problem not the solution
+- **What's here** — one clause per bullet
+- **Verification** — what you ran and what it printed
+- **Not covered** — only where a reviewer would otherwise assume it was
+
+Screenshots for UI, rollback notes for schema, only where they apply.
+
+Test every line: *could a reviewer predict the diff from it?* If not, cut it.
+
+- Never restate what the host already renders — CI status, commit count, behind-by, conflicts
+- No defensive notes about files you did not touch. The diff answers that
+- Nothing about your machine. A failure only reproducible in your checkout is not the
+  reviewer's problem, however true
+- Don't write a closing keyword for a tracker until the PR actually closes that ticket
+- Draft by default. Mark ready only when asked
+
+Wrong description? Fix the body — no correction comment. A comment correcting a revision
+nobody reviewed is a correction to nothing. Comment only if someone already reviewed it, or
+it shaped a ticket or doc others can see.
 
 ### 1. Pre-flight
 

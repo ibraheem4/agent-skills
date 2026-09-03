@@ -53,6 +53,24 @@ Examples: `feat/LUC-123-user-registration`, `fix/LUC-456-null-pointer`
 - No "WIP" or "fix typo" commits in final history (squash before merge)
 - No committed secrets, debug logs, or TODO without ticket reference
 
+"No committed secrets" needs a procedure, not an intention. Before every commit:
+
+```sh
+git status --short                    # no .env*, *.local.md, settings.local.json
+git check-ignore -v <env file>        # prove the env file is actually ignored
+git diff --cached | grep -inE 'secret|token|api[_-]?key|password|PRIVATE KEY'
+```
+
+Local-config files leak repeatedly because they sit in the working tree looking normal. When
+one is untracked-but-visible, add it to `.git/info/exclude` rather than the repo's
+`.gitignore` — unless the whole team wants it ignored.
+
+Leave other people's files alone. If a shared doc changed and it was not you, revert it.
+
+⚠️ **Where a repo's history is all-prose, house style and the conventional-commit rule
+conflict.** Say so and ask rather than deciding silently — a subject line cannot be fixed
+after pushing, because force-push is off the table.
+
 ### 4. Worktree Lifecycle
 
 Use worktrees for feature isolation. Never switch branches in-place on the main checkout.

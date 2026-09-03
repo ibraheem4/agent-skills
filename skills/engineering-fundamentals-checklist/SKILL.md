@@ -44,6 +44,17 @@ These must be in place before writing feature code:
 - [ ] Code coverage tool configured with minimum threshold (80%)
 - [ ] Integration tests exist for external boundaries (DB, APIs)
 - [ ] Tests are deterministic — no flaky tests in the suite
+- [ ] The suite is weighted toward small tests, not end-to-end ones
+
+| Size | Constraints | Time | Network | Use for |
+|------|------------|------|---------|---------|
+| **Small** | single process, hermetic | < 60s | no | functions, classes, pure logic |
+| **Medium** | single machine | < 5min | localhost only | DB queries, API boundaries |
+| **Large** | none | < 15min | yes | critical user journeys, E2E |
+
+Target **80% small, 15% medium, 5% large**. Small tests are fast, deterministic and catch
+most bugs; reach for medium at system boundaries and large only for critical paths. A suite
+inverted toward large tests is slow, flaky, and stops being run.
 
 #### Security
 - [ ] Credential scanning in CI (detect-secrets, git-secrets, or equivalent)

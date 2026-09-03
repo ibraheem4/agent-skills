@@ -26,3 +26,6 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 | triage-failing-fleet | Reading the biggest log instead of the first failure |
 | disk-reclaim | Deleting committed files as build output |
 | work-summary | Hardcoding one company into a reusable skill |
+| false-verification-signals | Reporting a cached replay as a passing test run |
+| session-handoff | Writing a handoff that says "the worktree" instead of the path |
+| pr-preview-environments | Trusting `pull_request` on a role that holds admin |

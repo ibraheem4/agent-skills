@@ -10,6 +10,19 @@
 4. Update the skill list in `README.md`, `CLAUDE.md`, `AGENTS.md`, and `GEMINI.md`
 5. Open a PR
 
+## Before Adding a Skill
+
+**Search the installed marketplaces first.** `claude plugin marketplace list`, then read the
+candidate's SKILL.md — not just its name. If an existing plugin covers it, adopt and
+cross-reference instead of writing.
+
+Compare on substance, not length. A longer skill is not automatically better, and two skills
+that look like duplicates by name are often complementary: one may be the general discipline
+and the other the specific failure mode. Read both before deciding.
+
+Record the decision either way in README's "Skills we deliberately do not ship" — a deferral
+nobody wrote down gets re-litigated, or worse, re-implemented.
+
 ## Quality Standards
 
 - **Actionable** — Steps, not advice. "Do X" not "Consider X"

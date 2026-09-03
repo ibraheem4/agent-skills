@@ -13,8 +13,6 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 |-------|----------------------------|
 | scope-discipline | Adding features nobody asked for |
 | incremental-implementation | Writing 500 lines without testing |
-| test-driven-development | Shipping code without tests |
-| debugging-and-error-recovery | Retrying the same failing approach |
 | code-review-and-quality | Missing subtle bugs in generated code |
 | security-and-hardening | Introducing injection vectors, hardcoded secrets |
 | shipping-and-launch | Leaving debug logs and TODOs in code |

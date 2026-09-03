@@ -11,8 +11,6 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 
 - `/build` — Implement in small, tested increments
 - `/scope` — Check your diff against the request — remove anything unsolicited
-- `/test` — Write the failing test first (TDD, Beyonce Rule)
-- `/debug` — Read the error. Hypothesize. Test one thing. Don't retry blindly
 - `/review` — Two-pass review: design pass, then code quality
 - `/secure` — Security checklist: inputs, auth, secrets, dependencies
 - `/ship` — Pre-flight: tests pass, no secrets, no debug logs, no naked TODOs

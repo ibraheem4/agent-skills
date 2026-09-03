@@ -20,13 +20,13 @@ AI agents fail differently than humans:
 | Agent Failure Mode | Human Equivalent | Skill That Fixes It |
 |-------------------|-----------------|---------------------|
 | Writes 500 lines without testing | Cowboy coding | [incremental-implementation](#build) |
-| Retries the same failing approach | Stubbornness | [debugging-and-error-recovery](#verify) |
+| Retries the same failing approach | Stubbornness | `superpowers:systematic-debugging` |
 | Adds features nobody asked for | Scope creep | [scope-discipline](#build) |
 | Generates code with subtle security holes | Inexperience | [security-and-hardening](#review) |
 | Leaves debug logs and TODOs in code | Carelessness | [shipping-and-launch](#ship) |
 | Doesn't read existing code before editing | Arrogance | [code-review-and-quality](#review) |
 | Over-engineers with premature abstractions | Resume-driven dev | [code-health-and-maintainability](#review) |
-| Ignores error messages, guesses at fixes | Panic | [debugging-and-error-recovery](#verify) |
+| Ignores error messages, guesses at fixes | Panic | `superpowers:systematic-debugging` |
 | Deletes a repo that had unpushed work | Carelessness | [safe-repo-removal](#operate) |
 | Kills a process that immediately respawns | Whack-a-mole | [find-hidden-services](#operate) |
 | Reads the biggest log first | Chasing noise | [triage-failing-fleet](#operate) |
@@ -44,8 +44,6 @@ AI agents fail differently than humans:
 - **[context-engineering](skills/context-engineering/)** — Read before writing, load deliberately, verify don't assume. Manage what enters the context window. *[Agent-specific]*
 
 ### Verify
-- **[test-driven-development](skills/test-driven-development/)** — Write the failing test first. "If you liked it, you should have put a test on it." *[Google: Beyonce Rule, 80/15/5 test pyramid]*
-- **[debugging-and-error-recovery](skills/debugging-and-error-recovery/)** — Read the error. Form a hypothesis. Test one thing. Never retry blindly. *[Microsoft: systematic diagnosis]*
 - **[verify-before-cite](skills/verify-before-cite/)** — A document is a claim, not evidence. Check the path, role or resource lives before following or repeating it. *[Agent-specific]*
 - **[false-verification-signals](skills/false-verification-signals/)** — A cached run is a replay, a sandboxed probe is about the sandbox, and zero rows can mean no scope. Confirm the check ran. *[Agent-specific]*
 - **[performance-optimization](skills/performance-optimization/)** — Measure first, optimize the bottleneck, verify the improvement. Never optimize without profiling data. *[Google: measure-first; Stripe: latency budgets]*
@@ -78,6 +76,26 @@ AI agents fail differently than humans:
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*
 - **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 setup: CI, tests, branch protection, security scanning, monitoring. *[Microsoft: Engineering Fundamentals Playbook]*
+
+## Skills we deliberately do not ship
+
+Another plugin already does it better. Adopting beats duplicating: two skills matching the
+same trigger means unpredictable selection, and the weaker one wins half the time.
+
+| Not here | Use instead | Why |
+|---|---|---|
+| test-driven-development | `superpowers:test-driven-development` | 320 lines to our 128, with an explicit *verify-RED / verify-GREEN* step ours lacked. Our Google test-size classification survives in `engineering-fundamentals-checklist` |
+| debugging-and-error-recovery | `superpowers:systematic-debugging` | Four phases with root-cause investigation and pattern analysis, against our six linear steps |
+
+Checked and **kept** rather than deferred, because the overlap was apparent and not real:
+
+- `review-response` — `superpowers:receiving-code-review` covers judgment (when to push back,
+  forbidden responses); ours covers thread hygiene (reply to every comment, resolve threads)
+- `frontend-ui-engineering` — `frontend-design` is 71 lines of aesthetic direction; ours is
+  engineering plus accessibility, components, responsive and data-viz references
+- `false-verification-signals` — `superpowers:verification-before-completion` is the
+  first-order rule (run it, read it, then claim). Ours is the second-order one: six cases
+  where you did run it, did read it, and were still deceived
 
 ## Design Philosophy
 

@@ -46,6 +46,7 @@ AI agents fail differently than humans:
 ### Verify
 - **[test-driven-development](skills/test-driven-development/)** — Write the failing test first. "If you liked it, you should have put a test on it." *[Google: Beyonce Rule, 80/15/5 test pyramid]*
 - **[debugging-and-error-recovery](skills/debugging-and-error-recovery/)** — Read the error. Form a hypothesis. Test one thing. Never retry blindly. *[Microsoft: systematic diagnosis]*
+- **[false-verification-signals](skills/false-verification-signals/)** — A cached run is a replay, a sandboxed probe is about the sandbox, and zero rows can mean no scope. Confirm the check ran. *[Agent-specific]*
 - **[performance-optimization](skills/performance-optimization/)** — Measure first, optimize the bottleneck, verify the improvement. Never optimize without profiling data. *[Google: measure-first; Stripe: latency budgets]*
 
 ### Review
@@ -67,6 +68,8 @@ AI agents fail differently than humans:
 - **[find-hidden-services](skills/find-hidden-services/)** — A respawning process means you found one spawner, not all of them. Enumerate launchd, native-messaging hosts and MCP configs. *[Agent-specific]*
 - **[triage-failing-fleet](skills/triage-failing-fleet/)** — Collapse logs to distinct lines, then walk the dependency chain backwards to the one upstream cause. *[Agent-specific]*
 - **[disk-reclaim](skills/disk-reclaim/)** — Caches before working trees. Never assume `dist/` is untracked. *[Agent-specific]*
+- **[session-handoff](skills/session-handoff/)** — Write a continuation prompt a cold session can act on: absolute paths, real shas, verified vs assumed, one next step. *[Agent-specific]*
+- **[pr-preview-environments](skills/pr-preview-environments/)** — Per-PR ephemeral preview environments on AWS + GitHub Actions: label-gated spin-up, an isolated database per PR whose *name* is the safety gate, the OIDC trust split that keeps a PR-triggered role from becoming account admin, and a teardown that cannot report success while orphaning billable resources.
 - **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across ten sources and post it. Profile-driven, no hardcoded org. *[Agent-specific]*
 
 ### Foundations

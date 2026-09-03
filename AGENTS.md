@@ -22,6 +22,9 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 - `/triage-fleet` — Distinct-line collapse, then walk the dependency chain to the upstream cause
 - `/reclaim-disk` — Caches before working trees; check for tracked files before deleting `dist/`
 - `/work-summary` — Summarize a workspace's activity for any period and post it (profile-driven)
+- `/verify-signals` — A cached run is a replay; a sandboxed probe is about the sandbox; zero rows can mean no scope
+- `/handoff` — Continuation prompt a cold session can act on: absolute paths, real shas, one next step
+- `/preview-env` — Per-PR preview environments: label-gated spin-up, a database per PR, bounded OIDC roles, a teardown that cannot lie
 
 ## Codex Operating Notes
 

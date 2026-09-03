@@ -71,7 +71,64 @@ Enter worktree → create branch → implement → commit → push → PR → re
 
 Periodic cleanup: run `git worktree list` and `git worktree prune` to find and remove orphaned worktrees.
 
-### 5. Semantic Versioning
+### 5. Pushing — the destination is not always the branch you named
+
+⚠️ With `push.default = upstream`, a branch created from `origin/main` inherits `origin/main`
+as its upstream, so a push that names the branch twice still targets **main**:
+
+```
+git push -u origin feat/my-branch
+  ! [rejected]  feat/my-branch -> main   (fetch first)
+```
+
+Nothing in the command hints that the destination comes from the upstream ref. It fails only
+when the base has moved; on a fast-forward it pushes your commits straight to the default
+branch.
+
+Push a new branch with an explicit refspec, and dry-run it first:
+
+```sh
+git push --dry-run -u origin <name>:refs/heads/<name>   # read the target ref
+git push -u origin <name>:refs/heads/<name>
+```
+
+### 6. Renaming a branch is local only
+
+Every part of this surprises:
+
+| What you expect | What actually happens |
+|---|---|
+| The remote branch is renamed | It is not. `origin/<old>` still exists |
+| An open PR follows the rename | It cannot — the host cannot retarget a PR's head ref |
+| Tracking config follows | `branch.<new>.merge` still points at `refs/heads/<old>`, so the renamed branch keeps pushing to the **old** remote name |
+| The worktree directory moves | It keeps its old path — `git worktree move` if that matters |
+
+Read `git branch -vv` after every rename and set the upstream deliberately.
+`git branch --unset-upstream <new>` is safest: a bare `git push` then errors instead of
+guessing a target.
+
+Renaming *back* does not clear a divergence. Once a rebase has rewritten a published commit,
+the remote's copy reads "1 behind, N ahead" under any name, because git counts SHAs, not
+content — `git show <sha> | git patch-id --stable` on both proves it is the same change
+replayed on a newer base. Only a push fixes the count. A stale upstream is the usual reason a
+branch *looks* wildly out of date while being level with its base.
+
+### 7. Force-pushing, when explicitly authorized
+
+Never on your own judgment. When the owner of the work asks for it outright:
+
+```sh
+git fetch origin
+git push --dry-run --force-with-lease origin <name>:refs/heads/<name>
+git push --force-with-lease origin <name>:refs/heads/<name>
+```
+
+`--force-with-lease`, never bare `--force`: it refuses if the remote moved since your fetch,
+so you cannot clobber someone else's push. Dry-run for the same reason as any push — the
+refspec is what keeps this off the default branch. Say plainly in the summary that it rewrote
+published commits.
+
+### 8. Semantic Versioning
 
 ```
 MAJOR.MINOR.PATCH
@@ -86,6 +143,8 @@ MAJOR.MINOR.PATCH
 |--------|---------------|
 | "The commit message doesn't matter" | `git log` and `git blame` are read 100x more than they're written |
 | "I'll clean up the history later" | You won't. And force-pushing rewrites is risky |
+| "`git push -u origin <branch>` obviously pushes to that branch" | Not under `push.default = upstream`. Read the dry-run's target ref |
+| "I renamed it, so the remote is renamed too" | The rename never left your machine |
 | "Squash everything into one commit" | One commit per PR is fine. One commit per feature branch with 20 changes is not |
 
 ## Verification
@@ -94,4 +153,6 @@ MAJOR.MINOR.PATCH
 - [ ] Branch name includes ticket reference
 - [ ] No secrets, debug output, or uncommitted files in the diff
 - [ ] Version bump follows semver rules
+- [ ] New branches pushed with an explicit refspec, dry-run read before the real push
+- [ ] After any rename, `git branch -vv` checked and the upstream set deliberately
 - [ ] Worktree removed after work is committed and pushed (not left stale)

@@ -27,3 +27,4 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 - `/bringup` — Cold clone to a running app; the bar is a status code and a screenshot
 - `/aws` — Pin the AZ, delegate subdomains, verify the deploy role against live IAM
 - `/preview-env` — Per-PR preview environments: label-gated spin-up, a database per PR, bounded OIDC roles, a teardown that cannot lie
+- `/oauth-providers` — WorkOS social sign-in: a secret shown once, and two provider gates that reject sign-ins your credentials had nothing to do with

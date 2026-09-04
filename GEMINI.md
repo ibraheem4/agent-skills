@@ -31,3 +31,4 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 | local-bringup | Claiming an app runs without ever opening it |
 | aws-infra | Repointing an apex's nameservers, or deriving an AZ that forces a replace |
 | pr-preview-environments | Trusting `pull_request` on a role that holds admin |
+| oauth-social-providers | Scrubbing the one control that holds a write-once secret |

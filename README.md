@@ -70,6 +70,7 @@ AI agents fail differently than humans:
 - **[disk-reclaim](skills/disk-reclaim/)** — Caches before working trees. Never assume `dist/` is untracked. *[Agent-specific]*
 - **[local-bringup](skills/local-bringup/)** — Cold clone to an app you have seen working: toolchain pins, port and database collisions, and a screenshot as the bar. *[Agent-specific]*
 - **[aws-infra](skills/aws-infra/)** — Pin the AZ, delegate subdomains instead of repointing an apex, and verify every role name against live IAM. *[Agent-specific]*
+- **[oauth-social-providers](skills/oauth-social-providers/)** — A provider client secret is shown once; capture it before anything can destroy it, and check the gates that reject sign-ins for reasons unrelated to your credentials. *[Agent-specific]*
 - **[session-handoff](skills/session-handoff/)** — Write a continuation prompt a cold session can act on: absolute paths, real shas, verified vs assumed, one next step. *[Agent-specific]*
 - **[pr-preview-environments](skills/pr-preview-environments/)** — Per-PR ephemeral preview environments on AWS + GitHub Actions: label-gated spin-up, an isolated database per PR whose *name* is the safety gate, the OIDC trust split that keeps a PR-triggered role from becoming account admin, and a teardown that cannot report success while orphaning billable resources.
 - **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across ten sources and post it. Profile-driven, no hardcoded org. *[Agent-specific]*

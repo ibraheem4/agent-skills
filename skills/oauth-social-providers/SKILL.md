@@ -102,27 +102,9 @@ az ad sp show --id 00000003-0000-0000-c000-000000000000 \
 
 ### Guest access
 
-The tenant may not own the operator's email domain. Check before blaming permissions:
-
-- `login.microsoftonline.com/<domain>/v2.0/.well-known/openid-configuration` returning
-  `AADSTS90002` means the domain is not an Entra tenant at all.
-- `getuserrealm.srf?login=<upn>&json=1` returning `NameSpaceType: Unknown` means the same.
-- An ID token with `idp: mail` is an email one-time-passcode B2B guest.
-
-An OTP guest has no home tenant, so plain `az login` fails with *"couldn't find an account
-with that username"* — it defaults to the `organizations` authority. Name the tenant, and ask
-for a Graph scope rather than the default ARM one:
-
-```
-az login --use-device-code --tenant <tenant> --allow-no-subscriptions \
-  --scope "https://graph.microsoft.com//.default"
-```
-
-A guest with no cloud RBAC cannot get an ARM token, and the browser then shows *"sign-in was
-successful but you don't have permission"* — **while the CLI still receives its Graph token.**
-That page is cosmetic; check `az ad signed-in-user show` before believing it failed.
-
-⚠️ `az account show` stays green on an expired refresh token. Guard on a real Graph call.
+An operator whose email domain the tenant does not own is a B2B guest, and `az login` then
+fails in ways that look like a permissions problem but are not. See
+[references/entra-guest-access.md](references/entra-guest-access.md).
 
 ## 4. Google is console-only, permanently
 
@@ -147,7 +129,9 @@ not an outage, and it is not a reason to declare an incident.
 where only listed test users can sign in, and a new project has **zero**. Every Google
 sign-in is rejected for a reason unrelated to the credentials. Either add test users —
 immediate, no review, 100 over the app's lifetime — or publish, which needs a privacy policy
-and terms-of-service link and possibly verification. Microsoft has no equivalent gate.
+and terms-of-service link and possibly verification. Microsoft has no equivalent gate. Re-read
+the test-user list after a reload before trusting it — that dialog's save can no-op silently
+([references/secret-capture.md](references/secret-capture.md)).
 
 ⚠️ The consent screen is branded by the **authorized domain**, which is auto-added from the
 callback host — so it shows the identity provider's domain, not your app name, however the

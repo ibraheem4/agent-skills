@@ -125,10 +125,12 @@ Any command that stages a secret to disk must remove **every** file it creates, 
 included. A trap listing `$tmp` and `$tmp.req` but not `$tmp.clean` leaves the plaintext
 behind — that exact gap left a live client secret in `$TMPDIR`.
 
-⚠️ An interactive shell may alias `rm` and `mv` to `-i`. A scripted `rm -f` then prompts, gets
-no answer, and **exits 0 having done nothing**, so cleanup silently fails and a "successful"
-merge writes the wrong content. Use `/bin/rm -Pf` and `mv -f` in inline commands. Scripts with
-their own shebang do not inherit the alias.
+⚠️ An interactive shell may alias the file-moving commands to `-i` — `rm`, `mv` **and `cp`**.
+A scripted `rm -f` or `cp` then prompts, gets no answer, and **exits 0 having done nothing**,
+so cleanup silently fails and a "successful" merge writes the wrong content. Confirmed on
+`cp` 2026-09-06, overwriting a file that was never overwritten. Call them by absolute path in
+inline commands — `/bin/rm -Pf`, `/bin/cp -f`, `mv -f`. Scripts with their own shebang do not
+inherit the alias.
 
 Sweep the temp directory for mode-600 files afterwards and grep for the provider's secret
 prefix before declaring the work done.

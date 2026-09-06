@@ -57,6 +57,7 @@ The profile defines these keys. Every `{{key}}` below is substituted from it:
 | `chat_destination` | Channel or DM id to post the summary to |
 | `work_channels` | Chat channel ids this workspace's work happens in, blank to skip step 8's pass C |
 | `transcript_glob` | Claude Code project-dir glob for this workspace |
+| `work_log_dir` | Where each run is recorded; defaults to `{{workspace_root}}/.claude/work-log` |
 
 **Never hardcode a profile value into this file.** If a step needs a new workspace-specific
 value, add a key to the table and to every profile.
@@ -97,8 +98,13 @@ interrogate them about boundaries. Only ask when the phrase has no defensible re
 sprint" with no sprint defined anywhere). If they say a weekday with no date, it means the most
 recent one already past, not next week's.
 
-**"Since the last run" — find it in Slack, don't keep a state file.** The skill posts its own
-history to their DM, so the last posted summary *is* the record of what's already covered:
+**"Since the last run" — the run log first, then Slack.** Every run writes a record to
+`{{work_log_dir}}/summary/` (step 14, and `work-queue/references/run-log.md` for the format),
+which is authoritative because it exists whether or not the summary was ever sent. Read the
+newest record there for the period it covered.
+
+Fall back to the DM when there is no run log — for runs that predate it, the posted summary is
+still the record of what was covered:
 
 ```
 mcp__claude_ai_Slack__slack_read_channel  channel_id: {{chat_destination}}, limit: 5,
@@ -111,10 +117,11 @@ after the end of that period** and `END` is today. Headers carry no year: resolv
 recent occurrence that isn't in the future.
 
 Four things about this that matter:
-- **Drafts are not runs.** Drafting is the default (step 13), and a draft leaves nothing in the
-  channel — so a summary they never sent is invisible here and its days count as uncovered. That
-  is the right answer, they never read it, but say which days you're re-covering so a resend isn't
-  a surprise.
+- **Drafts are still not runs — but they are no longer invisible.** Drafting is the default
+  (step 13), and a draft leaves nothing in the channel, so its days still count as uncovered:
+  they never read it. What changed is that the run log records the draft with `sent: no`, so
+  you can say *"you drafted the 19th and never sent it"* instead of silently re-covering those
+  days. Coverage still advances only on a sent summary.
 - **Resume from coverage, not from the timestamp.** A summary for the 19th posted at 17:22 on
   the 19th means the 19th is done; start at the 20th, not at 17:22.
 - If the DM has no summary at all, there is no last run — treat the request as "today" and say
@@ -148,6 +155,15 @@ Follow **`references/output.md`**. It covers what qualifies as a blocker, how to
 person's voice rather than a report register, how output shape changes with period length, and
 how to post to `{{chat_destination}}`.
 
+## Step 14 - record the run
+
+Write one record to `{{work_log_dir}}/summary/YYYY-MM-DD-HHMM.md`: the period covered, the
+sources that failed, and `sent: yes|no`. Format in `work-queue/references/run-log.md`; the two
+skills share that directory so one place answers both "what did I finish" and "what do I owe".
+
+This is the only thing this skill writes outside `{{chat_destination}}`, and it is what makes
+step 1's "since the last run" reliable rather than dependent on whether a draft got sent.
+
 ## Common Rationalizations
 
 | Excuse | Why It's Wrong |
@@ -178,4 +194,5 @@ how to post to `{{chat_destination}}`.
 - [ ] Linear confirmed as this workspace's and scoped to `{{linear_teams}}`, or skipped with the reason stated
 - [ ] No ticket reported as its own item when the PR in step 2 already covers it
 - [ ] Summary drafted to `{{chat_destination}}` and the draft link returned — sent outright only if they asked
+- [ ] Run recorded to `{{work_log_dir}}/summary/` with the period covered and `sent: yes|no`
 - [ ] No workspace-specific literal committed to this skill

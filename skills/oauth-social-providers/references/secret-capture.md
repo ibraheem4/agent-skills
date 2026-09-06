@@ -98,6 +98,11 @@ anything that is not a secret-bearing control; references survive reflow, coordi
   lands on nothing and the dialog silently never opens. Confirm state between steps.
 - **Dialogs animate in.** A click sent before one finishes rendering hits nothing and looks
   like the action failed silently. Screenshot to confirm it is painted, then click.
+- **A save can no-op while looking exactly like success.** Verified 2026-09-06 on the consent
+  screen's *Add users* dialog: it closed with no error and added nobody, while still rendering
+  the entries and their count. The identical action worked on retry, and the same run's other
+  project saved first time — so it is intermittent, not a per-project quirk. Reload and re-read
+  the stored count; the post-save view is not evidence.
 
 ## Saving onto the credential record
 

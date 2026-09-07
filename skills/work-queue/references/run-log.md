@@ -31,7 +31,36 @@ promise is unchanged.
 ## cleared since 2026-09-04
 | linear:CORE-1071 | done |
 | slack:C0BQZNMH231:1756900000.002 | aged out |
+
+## already-done
+| linear:CORE-951 | closed 2026-09-07 | strong — branch + PR #99 merged 2026-09-04 |
+| linear:CORE-727 | declined 2026-09-07 | keep asking? no |
 ```
+
+## Already-done candidates, and why declines must persist
+
+Step 13's section records three outcomes, and the third is the one that matters across runs.
+
+- **`closed <date>`** with the evidence that justified it. The ticket leaves the queue on the
+  next run as a normal `cleared … done`; this line is the audit trail for why.
+- **`offered <date>`** — presented, no answer given. Offer it again next run.
+- **`deferred <date>`** — **the default answer to anything that is not a yes.** The ticket
+  stays open and stays in the queue; it simply stops being offered as a close candidate, and
+  ranks below anything with live evidence. Deferring is cheap and reversible, which is the
+  point.
+- **`declined <date>`** — never offer this again, ever. **Only ever record this when the person
+  says so in those terms.** Never infer it from a "no", a "not now", a "leave it", or silence.
+
+⚠️ **Do not promote a soft answer into a hard state.** "Not now", "defer it", "deprioritize it"
+and "leave it open" all mean `deferred`. Reading any of them as `declined` permanently deletes
+a candidate on the strength of a passing remark, and the person who said "not now" has no way
+to know it will never be raised again. The same mistake in the other direction — treating a
+scheduling remark as a status change on the ticket itself — is why step 13 writes nothing
+without a per-ticket confirmation.
+
+A `declined` is a statement about the ticket rather than about that day's evidence, so it
+survives new evidence arriving. A `deferred` does not: if a genuinely stronger signal appears
+later, offering it again is correct.
 
 ## Ids must be stable
 

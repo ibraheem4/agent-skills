@@ -188,5 +188,17 @@ over-report.
 **A branch whose commits are already merged upstream is not in flight.** Compare against the
 remote default branch, not the local one, before listing it.
 
+⚠️ **`git fetch` first, on every run.** `origin/main` is a local cache of where the remote
+stood the last time something fetched it, and this skill is most often run inside a session
+that has been open for hours. Nothing else in this pass refreshes it, so the comparison above
+is only as current as that ref. Measured 2026-09-07: 158 commits had landed on `main` since
+the open session's base, and re-reading against the refreshed ref showed **7 of 21** items
+that run was about to report as owed were already fixed and merged. A queue that lists
+finished work is the exact failure `already-done.md` exists to prevent — and here it is
+self-inflicted, from a one-command omission.
+
+`work-summary` has no equivalent hazard: it reads GitHub through `gh`, which always hits the
+API. This is a local-checkout problem, so it belongs to this tier alone.
+
 **Skip worktree directories.** A workspace that keeps worktrees inside a dot-directory will
 otherwise report the same branch several times over.

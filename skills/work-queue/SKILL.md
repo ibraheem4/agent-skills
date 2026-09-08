@@ -227,6 +227,7 @@ ticket the person already said to leave alone.
 - [ ] Exactly one workspace resolved, and no key divergent across its profiles
 - [ ] Every team in `{{linear_teams}}` queried, not just the first
 - [ ] Every source attempted; unavailable ones named in the output
+- [ ] `git fetch` run before any branch was compared against its remote default branch
 - [ ] Nothing completed, and nothing from `{{exclude_orgs}}`, appears in the list
 - [ ] Every tier 2-4 item carries a confidence and a verbatim quote
 - [ ] Noise filters applied — bot PRs, calendar invitations, metadata notifications, own messages

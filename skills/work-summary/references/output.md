@@ -184,5 +184,7 @@ draft costs them one click.
 Send outright with `mcp__claude_ai_Slack__slack_send_message` only when they ask for that
 specifically, or when the run is unattended and nobody is there to press send.
 
-A drafted summary they never send leaves no record, so the next run re-covers those days —
-correct, but say so rather than letting a resend surprise them (step 1).
+A drafted summary they never send still leaves nothing in the channel, so the next run
+re-covers those days — correct, they never read it. Say so rather than letting a resend
+surprise them (step 1). The run log records the draft with `sent: no` (step 14), so you can
+name the days you are re-covering instead of guessing at them.

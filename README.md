@@ -32,6 +32,7 @@ AI agents fail differently than humans:
 | Reads the biggest log first | Chasing noise | [triage-failing-fleet](#operate) |
 | Deletes committed files as "build output" | Overreach | [disk-reclaim](#operate) |
 | Hardcodes one company into a reusable skill | Short-termism | [work-summary](#operate) |
+| Calls unread mail a to-do list | Mistaking volume for signal | [work-queue](#operate) |
 
 ## Skills
 
@@ -72,6 +73,7 @@ AI agents fail differently than humans:
 - **[session-handoff](skills/session-handoff/)** — Write a continuation prompt a cold session can act on: absolute paths, real shas, verified vs assumed, one next step. *[Agent-specific]*
 - **[pr-preview-environments](skills/pr-preview-environments/)** — Per-PR ephemeral preview environments on AWS + GitHub Actions: label-gated spin-up, an isolated database per PR whose *name* is the safety gate, the OIDC trust split that keeps a PR-triggered role from becoming account admin, and a teardown that cannot report success while orphaning billable resources.
 - **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across ten sources and post it. Profile-driven, no hardcoded org. *[Agent-specific]*
+- **[work-queue](skills/work-queue/)** — The inverse: what is owed, not what is done. Nine sources into six ranked bands, each with the noise filter it needs. Read-only, profile-driven. *[Agent-specific]*
 
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*

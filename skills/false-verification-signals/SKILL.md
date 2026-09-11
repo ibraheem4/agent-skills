@@ -105,6 +105,26 @@ like a crash.
 So: don't build against a live stack you are about to verify. Stop the server, build, clear
 the output directory, restart.
 
+### 7. An environment you sanitized is not the environment under test
+
+`env -i` is the obvious way to ask "what does a clean shell do?" — and it answers a
+different question. With `PATH` unset, zsh falls back to its **compiled-in default**
+(`/bin:/usr/bin:/usr/ucb:/usr/local/bin`), and any config line of the form
+`PATH="$PATH:/x"` prepends an empty component, which means the current directory. Both then
+look like findings about the user's machine.
+
+Measured 2026-09-10: an audit run this way reported `/usr/ucb` on the PATH and, separately,
+13 node-version directories. Re-run from a realistic base — `PATH=$(tr '\n' : </etc/paths)`
+— and `/usr/ucb` vanished and the 13 collapsed to one. Only the empty component survived,
+and that one was real.
+
+The same trap in the other direction: **the PATH your agent process inherited is not the
+user's PATH.** A long-lived session accumulates entries from every `nvm use` it ran. Diagnose
+a login shell by starting one, not by reading `$PATH`.
+
+Before reporting any environment finding, re-derive it a second way. A difference between
+the two methods is the finding.
+
 ## Common Rationalizations
 
 | Excuse | Why It's Wrong |
@@ -115,6 +135,8 @@ the output directory, restart.
 | "The port is closed, the service is down" | Only if your probe was allowed to reach it |
 | "The table is empty" | Only if your session was allowed to see it |
 | "I'll just rebuild quickly while it's running" | That is how the running server dies |
+| "`env -i` gives me a clean shell" | It gives you zsh's built-in default PATH. Start from /etc/paths |
+| "`echo $PATH` shows what the user has" | It shows what your session accumulated. Start a login shell |
 
 ## Verification
 
@@ -124,3 +146,4 @@ the output directory, restart.
 - [ ] "Down" and "empty" conclusions came from a path the sandbox and RLS do not filter
 - [ ] Row counts are scoped to a tenant, not global, on any shared database
 - [ ] No build was run against the stack being verified
+- [ ] Environment findings were re-derived a second way, from a realistic base rather than `env -i`

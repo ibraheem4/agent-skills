@@ -1,7 +1,7 @@
 {
   "name": "agent-skills",
   "description": "Project-agnostic engineering practice and workstation operations: operating principles, scope discipline, incremental implementation, code review, security and threat modeling, performance, observability, git workflow, PR lifecycle and shipping; plus disk reclaim, hidden-service discovery, safe repo removal, failing-fleet triage, per-PR preview environments, local bring-up, AWS and DNS infrastructure, false verification signals, session handoffs, verifying a document before citing it, and cross-source work summaries and prioritized work queues.",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": {
     "name": "Ibraheem Abdul-Malik",
     "url": "https://github.com/ibraheem4"

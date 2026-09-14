@@ -134,3 +134,18 @@ inherit the alias.
 
 Sweep the temp directory for mode-600 files afterwards and grep for the provider's secret
 prefix before declaring the work done.
+
+## Read the callback URI before you enable anything
+
+The dialog shows the callback URI as soon as it opens, before any save. Verified on WorkOS
+2026-09-14: the slug was identical across a cancel-and-reopen *and* a full page reload, while
+the provider still read `Enable` on the list behind it — so it is allocated per environment
+and provider, not minted per dialog.
+
+That matters because it inverts the obvious order. If you enable first to obtain the URI, the
+environment runs on the identity provider's demo client for as long as the upstream
+registration takes. Read the URI, cancel, register upstream, capture the secret, and only then
+enable and save — the environment goes straight from off to correctly configured.
+
+Confirm the reload before trusting it. A slug minted per dialog would leave you registering a
+URI upstream that no longer matches, and the failure appears only at first sign-in.

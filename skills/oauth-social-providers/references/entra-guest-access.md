@@ -23,3 +23,18 @@ successful but you don't have permission"* — **while the CLI still receives it
 That page is cosmetic; check `az ad signed-in-user show` before believing it failed.
 
 ⚠️ `az account show` stays green on an expired refresh token. Guard on a real Graph call.
+
+## The same check decides who can test sign-in
+
+Those two lookups answer a second question: whether an address can sign in through Microsoft
+at all. `/common` resolves consumer MSAs and Entra tenants, and nothing else — so an address
+on a non-Microsoft mail provider returns `NameSpaceType: Unknown` and is rejected with
+*"We couldn't find an account with that username"*, no matter how the app is configured.
+
+Being a B2B guest in the tenant does not help: a guest is a foreign identity the tenant has
+invited, not an account `/common` can resolve. The operator who registered the app is
+therefore often the one person who cannot test it. To exercise the work-account path you need
+a member account in a tenant — a licensed user in your own, or a design partner's.
+
+Each completed test sign-in creates a real user in the target environment. Plan for that
+before testing against one that holds production users.

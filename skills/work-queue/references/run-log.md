@@ -24,17 +24,17 @@ promise is unchanged.
 
 | id | band | first_seen | title |
 |---|---|---|---|
-| linear:ENG-7 | 1 | 2026-09-06 | Common Paper probe — Nathan blocked on credentials |
-| gh:Sandbar-Health/broker-platform#173 | 3 | 2026-08-28 | Derive the AuthKit matcher check |
-| slack:C0BQZNMH231:1757021175.001 | 1 | 2026-09-06 | Arif — why three repos |
+| linear:ABC-12 | 1 | 2026-09-06 | Vendor probe — a teammate is blocked on credentials |
+| gh:<org>/<repo>#173 | 3 | 2026-08-28 | Derive the auth middleware matcher check |
+| slack:C0XXXXXXXXX:1757021175.001 | 1 | 2026-09-06 | A teammate — why three repos |
 
 ## cleared since 2026-09-04
-| linear:CORE-1071 | done |
-| slack:C0BQZNMH231:1756900000.002 | aged out |
+| linear:ABC-40 | done |
+| slack:C0XXXXXXXXX:1756900000.002 | aged out |
 
 ## already-done
-| linear:CORE-951 | closed 2026-09-07 | strong — branch + PR #99 merged 2026-09-04 |
-| linear:CORE-727 | declined 2026-09-07 | keep asking? no |
+| linear:ABC-33 | closed 2026-09-07 | strong — branch + PR #99 merged 2026-09-04 |
+| linear:ABC-21 | declined 2026-09-07 | keep asking? no |
 ```
 
 ## Already-done candidates, and why declines must persist
@@ -70,7 +70,7 @@ neither may appear in the id.
 
 | Source | Id |
 |---|---|
-| Tracker issue | `linear:<identifier>` — `linear:ENG-7` |
+| Tracker issue | `linear:<identifier>` — `linear:ABC-12` |
 | GitHub | `gh:<owner>/<repo>#<number>` |
 | Chat | `slack:<channel_id>:<message_ts>` |
 | Mail | `mail:<thread_id>` |
@@ -79,7 +79,7 @@ neither may appear in the id.
 
 Meeting commitments are the weak one: they have no natural key, and a re-worded quote produces
 a new id and a false `NEW`. Prefer the tracker item when a commitment has one — a promise that
-became ENG-3 is `linear:ENG-3`, not a meeting id.
+became ABC-3 is `linear:ABC-3`, not a meeting id.
 
 ## The diff
 

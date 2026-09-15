@@ -119,7 +119,7 @@ Red → Neutral → Green: #ef4444 → #f87171 → #d4d4d8 → #4ade80 → #22c5
 ```
 
 ### Semantic Score Colors
-Used consistently across Lucitra for validation scores:
+Pick one set and use it consistently for validation scores:
 ```
 Pass/Good:    #22c55e (green-500)
 Warning:      #eab308 (yellow-500)

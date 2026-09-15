@@ -31,7 +31,7 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 
 ## Codex Operating Notes
 
-- Treat this repository as independent from the surrounding `lucitra-dev` workspace unless a task explicitly spans multiple repos.
+- Treat this repository as independent from any surrounding multi-repo workspace unless a task explicitly spans several repos.
 - Check `git status --short` before editing and do not revert user changes.
 - Prefer the repo's documented commands and existing patterns over introducing new tooling.
 - Run the smallest useful verification for the files changed and report anything that could not be run.

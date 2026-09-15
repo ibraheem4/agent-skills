@@ -42,6 +42,9 @@ AI agents fail differently than humans:
 - **[api-and-interface-design](skills/api-and-interface-design/)** — Design the interface before the implementation. Consistent naming, minimal surface area, hard to misuse. *[Stripe: resource-oriented design, consistent error structure]*
 - **[frontend-ui-engineering](skills/frontend-ui-engineering/)** — Composition over configuration, accessibility by default, no generic AI aesthetic. Includes reference library for 35+ components. *[Industry: WCAG, component architecture]*
 - **[ui-component-lookup](skills/ui-component-lookup/)** — Quick reference card for any component: anatomy, props, accessibility, anti-patterns
+- **[better-accessibility](skills/better-accessibility/)** — Focus states, keyboard support, ARIA, forms and screen readers. For building or reviewing a component, not auditing a finished page. *[Industry: WCAG]*
+- **[web-design-guidelines](skills/web-design-guidelines/)** — Review UI code against the Web Interface Guidelines. *[Industry: WIG]*
+- **[tailwind-v4](skills/tailwind-v4/)** — CSS-first `@theme` configuration, the v3→v4 migration diffs, and why a dynamic class name silently fails to generate.
 - **[context-engineering](skills/context-engineering/)** — Read before writing, load deliberately, verify don't assume. Manage what enters the context window. *[Agent-specific]*
 
 ### Verify

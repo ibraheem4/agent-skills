@@ -25,7 +25,7 @@ costs more trust than staying silent.
 |---|---|---|---|
 | 1 | A **merged** PR is attached to the open issue by the tracker integration | Strong | The integration made the link; nobody typed it. Attachment titles mirror the PR title verbatim with an empty subtitle — a hand-made one is prose |
 | 2 | A merged PR's **branch name encodes the id** (`alex/abc-33-db-secret-runtime-retrieval`) | Strong | Branch names are generated from the ticket. Someone started that branch *for* that ticket |
-| 3 | A merged PR body carries a **magic word** (`Closes ABC-nn`) and the issue is still open | Strong | The author declared it closing. If the issue is open anyway, the automation failed rather than the work |
+| 3 | A merged PR body carries a **magic word** (`Closes ABC-33`) and the issue is still open | Strong | The author declared it closing. If the issue is open anyway, the automation failed rather than the work |
 
 ⚠️ **Match the magic word in both forms.** The tracker accepts `Closes ABC-123` *and*
 `Closes <full issue URL>`, and people use the URL form when they paste from the browser. A
@@ -60,9 +60,9 @@ close candidate.
 **Signal 5 is a trap, and it is the most common hit.** PR bodies cite tickets to say the
 opposite of done: *deferred*, *pre-existing*, *its own ticket*, *out of scope here*. Measured
 on this queue 2026-09-07 — of 7 still-open tickets referenced by a merged PR, **zero** carried
-a magic word and at least two were referenced precisely as future work: `ABC-nn` ("tear down
+a magic word and at least two were referenced precisely as future work: `ABC-28` ("tear down
 the tooling *once* sam/migration lands") was named by the very PR that built the tooling, and
-`ABC-nn` was named by two PRs that describe it as the next step. Read the sentence around the
+`ABC-39` was named by two PRs that describe it as the next step. Read the sentence around the
 id before believing it.
 
 ## Never candidates
@@ -105,7 +105,7 @@ with the person.
 Each candidate carries four things and nothing else:
 
 ```
-ABC-nn · Backlog · created by you · https://linear.app/<org>/issue/ABC-nn/…
+ABC-33 · Backlog · created by you · https://linear.app/<org>/issue/ABC-33/…
   "broker-dev loses its DB credential on every RDS password rotation"
   What it actually is: one plain sentence, in case the id means nothing to them today
   Strong (2, 3): branch alex/abc-33-db-secret-runtime-retrieval, PR #99
@@ -117,7 +117,7 @@ ABC-nn · Backlog · created by you · https://linear.app/<org>/issue/ABC-nn/…
 
 **Always print the ticket URL and the evidence PR's URL.** An id is not a recognisable name for
 a piece of work — the first person to use this pass could not tell what one of their own
-tickets was from `ABC-nn`, and they had written it two weeks earlier. Someone being asked to
+tickets was from `ABC-21`, and they had written it two weeks earlier. Someone being asked to
 authorise a close needs to be able to open the thing in one click; an unclickable id makes the
 confirmation a guess. The tracker read already returns a `url` field, so there is no excuse for
 omitting it.

@@ -24,7 +24,7 @@ hours. Verify against the live thing before you follow it or repeat it.
 ### The two real cases
 
 **The phantom playbook.** A task file, `tasks/32-aws-migration.md`, was named as
-"Acme's full playbook" and cited in five places — a handoff doc §5.6 plus `README.md`,
+"the team's full playbook" and cited in five places — a handoff doc §5.6 plus `README.md`,
 `CONTRIBUTING.md`, `SECURITY.md` and `docs/security-posture.md`, the last two as the
 *definition of the pre-PHI gate*. It **has never existed** in any commit on any branch.
 `git log --all -S'32-aws-migration'` returns only the commit that introduced the citation.

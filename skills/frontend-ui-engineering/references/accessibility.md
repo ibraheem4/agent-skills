@@ -2,7 +2,7 @@
 
 ## Core Requirements
 
-WCAG 2.1 Level AA is the baseline for all Acme surfaces. This means:
+WCAG 2.1 Level AA is the baseline for every surface you ship. This means:
 
 ### Perceivable
 1. **Text alternatives**: All non-text content has a text alternative (`alt`, `aria-label`, `aria-labelledby`)

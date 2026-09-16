@@ -61,7 +61,8 @@ All workspace-specific values live in a profile, never in this file.
 
 1. If the caller named a workspace, read `~/<workspace>/.claude/*.config.md`.
 2. Otherwise glob `~/*/.claude/*.config.md`. Exactly one workspace matches — use it. Several —
-   list them and ask. None — stop and say a profile must be created.
+   list them and ask. None — stop and say a profile must be created, and point at
+   `references/profile-example.md`, which is the template to create it from.
 
 A workspace may carry several profile files with separate contracts; a key defined by any of
 them resolves. **If two profiles define the same key with different values, stop and report

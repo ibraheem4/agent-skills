@@ -40,7 +40,8 @@ before doing anything else:
 
 1. If the caller named a workspace, read `~/<workspace>/.claude/work-summary.config.md`.
 2. Otherwise glob `~/*/.claude/work-summary.config.md`. Exactly one match - use it.
-   Several - list them and ask which. None - stop and say a profile must be created.
+   Several - list them and ask which. None - stop and say a profile must be created, and
+   point at `work-queue/references/profile-example.md`, which is the template for both skills.
 
 The profile defines these keys. Every `{{key}}` below is substituted from it:
 

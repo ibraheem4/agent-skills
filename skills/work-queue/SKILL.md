@@ -77,10 +77,24 @@ Keys read: `{{workspace_root}}`, `{{github_login}}`, `{{github_org}}`, `{{exclud
 **No date argument is ever required.** Running the skill bare is the normal case. If the
 caller gave no period, do not ask for one — pick the defaults below and say which you used.
 
-**Scope.** The default sweep is **tiers 1-2** — tracker, GitHub, mail and chat. Those carry
-real assignments and finish fast enough to run before standup. `--full` adds **tiers 3-4** —
-meetings, calendar, wiki and local work-in-progress. Transcript search and a session scan are
-slow; they earn their cost weekly, not hourly.
+**Scope.** The default sweep is **tiers 1-2** — tracker, GitHub, mail, chat and meetings. Those
+carry real assignments and finish fast enough to run before standup. `--full` adds **tiers 3-4**
+— calendar, wiki and local work-in-progress. A session scan is slow; it earns its cost weekly,
+not hourly.
+
+**Meetings and chat are never optional.** Both run on every call, including a bare one.
+
+- **Meetings** were tier 3 until 2026-09-08, which meant a default run never read them. That is
+  backwards: meeting notes are usually the *only* source that produces a date, so the sweep that
+  skipped them was the sweep most likely to miss the nearest deadline. A run that carried a date
+  forward from a previous snapshot without re-reading the notes is reporting hearsay — it cannot
+  tell you the date moved, or that the commitment was already discharged.
+- **Chat** means every channel *and* every DM the person can read, threads included. Scoping it
+  to a channel list was the same mistake in a different place: the ask that blocks someone is at
+  least as likely to arrive in a DM as in `#dev`.
+
+Neither may be dropped for being slow. If one fails, say so in the header — never let a silent
+omission read as a quiet week.
 
 **Window.** There are two kinds of source here, and only one of them has a window at all:
 
@@ -101,9 +115,9 @@ date -j -v-14d +%F     # default SINCE
 
 | Argument | Effect |
 |---|---|
-| *(none)* | Default sweep, `SINCE` 14 days, snapshot written |
-| a period | Overrides `SINCE` only — never the assignment sources, which have no window |
-| `--full` | Adds tiers 3-4 |
+| *(none)* | Default sweep — tracker, GitHub, mail, chat **and meetings** — `SINCE` 14 days, snapshot written |
+| a period | Overrides `SINCE` only — never the assignment sources, which have no window, and never the meetings floor |
+| `--full` | Adds tiers 3-4 — calendar, wiki, local work-in-progress |
 | `--as-of <date>` | Prints the nearest snapshot at or before that date **instead of sweeping**. This is how the skill answers questions about past work |
 | `--no-log` | Skips writing a snapshot. For a throwaway run that should not affect the next diff |
 | `--close` | Runs step 13's confirmation loop, offering each already-done candidate one at a time. **The only argument that can write to the tracker.** Detection runs either way |
@@ -120,8 +134,8 @@ it in the output, and continue.
 | 3 | Tracker inbox | 2 | Mentions, and comments on issues that are mine |
 | 4 | GitHub | 1, 4 | Review requests of me; my own open PRs |
 | 5 | Mail | 2 | Direct asks addressed to me |
-| 6 | Chat | 2 | Unanswered @-mentions in `{{work_channels}}` |
-| 7 | Meetings | 3 | Commitments I made out loud — **and usually the only source of dates** |
+| 6 | Chat | 2 | Unanswered @-mentions and DMs — **every channel and DM I can read** |
+| 7 | Meetings | 2 | Commitments I made out loud — **and usually the only source of dates** |
 | 8 | Calendar | 3 | What is imminent, and what needs preparing |
 | 9 | Wiki and docs | 3 | Documents left awaiting my edit |
 | 10 | Local work-in-progress | 4 | Unmerged branches, draft PRs, sessions that stopped mid-task |
@@ -190,6 +204,12 @@ ticket the person already said to leave alone.
 | "The notification inbox is the ask list" | A large share of notifications are project-metadata churn. Whitelist the types that mean someone wants something from you |
 | "A mention is a request" | Most mentions are cc-and-FYI. A request carries a question mark or an imperative addressed to you |
 | "More sources means a better queue" | Every source past tier 1 lowers precision. `--full` exists so the person chooses when to pay that |
+| "Meetings are slow, and it's only a bare call" | Meetings run on every call. They are usually the only source of a date, so skipping them is how the nearest deadline goes missing |
+| "The date is already in the last snapshot, I can carry it" | A carried date is hearsay. Re-read the notes: dates move, promises get discharged, and a second one can land on the same day |
+| "The profile lists the work channels, so that's the chat scope" | Every channel *and* every DM. `{{work_channels}}` ranks results; it must never filter the search |
+| "The search returned the message, so I've read the ask" | A hit is a message. Open the thread — the reply that asks you something usually doesn't repeat your name |
+| "That link is just an announcement" | A document a colleague calls *the agreed flow* or *what's built and what isn't* is a source. Open it before ranking anything it covers |
+| "The ticket says it's blocked, so it's blocked" | Issue text is written once and rarely revised. Check the stated blocker still holds before an item reaches the top three — twice in one run the blocker had already cleared |
 | "I found 40 things, so I'll list 40" | A list nobody finishes is not a priority list. Rank, cut, and offer the tail |
 | "The tracker says Urgent, so it ranks first" | Urgent is frequently applied to most of a queue. Something blocking a colleague outranks a flat priority flag |
 | "I can close this one for them while I'm here" | A bare call is read-only. Closing needs `--close` **and** a confirmation for that specific ticket |
@@ -208,6 +228,9 @@ ticket the person already said to leave alone.
 
 - Any workspace-specific literal in `SKILL.md` or `references/` instead of a profile key
 - An item from an org in `{{exclude_orgs}}`, or from a tracker team outside `{{linear_teams}}`
+- A dated item whose date came from a previous snapshot rather than from notes read this run
+- A band 1-2 item whose urgency rests only on the ticket's own description of its blocker
+- A chat sweep that searched only `{{work_channels}}`, or that skipped DMs
 - A completed, merged or closed item presented as owed
 - An inferred item shown without the quote it was inferred from
 - Bot-authored PRs (dependency bumps) counted as review requests
@@ -227,6 +250,10 @@ ticket the person already said to leave alone.
 - [ ] Exactly one workspace resolved, and no key divergent across its profiles
 - [ ] Every team in `{{linear_teams}}` queried, not just the first
 - [ ] Every source attempted; unavailable ones named in the output
+- [ ] Meetings swept on this run — not carried from a previous snapshot — and any date reported
+      traced to notes read this run, or else labelled as carried
+- [ ] Chat searched across every channel and DM, not just `{{work_channels}}`; any spilled
+      result file read in full; threads opened before an ask was called unanswered
 - [ ] `git fetch` run before any branch was compared against its remote default branch
 - [ ] Nothing completed, and nothing from `{{exclude_orgs}}`, appears in the list
 - [ ] Every tier 2-4 item carries a confidence and a verbatim quote

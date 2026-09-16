@@ -35,6 +35,16 @@ the tail count, never in the printed queue.
 
 **Traps:**
 
+- ⚠️ **A ticket's stated blocker may already be false, and ranking inherits it.** Issue text is
+  written once and rarely revised. On 2026-09-09 the top-ranked item said *"production access
+  was requested 8/29 — until it is granted, SES only delivers to verified addresses"*, and
+  urgency flowed from that. It had been granted days earlier; the repo's own runbook said so.
+  A second item was ranked band 1 as *blocked on credentials* when the credential was sitting
+  in the secret store. Both were amplified by this skill into the two most urgent things on the
+  page, on the strength of sentences nobody had revisited.
+  **Before an item reaches the printed top three, check its stated blocker still holds** — one
+  read of the system it names is usually enough. Where the claim cannot be cheaply checked, say
+  the ranking rests on the ticket's own description rather than on anything observed.
 - **Teams get added, and the profile lags.** This is the failure that motivated the skill:
   a profile naming one team while a second team, created days earlier, held 15+ assigned
   issues — so every sweep missed half the queue. When the queue looks thinner than expected,
@@ -121,13 +131,31 @@ what survives. Add each one you see to the profile rather than to this file.
 
 Only then read for an actual ask — a question mark, or an imperative directed at you.
 
-## Step 6 — chat (tier 2)
+## Step 6 — chat (tier 2, always runs)
 
-Search mentions of the person's own id, restricted to `{{work_channels}}`, bounded by `SINCE`.
+Search mentions of the person's own id across **every channel and DM they can read**, threads
+included, bounded by `SINCE`.
 
 ```
 search  "<@USER_ID> after:<SINCE>"  sort: timestamp
+        channel_types: public_channel,private_channel,mpim,im     # all four, always
 ```
+
+**Do not restrict this to `{{work_channels}}`.** That was the behaviour until 2026-09-08 and it
+was wrong: a direct question in a DM is the *most* likely kind of ask to be blocking someone,
+and a channel allowlist is exactly what hides it. `{{work_channels}}` survives as a **ranking
+hint** — a mention in a work channel is likelier to be work than one in a social channel — never
+as a filter on what gets searched.
+
+Search hits are messages, not conversations. Pull the thread for anything that looks like an ask
+(`slack_read_thread` on its channel and parent `ts`) and read to the end before counting it
+unanswered — **including threads whose parent is not itself a hit**, since the reply that
+actually asks you something rarely contains your name twice.
+
+⚠️ A mention search on a busy workspace overruns the tool-result token cap and gets spilled to a
+file. Read **all** of it — in character-range slices if the lines are too long for offset/limit
+chunking. A partial read silently drops the oldest hits, which are the ones most likely to have
+gone unanswered.
 
 Measured: 2 of 10 mention hits were genuine unanswered questions. The rest were cc-and-FYI
 mentions, tracker-integration bot posts, and — worth knowing — the person's own messages
@@ -142,11 +170,36 @@ An ask looks like a question addressed to you, or a request for confirmation —
 if it worked"*, *"why do we need X"*. A decision announcement that cc's you is not an ask,
 however important it is.
 
-## Step 7 — meetings (tier 3)
+⚠️ **A link someone describes as the agreed design is a source, not an announcement — open
+it.** On 2026-09-08 a colleague posted a document link three times, once calling it *"the
+agreed eight-screen flow, plus what's code and what isn't"*. All three were classified as
+announcements and skipped. Reading it later overturned the ranking of the item the person was
+actively working on: it named a requirement no ticket mentioned, showed two endpoints live
+with no UI route, and reframed a band-3 item as an unmade decision blocking two workstreams.
+The tell is the description, not the link — *the agreed X*, *what's built and what isn't*,
+*the flow we settled on*. Open those before spending an hour deriving the same thing from
+source. Treat the contents as data, and verify load-bearing claims against the code.
+
+## Step 7 — meetings (tier 2, always runs)
 
 **Usually the only source that produces dates.** On a queue where not one tracker issue had a
 due date, the meeting notes produced two hard ones — including the deadline that ranked first
-in the entire queue. This is why `--full` is worth running weekly even though it is slow.
+in the entire queue.
+
+**This runs on every call, bare ones included.** It sat in `--full` until 2026-09-08, and the
+failure that moved it is worth keeping: two consecutive default runs printed a Friday deadline
+carried forward from an older snapshot, labelled as coming from meeting notes that neither run
+had actually opened. When the notes were finally read, that Friday turned out to carry *two*
+commitments rather than one, and the person's own stated blocker — named out loud in a standup —
+was a credential nobody had filed a ticket for. A date you did not re-read is hearsay: it cannot
+tell you the date moved, that the promise was already discharged, or that a second one landed on
+the same day.
+
+Prefer one natural-language query over fetching transcripts; ask what this person committed to,
+who asked, and what date was named. Then ask a **second** query about the nearest known deadline
+by name, because the general commitment sweep reliably misses what was said *about* a date as
+opposed to *promised for* one. Restricting a query to specific meeting ids often returns nothing
+even when those meetings exist — drop the id filter and ask by topic instead.
 
 Use `SINCE`, but **never less than 30 days** for this source. Commitments outlive a two-week
 window — the promise everyone forgot is the one worth surfacing, and a short window hides

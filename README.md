@@ -40,12 +40,6 @@ AI agents fail differently than humans:
 - **[incremental-implementation](skills/incremental-implementation/)** — Never write more than 50 lines without running tests. Commit after every working change. *[Google: small CLs; Microsoft: atomic commits]*
 - **[scope-discipline](skills/scope-discipline/)** — Surface assumptions, then do exactly what was asked. No extra features, no unsolicited improvements. *[Google: one logical change per CL]*
 - **[api-and-interface-design](skills/api-and-interface-design/)** — Design the interface before the implementation. Consistent naming, minimal surface area, hard to misuse. *[Stripe: resource-oriented design, consistent error structure]*
-- **[frontend-ui-engineering](skills/frontend-ui-engineering/)** — Composition over configuration, accessibility by default, no generic AI aesthetic. Includes reference library for 35+ components. *[Industry: WCAG, component architecture]*
-- **[scroll-driven-animation](skills/scroll-driven-animation/)** — Scroll-linked motion that actually starts: pinning, reveal-on-enter, and why a scroll animation renders blank. *[Agent-specific]*
-- **[ui-component-lookup](skills/ui-component-lookup/)** — Quick reference card for any component: anatomy, props, accessibility, anti-patterns
-- **[better-accessibility](skills/better-accessibility/)** — Focus states, keyboard support, ARIA, forms and screen readers. For building or reviewing a component, not auditing a finished page. *[Industry: WCAG]*
-- **[web-design-guidelines](skills/web-design-guidelines/)** — Review UI code against the Web Interface Guidelines. *[Industry: WIG]*
-- **[tailwind-v4](skills/tailwind-v4/)** — CSS-first `@theme` configuration, the v3→v4 migration diffs, and why a dynamic class name silently fails to generate.
 - **[context-engineering](skills/context-engineering/)** — Read before writing, load deliberately, verify don't assume. Manage what enters the context window. *[Agent-specific]*
 
 ### Verify
@@ -66,42 +60,31 @@ AI agents fail differently than humans:
 - **[pr-lifecycle](skills/pr-lifecycle/)** — Shepherd a PR to merge-readiness: monitor CI, fix failures, handle feedback, loop until green. Never merge automatically. *[Microsoft/Google: CI gates]*
 
 ### Operate
-- **[graceful-degradation](skills/graceful-degradation/)** — Every external call needs a timeout. Classify dependencies as critical or optional. Degrade, don't crash. *[Netflix: Hystrix, circuit breakers, fallback hierarchy]*
-- **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logs, RED metrics, correlation IDs. Ship monitoring with the feature. *[Google: SRE; Microsoft: observability pillar]*
-- **[safe-repo-removal](skills/safe-repo-removal/)** — Prove every commit is recoverable before deleting a repo. Five checks, a manifest, and a restore-tested bundle. *[Agent-specific]*
-- **[find-hidden-services](skills/find-hidden-services/)** — A respawning process means you found one spawner, not all of them. Enumerate launchd, native-messaging hosts and MCP configs. *[Agent-specific]*
-- **[triage-failing-fleet](skills/triage-failing-fleet/)** — Collapse logs to distinct lines, then walk the dependency chain backwards to the one upstream cause. *[Agent-specific]*
-- **[disk-reclaim](skills/disk-reclaim/)** — Caches before working trees. Never assume `dist/` is untracked. *[Agent-specific]*
-- **[local-bringup](skills/local-bringup/)** — Cold clone to an app you have seen working: toolchain pins, port and database collisions, and a screenshot as the bar. *[Agent-specific]*
-- **[gcp-resource-sweep](skills/gcp-resource-sweep/)** — A resource's name tells you nothing about whether it is used. Prove it with evidence before deleting. *[Agent-specific]*
-- **[mail-authentication-records](skills/mail-authentication-records/)** — SPF, DKIM and DMARC as live production controls: a wrong record silently drops real mail. *[Agent-specific]*
-- **[google-workspace-sso-cutover](skills/google-workspace-sso-cutover/)** — Moving a tenant onto SSO without locking everyone out, including yourself. *[Agent-specific]*
-- **[aws-infra](skills/aws-infra/)** — Pin the AZ, delegate subdomains instead of repointing an apex, and verify every role name against live IAM. *[Agent-specific]*
-- **[oauth-social-providers](skills/oauth-social-providers/)** — A provider client secret is shown once; capture it before anything can destroy it, and check the gates that reject sign-ins for reasons unrelated to your credentials. *[Agent-specific]*
+
+- **[graceful-degradation](skills/graceful-degradation/)** — Every external call needs a timeout. Classify dependencies as critical or optional. Degrade, don't crash. *[Netflix: Hystrix, circuit breakers]*
+- **[observability-and-monitoring](skills/observability-and-monitoring/)** — Structured logs, RED metrics, correlation IDs. Ship monitoring with the feature. *[Google: SRE]*
 - **[session-handoff](skills/session-handoff/)** — Write a continuation prompt a cold session can act on: absolute paths, real shas, verified vs assumed, one next step. *[Agent-specific]*
-- **[pr-preview-environments](skills/pr-preview-environments/)** — Per-PR ephemeral preview environments on AWS + GitHub Actions: label-gated spin-up, an isolated database per PR whose *name* is the safety gate, the OIDC trust split that keeps a PR-triggered role from becoming account admin, and a teardown that cannot report success while orphaning billable resources.
-- **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across ten sources and post it. Profile-driven, no hardcoded org. *[Agent-specific]*
-- **[work-queue](skills/work-queue/)** — The inverse: what is owed, not what is done. Nine sources into six ranked bands, each with the noise filter it needs. Read-only, profile-driven. *[Agent-specific]*
-
-### Govern
-
-Two chains, each with separation of duties. Neither is a substitute for the judgement at the end
-of it; both exist so the judgement is made on evidence somebody else can re-check.
-
-- **[trust-posture-review](skills/trust-posture-review/)** — Assess security and compliance posture from authorized read-only records. The first step; everything below cites it. *[Agent-specific]*
-- **[evidence-investigation](skills/evidence-investigation/)** — Investigate one material finding on authorized evidence, not on the finding's own description. *[Agent-specific]*
-- **[remediation-review](skills/remediation-review/)** — Independently verify a finding, its evidence lineage and proposed fix *before* work is created. *[Agent-specific]*
-- **[founder-brief](skills/founder-brief/)** — Turn reviewed findings into a short evidence-linked brief for the person who decides. *[Agent-specific]*
-- **[repo-orient](skills/repo-orient/)** — Read-only reconnaissance before planning or implementing: authority files first, then the vertical trace. *[Agent-specific]*
-- **[implement-story](skills/implement-story/)** — Execute a bounded work order in an isolated worktree, preserving unrelated changes. *[Agent-specific]*
-- **[delivery-review](skills/delivery-review/)** — Read-only pre-QA review against the work order, contracts, regression surface and rollback. *[Agent-specific]*
-- **[shape-work](skills/shape-work/)** — Turn a request into a bounded work order: outcome, acceptance criteria, non-goals, risks. *[Agent-specific]*
-- **[release-readiness](skills/release-readiness/)** — Decide whether a candidate has the scope, review, QA, CI, rollback and approval to ship. *[Agent-specific]*
+- **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across ten sources and post it. Profile-driven. *[Agent-specific]*
+- **[work-queue](skills/work-queue/)** — The inverse: what is owed, not what is done. Nine sources into six ranked bands. Read-only, profile-driven. *[Agent-specific]*
 
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*
 - **[skill-authoring](skills/skill-authoring/)** — Create and revise reusable skills: the contract, the invariants, and a validator. *[Agent-specific]*
 - **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 setup: CI, tests, branch protection, security scanning, monitoring. *[Microsoft: Engineering Fundamentals Playbook]*
+
+## Split out of this repository
+
+Three groups left this repo when it reached 49 skills, which is more descriptions than any one
+selection context should carry. Each is a plugin of its own:
+
+| Plugin | Covers |
+|---|---|
+| [frontend-skills](https://github.com/ibraheem4/frontend-skills) | UI engineering, accessibility, Tailwind v4, component reference, scroll motion |
+| [infra-skills](https://github.com/ibraheem4/infra-skills) | AWS, GCP, DNS, mail auth, SSO, OAuth providers, preview environments, and workstation operations |
+| [delivery-skills](https://github.com/ibraheem4/delivery-skills) | Deploy, QA, release — and the governance chains: trust review and the shape → orient → implement → review → release pipeline |
+
+What stays here is the part that applies whatever you are building: how to work, what to check,
+and what to refuse.
 
 ## Skills we deliberately do not ship
 

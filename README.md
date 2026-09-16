@@ -92,6 +92,9 @@ of it; both exist so the judgement is made on evidence somebody else can re-chec
 - **[evidence-investigation](skills/evidence-investigation/)** — Investigate one material finding on authorized evidence, not on the finding's own description. *[Agent-specific]*
 - **[remediation-review](skills/remediation-review/)** — Independently verify a finding, its evidence lineage and proposed fix *before* work is created. *[Agent-specific]*
 - **[founder-brief](skills/founder-brief/)** — Turn reviewed findings into a short evidence-linked brief for the person who decides. *[Agent-specific]*
+- **[repo-orient](skills/repo-orient/)** — Read-only reconnaissance before planning or implementing: authority files first, then the vertical trace. *[Agent-specific]*
+- **[implement-story](skills/implement-story/)** — Execute a bounded work order in an isolated worktree, preserving unrelated changes. *[Agent-specific]*
+- **[delivery-review](skills/delivery-review/)** — Read-only pre-QA review against the work order, contracts, regression surface and rollback. *[Agent-specific]*
 - **[shape-work](skills/shape-work/)** — Turn a request into a bounded work order: outcome, acceptance criteria, non-goals, risks. *[Agent-specific]*
 - **[release-readiness](skills/release-readiness/)** — Decide whether a candidate has the scope, review, QA, CI, rollback and approval to ship. *[Agent-specific]*
 

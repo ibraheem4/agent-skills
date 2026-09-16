@@ -41,6 +41,7 @@ AI agents fail differently than humans:
 - **[scope-discipline](skills/scope-discipline/)** — Surface assumptions, then do exactly what was asked. No extra features, no unsolicited improvements. *[Google: one logical change per CL]*
 - **[api-and-interface-design](skills/api-and-interface-design/)** — Design the interface before the implementation. Consistent naming, minimal surface area, hard to misuse. *[Stripe: resource-oriented design, consistent error structure]*
 - **[frontend-ui-engineering](skills/frontend-ui-engineering/)** — Composition over configuration, accessibility by default, no generic AI aesthetic. Includes reference library for 35+ components. *[Industry: WCAG, component architecture]*
+- **[scroll-driven-animation](skills/scroll-driven-animation/)** — Scroll-linked motion that actually starts: pinning, reveal-on-enter, and why a scroll animation renders blank. *[Agent-specific]*
 - **[ui-component-lookup](skills/ui-component-lookup/)** — Quick reference card for any component: anatomy, props, accessibility, anti-patterns
 - **[better-accessibility](skills/better-accessibility/)** — Focus states, keyboard support, ARIA, forms and screen readers. For building or reviewing a component, not auditing a finished page. *[Industry: WCAG]*
 - **[web-design-guidelines](skills/web-design-guidelines/)** — Review UI code against the Web Interface Guidelines. *[Industry: WIG]*
@@ -72,6 +73,9 @@ AI agents fail differently than humans:
 - **[triage-failing-fleet](skills/triage-failing-fleet/)** — Collapse logs to distinct lines, then walk the dependency chain backwards to the one upstream cause. *[Agent-specific]*
 - **[disk-reclaim](skills/disk-reclaim/)** — Caches before working trees. Never assume `dist/` is untracked. *[Agent-specific]*
 - **[local-bringup](skills/local-bringup/)** — Cold clone to an app you have seen working: toolchain pins, port and database collisions, and a screenshot as the bar. *[Agent-specific]*
+- **[gcp-resource-sweep](skills/gcp-resource-sweep/)** — A resource's name tells you nothing about whether it is used. Prove it with evidence before deleting. *[Agent-specific]*
+- **[mail-authentication-records](skills/mail-authentication-records/)** — SPF, DKIM and DMARC as live production controls: a wrong record silently drops real mail. *[Agent-specific]*
+- **[google-workspace-sso-cutover](skills/google-workspace-sso-cutover/)** — Moving a tenant onto SSO without locking everyone out, including yourself. *[Agent-specific]*
 - **[aws-infra](skills/aws-infra/)** — Pin the AZ, delegate subdomains instead of repointing an apex, and verify every role name against live IAM. *[Agent-specific]*
 - **[oauth-social-providers](skills/oauth-social-providers/)** — A provider client secret is shown once; capture it before anything can destroy it, and check the gates that reject sign-ins for reasons unrelated to your credentials. *[Agent-specific]*
 - **[session-handoff](skills/session-handoff/)** — Write a continuation prompt a cold session can act on: absolute paths, real shas, verified vs assumed, one next step. *[Agent-specific]*
@@ -81,6 +85,7 @@ AI agents fail differently than humans:
 
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*
+- **[skill-authoring](skills/skill-authoring/)** — Create and revise reusable skills: the contract, the invariants, and a validator. *[Agent-specific]*
 - **[engineering-fundamentals-checklist](skills/engineering-fundamentals-checklist/)** — Sprint 0 setup: CI, tests, branch protection, security scanning, monitoring. *[Microsoft: Engineering Fundamentals Playbook]*
 
 ## Skills we deliberately do not ship

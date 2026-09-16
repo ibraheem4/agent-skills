@@ -83,6 +83,18 @@ AI agents fail differently than humans:
 - **[work-summary](skills/work-summary/)** — Summarize one workspace's activity for any period across ten sources and post it. Profile-driven, no hardcoded org. *[Agent-specific]*
 - **[work-queue](skills/work-queue/)** — The inverse: what is owed, not what is done. Nine sources into six ranked bands, each with the noise filter it needs. Read-only, profile-driven. *[Agent-specific]*
 
+### Govern
+
+Two chains, each with separation of duties. Neither is a substitute for the judgement at the end
+of it; both exist so the judgement is made on evidence somebody else can re-check.
+
+- **[trust-posture-review](skills/trust-posture-review/)** — Assess security and compliance posture from authorized read-only records. The first step; everything below cites it. *[Agent-specific]*
+- **[evidence-investigation](skills/evidence-investigation/)** — Investigate one material finding on authorized evidence, not on the finding's own description. *[Agent-specific]*
+- **[remediation-review](skills/remediation-review/)** — Independently verify a finding, its evidence lineage and proposed fix *before* work is created. *[Agent-specific]*
+- **[founder-brief](skills/founder-brief/)** — Turn reviewed findings into a short evidence-linked brief for the person who decides. *[Agent-specific]*
+- **[shape-work](skills/shape-work/)** — Turn a request into a bounded work order: outcome, acceptance criteria, non-goals, risks. *[Agent-specific]*
+- **[release-readiness](skills/release-readiness/)** — Decide whether a candidate has the scope, review, QA, CI, rollback and approval to ship. *[Agent-specific]*
+
 ### Foundations
 - **[agent-operating-principles](skills/agent-operating-principles/)** — Core behaviors: surface assumptions, stop when confused, don't be sycophantic, admit uncertainty. *[Agent-specific]*
 - **[skill-authoring](skills/skill-authoring/)** — Create and revise reusable skills: the contract, the invariants, and a validator. *[Agent-specific]*

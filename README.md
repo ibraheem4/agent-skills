@@ -42,6 +42,7 @@ AI agents fail differently than humans:
 - **[scope-discipline](skills/scope-discipline/)** — Surface assumptions, then do exactly what was asked. No extra features, no unsolicited improvements. *[Google: one logical change per CL]*
 - **[api-and-interface-design](skills/api-and-interface-design/)** — Design the interface before the implementation. Consistent naming, minimal surface area, hard to misuse. *[Stripe: resource-oriented design, consistent error structure]*
 - **[context-engineering](skills/context-engineering/)** — Read before writing, load deliberately, verify don't assume. Manage what enters the context window. *[Agent-specific]*
+- **[agent-instruction-files](skills/agent-instruction-files/)** — One instruction file per repo and per user, reached from each CLI's documented path by symlink or import. Never `~/AGENTS.md`. *[Agent-specific]*
 
 ### Verify
 - **[verify-before-cite](skills/verify-before-cite/)** — A document is a claim, not evidence. Check the path, role or resource lives before following or repeating it. *[Agent-specific]*

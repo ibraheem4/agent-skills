@@ -28,6 +28,7 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 | false-verification-signals | Reporting a cached replay as a passing test run |
 | session-handoff | Writing a handoff that says "the worktree" instead of the path |
 | verify-before-cite | Repeating a resource name from a doc that never existed |
+| agent-instruction-files | Keeping a CLAUDE.md and an AGENTS.md that drift apart |
 | local-bringup | Claiming an app runs without ever opening it |
 | aws-infra | Repointing an apex's nameservers, or deriving an AZ that forces a replace |
 | pr-preview-environments | Trusting `pull_request` on a role that holds admin |

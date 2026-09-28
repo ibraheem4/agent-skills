@@ -177,6 +177,8 @@ step 1's "since the last run" reliable rather than dependent on whether a draft 
 | "I'll include everything I found" | Cross-org work and tooling maintenance are excluded by design. Filter to `{{github_org}}` |
 | "The Linear ticket and its PR are two things I did" | They are one piece of work. Linear flips the ticket when the PR merges — two bullets for one merge is padding (step 10) |
 | "The Linear connector is authenticated, so its tickets are this workspace's" | OAuth binds one Linear workspace, and it may be an org in `{{exclude_orgs}}`. Check `get_workspace` before reading issues |
+| "Nobody replied in the thread, so it's still on me" | Asks get answered at standup and nothing gets typed. Check step 3's meeting list before asserting an open item — the thread will read unanswered forever |
+| "Nothing shipped, so there's nothing to report" | A standup that cleared three people's questions is work, and it is the only work that leaves no commit, ticket or message behind |
 
 ## Red Flags
 
@@ -185,6 +187,10 @@ step 1's "since the last run" reliable rather than dependent on whether a draft 
 - Linear issues from a team outside `{{linear_teams}}`, or from a workspace `get_workspace` says isn't this one
 - Dates computed mentally rather than with `date`
 - Posting without reporting which sources were unavailable
+- An *On me* line asserted from an unanswered thread when a meeting with that person sits
+  between the ask and `END`
+- A meeting transcript pulled to settle whether an ask was answered — step 3 forbids it; title
+  and time are enough
 
 ## Verification
 
@@ -194,6 +200,8 @@ step 1's "since the last run" reliable rather than dependent on whether a draft 
 - [ ] No content from an org in `{{exclude_orgs}}`
 - [ ] Linear confirmed as this workspace's and scoped to `{{linear_teams}}`, or skipped with the reason stated
 - [ ] No ticket reported as its own item when the PR in step 2 already covers it
+- [ ] Every *On me* line checked against step 3's meetings, and written as covered-unless where
+      a meeting with that person falls between the ask and `END`
 - [ ] Summary drafted to `{{chat_destination}}` and the draft link returned — sent outright only if they asked
 - [ ] Run recorded to `{{work_log_dir}}/summary/` with the period covered and `sent: yes|no`
 - [ ] No workspace-specific literal committed to this skill

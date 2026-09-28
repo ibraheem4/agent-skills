@@ -228,6 +228,20 @@ working channel is invisible, and that is usually the most actionable line in th
 an answered question is not an open item. Match them by thread: the permalinks carry `thread_ts`,
 so a reply of their in the same thread is normally the answer.
 
+⚠️ **A thread with no reply is not proof the ask is open.** The usual way a question from a
+teammate gets answered is out loud at the next standup, and nothing is ever typed — so the
+thread reads unanswered on that day's summary and on every summary after it. Before writing an
+*On me* line for an ask, check step 3's meeting list for a meeting between the ask and `END`
+with both people in it. Title and time settle this; **do not pull the transcript**, which step 3
+forbids for good reason. If one exists, write the line as covered-unless — "a teammate's staging
+question, unless the standup covered it" — rather than asserting an open item. Measured
+2026-09-15 on the other half of this pair: two asks were answered verbally five minutes after
+the queue printed, and both still read as unanswered in Slack.
+
+**A discharged ask is still work, and it is the only work no system records.** Answering three
+questions at standup leaves no commit, no ticket and no message. If the meeting is in the
+period, that conversation is a summary line in its own right — not an omission to apologize for.
+
 Anything still unanswered, or assigned to them and not done, becomes an *On me* line in step 13 —
 unless what they need is from someone else, in which case it is a blocker (step 12).
 

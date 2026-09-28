@@ -88,8 +88,25 @@ ranked list still leaves the choice open; the reader asked what to work on.
 
 Do not hedge it across three options. Name one.
 
+## Judgments the sweep must not overrule
+
+Read the previous snapshot's `judgments` block before assigning a band. Two entries bind:
+
+- An ask marked **`discharged`** was answered somewhere the sweep cannot see. It does not
+  print, however unanswered its source still looks. It never will look answered.
+- An item marked **`ranked <band> by owner`** stays at that band until *new* evidence arrives.
+  Re-deriving the original band from the same evidence is the sweep overruling the person once
+  a day, every day, and it is band 1 this happens to — the band whose whole value is that the
+  reader trusts it.
+
+New evidence releases the override; the absence of new evidence never does. If the item's
+own text contradicts the person's call — the ticket says they need something they say they
+do not — rank where they put it, and say once that the ticket disagrees.
+`references/run-log.md` carries both states.
+
 ## What never appears
 
+- An ask recorded as `discharged` in the run log
 - Anything completed, merged or closed
 - Anything from an org or team the profile excludes
 - Meetings the person merely attends

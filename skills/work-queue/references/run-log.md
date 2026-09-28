@@ -35,6 +35,10 @@ promise is unchanged.
 ## already-done
 | linear:ABC-33 | closed 2026-09-07 | strong — branch + PR #99 merged 2026-09-04 |
 | linear:ABC-21 | declined 2026-09-07 | keep asking? no |
+
+## judgments
+| slack:C0XXXXXXXXX:1757021175.001 | discharged 2026-09-06 — standup | "took it verbally instead" |
+| linear:ABC-12 | ranked 5 by owner 2026-09-06 | "nothing is needed from them" |
 ```
 
 ## Already-done candidates, and why declines must persist
@@ -61,6 +65,38 @@ without a per-ticket confirmation.
 A `declined` is a statement about the ticket rather than about that day's evidence, so it
 survives new evidence arriving. A `deferred` does not: if a genuinely stronger signal appears
 later, offering it again is correct.
+
+## Judgments that outlive the evidence
+
+Two things a person says about an item are **not** facts about the item, and both must survive
+into the next run or the sweep will undo them. Neither is an already-done state; they apply to
+any item, including ones nobody would ever close.
+
+- **`discharged <date> — <where>`** — the ask was answered, but **somewhere the sweep cannot
+  see**: out loud in a standup, on a call, in person. The source still shows it unanswered and
+  always will. A discharged ask does not print again.
+- **`ranked <band> by owner <date>`** — the person moved an item out of the band the evidence
+  put it in. Keep it at their band until *new* evidence arrives; re-deriving the old band from
+  the same evidence is the sweep overruling them once a day, every day.
+
+Record the person's own words next to each, because both states are claims the sources
+contradict, and in three weeks the log is the only thing that remembers why.
+
+⚠️ **The out-of-band answer is the failure mode that never self-corrects.** Measured
+2026-09-15: two asks — a thread and a DM — were answered verbally at a standup five minutes
+after the queue printed. Nothing was typed, so both still read as unanswered in chat. Without
+this state, every future run re-surfaces them as band-1 "blocking someone else", the person
+re-explains that they handled it, and the queue's most urgent band is permanently wrong. The
+same run also demoted two band-1 items on the person's say-so; the log had to carry a prose
+"do not re-rank these next run", which is exactly the instruction a structured state replaces.
+
+**Discharged is not done.** The ask is settled; the work it asked for usually is not. The
+09-15 standup answered *whether* the verification pass would happen — nobody had performed it.
+Close the ask, keep the work, and say which is which.
+
+**Ask before recording either.** Both come from the person telling you. Never infer a discharge
+from a meeting that merely happened near the ask, and never infer a band override from the
+person not mentioning an item — silence is not a ranking.
 
 ## Ids must be stable
 

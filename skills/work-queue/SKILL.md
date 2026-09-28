@@ -158,6 +158,13 @@ and the classification rule.
 The diff is what makes the queue a record rather than a snapshot: `carried 12d` on a two-line
 task is the most actionable thing on the page, and no single sweep can produce it.
 
+**Read the snapshot's `judgments` block in the same pass, and honor it.** An ask the person
+answered out of band — verbally at a standup, on a call — is settled forever in their head and
+unanswered forever in its source, so only the log can carry that. An item they re-ranked stays
+where they put it until new evidence arrives. Both states are in `references/run-log.md`; a
+sweep that ignores them re-surfaces the same two items every run and spends band 1, the only
+band whose value is the reader's trust, arguing with the reader.
+
 Then follow **`references/ranking.md`** for the six bands, the tie-breaks and the output shape.
 In order: blocking someone, dated, stalled on someone else, in flight, assigned, inferred.
 
@@ -222,6 +229,10 @@ ticket the person already said to leave alone.
 | "No period was given, so I'll ask which one" | Bare invocation is the normal case. Assignments have no window and asks default to 14 days — state what you used and get on with it |
 | "This issue is months old, it can't still be live" | Assignments never expire on age. That judgment belongs to the person reading the queue, not to the sweep |
 | "It's gone from the queue, so it got done" | It may have aged out of `SINCE` without ever being answered. Classify against the window before claiming anything closed |
+| "Slack still shows no reply, so the ask is still open" | Most asks that matter get answered in the standup five minutes later, and nothing gets typed. Check the `judgments` block before ranking an ask as blocking anyone |
+| "They handled it verbally, so it's done" | The ask is discharged; the work it asked for usually is not. Drop the ask, keep the task, and say which is which |
+| "The evidence clearly puts this in band 1" | It did last run too, and they moved it. An owner's band survives until new evidence arrives — re-deriving the old one is overruling them daily |
+| "The ticket itself says they need that thing" | Issue text is written once. If the person says otherwise, rank where they put it and note the disagreement once |
 | "There's no snapshot for that date, I'll just sweep and present it as that day" | A reconstructed past is a fabricated one. Say no snapshot exists |
 | "I'll reset first_seen, the item looks different now" | `first_seen` is the age of the obligation, not of its wording. Resetting it hides exactly what the log is for |
 
@@ -230,6 +241,10 @@ ticket the person already said to leave alone.
 - Any workspace-specific literal in `SKILL.md` or `references/` instead of a profile key
 - An item from an org in `{{exclude_orgs}}`, or from a tracker team outside `{{linear_teams}}`
 - A dated item whose date came from a previous snapshot rather than from notes read this run
+- An ask printed as unanswered that the log records as `discharged`
+- An item re-ranked into the band the person moved it out of, on the same evidence
+- A `discharged` or `ranked by owner` entry written from inference rather than from the person
+  saying so
 - A band 1-2 item whose urgency rests only on the ticket's own description of its blocker
 - A chat sweep that searched only `{{work_channels}}`, or that skipped DMs
 - A completed, merged or closed item presented as owed
@@ -261,6 +276,8 @@ ticket the person already said to leave alone.
 - [ ] Noise filters applied — bot PRs, calendar invitations, metadata notifications, own messages
 - [ ] Items ranked into the six bands, not sorted by tracker priority
 - [ ] Diffed against the previous snapshot; every item marked `NEW` or `carried Nd`
+- [ ] The previous snapshot's `judgments` block read before ranking — no `discharged` ask
+      printed, and no owner-set band re-derived without new evidence
 - [ ] Cleared items classified `done` or `aged out`, never merged into one list
 - [ ] Snapshot written to `{{work_log_dir}}`, with `first_seen` carried forward
 - [ ] Already-done candidates printed as their own section, each with its evidence strength

@@ -8,9 +8,10 @@ Draws from [Microsoft's Engineering Playbook](https://microsoft.github.io/code-w
 
 | Tool | Config File | Status |
 |------|------------|--------|
-| [Claude Code](https://claude.ai/code) | `CLAUDE.md` | Supported |
-| [Codex](https://github.com/openai/codex) | `codex.md` / `AGENTS.md` | Supported |
+| [Claude Code](https://claude.ai/code) | `CLAUDE.md`, or `AGENTS.md` where there is none | Supported |
+| [Codex](https://github.com/openai/codex) | `AGENTS.md` | Supported |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `GEMINI.md` | Supported |
+| [Goose](https://github.com/block/goose) | `AGENTS.md` / `.goosehints` | Supported |
 | [OpenCode](https://github.com/nicholasgriffintn/opencode) | — | Planned |
 
 ## Why Agent-Specific Skills?

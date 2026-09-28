@@ -22,7 +22,7 @@ This is the most agent-specific skill in the set — humans manage context uncon
 Load context in this order, stopping when you have enough:
 
 ```
-Priority 1: Project rules (CLAUDE.md, AGENTS.md, GEMINI.md)
+Priority 1: Project rules (CLAUDE.md, AGENTS.md, GEMINI.md, .goosehints)
     ↓       Always loaded. These are persistent constraints.
 Priority 2: Relevant source files
     ↓       Read files you'll modify BEFORE modifying them.

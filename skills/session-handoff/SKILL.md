@@ -1,6 +1,6 @@
 ---
 name: session-handoff
-description: Use when asked for a continuation prompt, a prompt to run after clearing context, a handoff before logging off, or when picking one up — "how do I resume this later", "give me a prompt to start a new session", "resume from the previous session". Writes a handoff a cold session can act on without re-deriving anything.
+description: Use when asked for a continuation prompt, a prompt to run after clearing context, a handoff before logging off, or when picking one up — "how do I resume this later", "give me a prompt to start a new session", "resume from the previous session". Also use when a session's work has shipped or is winding down, or when asked "anything else for this session?" — close it out without waiting to be asked: follow-ups filed, the system of record reconciled, a handoff written. Writes a handoff a cold session can act on without re-deriving anything.
 ---
 
 # Session Handoff
@@ -18,6 +18,8 @@ Write it as a block to paste, not as prose about what to paste. Keep it under a 
 
 - Asked for a continuation prompt, or a prompt to run after clearing context
 - Wrapping up before a break, with work still in flight
+- The session's main work has shipped, or the user asks whether anything is left — run
+  **Closing a session** below instead of listing follow-ups and waiting to be told to file them
 - Starting from a handoff someone else — or an earlier session — wrote
 
 ## Core Process
@@ -80,6 +82,30 @@ work down is the requester's call, not yours.
 A handoff is a claim about the past. Treat every line as needing confirmation, especially the
 ones that say something is already done.
 
+### 5. Closing a session
+
+A list of follow-ups in chat is not a close-out. The user should not have to ask for any of
+this. Resolve the workspace profile first (`~/<workspace>/.claude/workspace.config.md`); its
+`closeout` key says what is pre-approved. Without that key, offer these steps once, as one
+question, and do not repeat it.
+
+1. **Reconcile before recording.** For everything the session removed, renamed or retired,
+   search the system of record (`{{wiki_base}}` and its registries) for it by name. A record
+   that says "kept deliberately" turns a follow-up into a decision for the owner. Surface it;
+   don't file it as a cleanup task.
+2. **File each follow-up in the tracker** (`{{tracker}}`, through the tracker-hygiene skill):
+   one ticket per independent piece, in the matching project, related to any existing ticket
+   rather than duplicating it. Each ticket names paths, shas and a done-when line.
+3. **Update the system of record:** append the session to its log, and correct any page or
+   registry entry the session made false. Commit only those paths. Push when the profile's
+   `closeout` allows it.
+4. **Update agent memory** with what was non-obvious, not a restatement of the commits.
+5. **Reply with the handoff block** (§1), with ticket ids in place of prose, and exactly one
+   next step.
+
+Never file a ticket for work that was blocked by a permission denial as if an agent could do
+it. Say that it needs the user.
+
 ## Common Rationalizations
 
 | Excuse | Why It's Wrong |
@@ -88,6 +114,8 @@ ones that say something is already done.
 | "It's obviously still on that branch" | Between sessions, someone rebased, merged, or renamed it |
 | "I'll list a few options for what's next" | The next session picks the wrong one and you have lost the context that would have prevented it |
 | "The tests passed earlier so I'll write that they pass" | Earlier is not now, and you did not read that output |
+| "I'll list the follow-ups and let them say whether to file them" | That makes the user ask every session. Filing them is the close-out |
+| "It's unused, so the teardown is a plain follow-up" | Unused is not the same as unwanted. Check the record for a keep decision first |
 
 ## Verification
 
@@ -97,3 +125,4 @@ ones that say something is already done.
 - [ ] Exactly one next step
 - [ ] No secrets, tokens, or env values anywhere in the block
 - [ ] When picking one up: claims re-verified before acting on them
+- [ ] When closing: follow-ups are tickets, the record is reconciled and committed, memory is updated

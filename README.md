@@ -1,3 +1,5 @@
+> **Moved.** This plugin now lives in [`ibraheem4/claude-marketplace` → `plugins/agent-skills`](https://github.com/ibraheem4/claude-marketplace/tree/main/plugins/agent-skills), history included. This repo is archived; install with `/plugin install agent-skills@ibraheem4`.
+
 # Agent Skills
 
 Behavioral guardrails and engineering workflows for AI coding agents. Each skill combats a specific agent failure mode — scope creep, blind retries, missing tests, hallucinated fixes — with step-by-step processes grounded in industry practices.

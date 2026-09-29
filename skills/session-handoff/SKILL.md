@@ -14,6 +14,12 @@ work was done that was never run.
 
 Write it as a block to paste, not as prose about what to paste. Keep it under a page.
 
+**Where a tracker already holds the state, the tracker is the handoff.** A pasted block then
+duplicates the ticket comments, the log and memory, and goes stale as soon as the lead branch
+moves. The full block is for state that lives nowhere else: uncommitted work, a half-finished
+branch, a running process, a decision made mid-task. The profile's `handoff` key says which
+applies (§3).
+
 ## When to Use
 
 - Asked for a continuation prompt, or a prompt to run after clearing context
@@ -64,7 +70,12 @@ work down is the requester's call, not yours.
 
 ### 3. Where it goes
 
-- **Default:** a chat message or a paste block. Ephemeral by design, which is correct — the
+- **Profile says `handoff: tracker`:** the tracker, the system of record's log and agent memory
+  carry it. The reply is a summary of three lines at most plus ticket ids, and the next session
+  starts by reading the tracker (a work-queue sweep), not a pasted block. Write the full block
+  anyway when state lives nowhere else — uncommitted changes, a branch mid-edit, a process that
+  must keep running — and put it in the ticket it belongs to, not only in chat.
+- **Default, or `handoff: block`:** a chat message or a paste block. Ephemeral by design, which is correct — the
   handoff describes a moment.
 - **If it must persist:** the team's system of record, wherever documentation actually
   lives.
@@ -97,6 +108,7 @@ named in the handoff, not guessed.
 | `docs_internal` | Repo docs agents and staff read: instruction files, READMEs, runbooks, specs |
 | `docs_external` | Docs customers read, and how each is generated and published |
 | `tracker` | Where tickets live, and the hygiene skill that guards writes |
+| `handoff` | `tracker` (the tracker carries continuation; reply with a short summary) or `block` (the paste block; the default) |
 
 1. **Reconcile before recording.** For everything the session removed, renamed or retired,
    search the system of record for it by name. A record that says "kept deliberately" turns a
@@ -128,8 +140,10 @@ named in the handoff, not guessed.
 5. **Commit only those paths**, staged and committed in one command. Push when `closeout`
    allows it.
 6. **Update agent memory** with what was non-obvious, not a restatement of the commits.
-7. **Reply with the handoff block** (§1), with ticket ids in place of prose, the docs updated
-   by path, lint results, and exactly one next step.
+7. **Reply.** With `handoff: tracker` and nothing left outside the tracker: three lines at
+   most — what shipped, what waits on whom, the one next step — with ticket ids. Otherwise the
+   handoff block (§1), with ticket ids in place of prose, the docs updated by path, lint results,
+   and exactly one next step.
 
 ## Common Rationalizations
 
@@ -145,6 +159,8 @@ named in the handoff, not guessed.
 | "The public docs are generated, so they'll catch up" | They regenerate from a source nobody edited. Edit the source, run the generator |
 | "I'll lint the wiki next session" | The next session inherits broken links it didn't write and can't attribute |
 | "The ticket is obviously done, I'll close it" | Closing is a state change the profile may reserve for the owner. Propose it |
+| "I'll paste the full block as well, to be safe" | With `handoff: tracker` it restates the tickets and is stale by the next session. The summary points at them |
+| "The tickets say it all" | Not an uncommitted change or a process left running. That still needs the block, in its ticket |
 
 ## Verification
 
@@ -152,6 +168,8 @@ named in the handoff, not guessed.
 - [ ] Every "done" line names the command that proved it
 - [ ] Skipped checks are listed explicitly
 - [ ] Exactly one next step
+- [ ] With `handoff: tracker`: a short summary with ticket ids, and a full block only for state
+      the tracker cannot hold
 - [ ] No secrets, tokens, or env values anywhere in the block
 - [ ] When picking one up: claims re-verified before acting on them
 - [ ] When closing: worked tickets carry their commits and state (or a proposed state change);

@@ -1,6 +1,6 @@
 ---
 name: session-handoff
-description: Use when asked for a continuation prompt, a prompt to run after clearing context, a handoff before logging off, or when picking one up — "how do I resume this later", "give me a prompt to start a new session", "resume from the previous session". Also use when a session's work has shipped or is winding down, or when asked "anything else for this session?" — close it out without waiting to be asked: follow-ups filed, the system of record reconciled, a handoff written. Writes a handoff a cold session can act on without re-deriving anything.
+description: Use when asked for a continuation prompt, a prompt to run after clearing context, a handoff before logging off, or when picking one up — "how do I resume this later", "give me a prompt to start a new session", "resume from the previous session". Also use when a session's work has shipped or is winding down, or when asked "anything else for this session?" — close it out without waiting to be asked: tickets updated and follow-ups filed, the system of record and internal and external docs corrected, the record linted, a handoff written. Writes a handoff a cold session can act on without re-deriving anything.
 ---
 
 # Session Handoff
@@ -87,24 +87,49 @@ ones that say something is already done.
 A list of follow-ups in chat is not a close-out. The user should not have to ask for any of
 this. Resolve the workspace profile first (`~/<workspace>/.claude/workspace.config.md`); its
 `closeout` key says what is pre-approved. Without that key, offer these steps once, as one
-question, and do not repeat it.
+question, and do not repeat it. A profile key that is missing means that layer is skipped and
+named in the handoff, not guessed.
+
+| Key | What it names |
+|---|---|
+| `wiki_base` | The system of record: its log, pages and registries |
+| `wiki_lint` | The command that health-checks the system of record |
+| `docs_internal` | Repo docs agents and staff read: instruction files, READMEs, runbooks, specs |
+| `docs_external` | Docs customers read, and how each is generated and published |
+| `tracker` | Where tickets live, and the hygiene skill that guards writes |
 
 1. **Reconcile before recording.** For everything the session removed, renamed or retired,
-   search the system of record (`{{wiki_base}}` and its registries) for it by name. A record
-   that says "kept deliberately" turns a follow-up into a decision for the owner. Surface it;
-   don't file it as a cleanup task.
-2. **File each follow-up in the tracker** (`{{tracker}}`, through the tracker-hygiene skill):
-   one ticket per independent piece, in the matching project, related to any existing ticket
-   rather than duplicating it. Each ticket names paths, shas and a done-when line.
-3. **Update the system of record:** append the session to its log, and correct any page or
-   registry entry the session made false. Commit only those paths. Push when the profile's
-   `closeout` allows it.
-4. **Update agent memory** with what was non-obvious, not a restatement of the commits.
-5. **Reply with the handoff block** (§1), with ticket ids in place of prose, and exactly one
-   next step.
-
-Never file a ticket for work that was blocked by a permission denial as if an agent could do
-it. Say that it needs the user.
+   search the system of record for it by name. A record that says "kept deliberately" turns a
+   follow-up into a decision for the owner. Surface it; don't file it as a cleanup task.
+2. **Update the tracker** (`{{tracker}}`, through its hygiene skill).
+   - Tickets the session worked on: add the commits, PR, deploy or run ids, and what is still
+     unverified. Move the state only when `closeout` allows it; otherwise put the exact change
+     ("ENG-12 → Done, verified by …") in the handoff for the user to approve.
+   - Follow-ups: one ticket per independent piece, in the matching project, related to any
+     existing ticket rather than duplicating it. Each names paths, shas and a done-when line.
+   - Never file work blocked by a permission denial as if an agent could do it. Say that it
+     needs the user.
+3. **Update every doc the session made false or incomplete**, in three layers:
+   - **System of record** (`{{wiki_base}}`): append the session to its log; correct any page
+     or registry entry it contradicted. A rule the owner stated in the session goes into the
+     page or skill that governs that work, quoting the owner. Never promote a proposal or your
+     own inference into a decision.
+   - **Internal docs** (`{{docs_internal}}`): any command, path, env name, deploy step, API
+     contract or behaviour the session changed.
+   - **External docs** (`{{docs_external}}`): public docs, API reference, changelog. Where a
+     page is generated, edit its source and run the generator, never the output. Publishing
+     is an outward action and needs approval unless `closeout` covers it.
+   To find what went stale, search each layer for every name the session changed (field,
+   route, label, command, env var). Prove the search works on one term you know is present
+   first.
+4. **Lint what you wrote.** Run `{{wiki_lint}}`, and the repo's doc checks where they exist
+   (a docs-sync `--check`, link or markdown lint). Fix mechanical findings in the same pass;
+   report judgment findings to the owner. A lint you skipped is named in the handoff.
+5. **Commit only those paths**, staged and committed in one command. Push when `closeout`
+   allows it.
+6. **Update agent memory** with what was non-obvious, not a restatement of the commits.
+7. **Reply with the handoff block** (§1), with ticket ids in place of prose, the docs updated
+   by path, lint results, and exactly one next step.
 
 ## Common Rationalizations
 
@@ -116,6 +141,10 @@ it. Say that it needs the user.
 | "The tests passed earlier so I'll write that they pass" | Earlier is not now, and you did not read that output |
 | "I'll list the follow-ups and let them say whether to file them" | That makes the user ask every session. Filing them is the close-out |
 | "It's unused, so the teardown is a plain follow-up" | Unused is not the same as unwanted. Check the record for a keep decision first |
+| "The commit message documents it" | Nobody reads history to learn how a service deploys. The runbook they do read is now wrong |
+| "The public docs are generated, so they'll catch up" | They regenerate from a source nobody edited. Edit the source, run the generator |
+| "I'll lint the wiki next session" | The next session inherits broken links it didn't write and can't attribute |
+| "The ticket is obviously done, I'll close it" | Closing is a state change the profile may reserve for the owner. Propose it |
 
 ## Verification
 
@@ -125,4 +154,9 @@ it. Say that it needs the user.
 - [ ] Exactly one next step
 - [ ] No secrets, tokens, or env values anywhere in the block
 - [ ] When picking one up: claims re-verified before acting on them
-- [ ] When closing: follow-ups are tickets, the record is reconciled and committed, memory is updated
+- [ ] When closing: worked tickets carry their commits and state (or a proposed state change);
+      follow-ups are tickets
+- [ ] When closing: system of record, internal and external docs searched for every changed
+      name, and corrected at the source
+- [ ] When closing: `wiki_lint` and repo doc checks ran, or are named as skipped; the record is
+      committed and memory is updated

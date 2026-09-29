@@ -22,7 +22,7 @@ Behavioral guardrails for AI coding agents. Each skill in `skills/` targets a sp
 - `/work-summary` — Summarize a workspace's activity for any period and post it (profile-driven)
 - `/work-queue` — What's owed across nine sources, ranked into six bands; read-only (profile-driven)
 - `/verify-signals` — A cached run is a replay; a sandboxed probe is about the sandbox; zero rows can mean no scope
-- `/handoff` — Continuation prompt a cold session can act on: absolute paths, real shas, one next step
+- `/handoff` — Continuation prompt a cold session can act on: absolute paths, real shas, one next step; closing updates tickets, docs and the record, then lints
 - `/cite-check` — A document is a claim, not evidence. Verify the path, role or resource exists
 - `/instruction-files` — One file for Claude, Codex, Gemini and Goose, linked or imported from each tool's documented path
 - `/bringup` — Cold clone to a running app; the bar is a status code and a screenshot
